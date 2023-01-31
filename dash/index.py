@@ -6,7 +6,7 @@ from views import current_view, recent_view
 from SQLConnection import SQLConnection
 
 #SQL connection
-sql = SQLConnection('')
+sql = SQLConnection('ec2-dash/dash.db')
 
 app.layout = html.Div(
 	children = [

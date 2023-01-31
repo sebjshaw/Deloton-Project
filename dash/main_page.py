@@ -71,9 +71,14 @@ layout = html.Div(
 )
 
 @app.callback(
-	Output(
-		"rpm_graph",'figure'
-	),
+	[
+		Output(
+			"rpm_graph",'figure'
+		),
+		Output(
+			"rpm_text",'children'
+		),
+	]
 	[
 		Input(
 			'interval_component', 'n_intervals'
@@ -84,9 +89,14 @@ def update_rpm_figure(n):
 	return visualisations.create_visualisation()
 
 @app.callback(
-	Output(
-		"rpm_graph",'figure'
-	),
+	[
+		Output(
+			"heart_rate_graph",'figure'
+		),
+		Output(
+			"heart_rate_text",'children'
+		),
+	]
 	[
 		Input(
 			'interval_component', 'n_intervals'
@@ -97,9 +107,14 @@ def update_heart_rate_figure(n):
 	return visualisations.create_visualisation()
 
 @app.callback(
-	Output(
-		"rpm_graph",'figure'
-	),
+	[
+		Output(
+			"power_graph",'figure'
+		),
+		Output(
+			"power_text",'children'
+		),
+	]
 	[
 		Input(
 			'interval_component', 'n_intervals'

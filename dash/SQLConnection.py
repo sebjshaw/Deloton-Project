@@ -1,10 +1,12 @@
-import sqlalchemy
+import sqlite3
 import pandas as pd
 
 class SQLConnection():
-	def __init__(self, username: str, password: str, host: str, port: str, database: str) -> None:
-		self.engine = sqlalchemy.create_engine(f'sqlite://{username}:{password}@{host}:{port}/{database}')
-		self.conn = self.engine.connect()
+	"""Create a SQLite connection class
+	"""
+	def __init__(self, database_file: str) -> None:
+		self.conn = sqlite3.connect(f'{database_file}')
+		self.curs = self.conn.cursor()
 	
 	def query(self, query:str) -> pd.DataFrame:
 		"""
@@ -24,53 +26,6 @@ class SQLConnection():
 			print(e)
 		print('\n')
 
-	def load_to_staging(self, df:pd.DataFrame, schema_name='week4_dominic_staging', table_name='staging_ecommerce', if_exists='replace') -> None:
-		"""
-		Load to sql database, creating a new table or appending to existing table
-
-		Args:
-			df (pd.DataFrame): df containing data for the sql table
-			schema (str): DEFAULT: week4_dominic_staging, schema to create table in
-			table_name (str): DEFAULT: staging_ecommerce, name given to created sql table
-			if_exists (str): DEFAULT: replace, course of action if table exists already [append, replace, fail] 
-
-		Returns:
-			str: _description_
-		"""
-		try:
-			df.to_sql(table_name, self.conn, schema=schema_name, if_exists=if_exists, index = False)
-			if if_exists == 'append':
-				print(f'Appended to table {table_name} successfully')
-			elif if_exists == 'replace':
-				print(f'Replaced table {table_name} successfully')
-		except Exception as e:
-			print(f"Error loading to table {table_name}")
-			print(e)
-		print()
-
-	def load_to_production(self, df:pd.DataFrame, schema_name='week4_dominic_production', table_name='production_ecommerce', if_exists='replace') -> None:
-		"""
-		Load to sql database, creating a new table or appending to existing table
-
-		Args:
-			df (pd.DataFrame): df containing data for the sql table
-			schema (str): schema to create table in
-			table_name (str): name given to created sql table
-			if_exists (str): DEFAULT: append, course of action if table exists already [append, replace, fail] 
-
-		Returns:
-			str: _description_
-		"""
-		try:
-			df.to_sql(table_name, self.conn, schema=schema_name, if_exists=if_exists, index = False)
-			if if_exists == 'append':
-				print(f'Appended to table {table_name} successfully')
-			elif if_exists == 'replace':
-				print(f'Daily update complete')
-		except Exception as e:
-			print(e)
-		print('\n')
-
 	def execute(self, query:str) -> list:
 		"""
 		Execute a query on the db
@@ -81,9 +36,8 @@ class SQLConnection():
 		Returns:
 				list: returned from query
 		"""
-		query = sqlalchemy.text(query)
 		try:
-			res = self.conn.execute(query).fetchall()
+			res = self.curs.execute(query).fetchall()
 			print(f"'{query}' executed")
 			return res
 		except Exception as e:

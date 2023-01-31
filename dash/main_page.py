@@ -1,7 +1,12 @@
 from dash import html, dcc, Input, Output
 import visualisations
 from app import app
+from SQLConnection import SQLConnection
 
+#SQL connection
+sql = SQLConnection('DB_NAME')
+
+#Layout of the dashboard
 layout = html.Div(
 	children=[
 		html.Div(
@@ -70,6 +75,7 @@ layout = html.Div(
 	id='page'
 )
 
+#Call backs for updating the components once a second
 @app.callback(
 	[
 		Output(
@@ -86,6 +92,7 @@ layout = html.Div(
 	]
 )
 def update_rpm_figure(n):
+
 	return visualisations.create_visualisation()
 
 @app.callback(

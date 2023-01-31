@@ -6,7 +6,7 @@ from views import current_view, recent_view
 from SQLConnection import SQLConnection
 
 #SQL connection
-sql = SQLConnection('DB_NAME')
+sql = SQLConnection('')
 
 app.layout = html.Div(
 	children = [
@@ -41,7 +41,6 @@ app.layout = html.Div(
 
 page_references = {
 	"/": current_view.current_layout,
-	"/current": current_view.current_layout,
 	"/recent": recent_view.recent_layout
 }
 

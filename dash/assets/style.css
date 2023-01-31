@@ -1,4 +1,42 @@
 #header {
 	display: flex;
 	flex-direction: row;
+	height: 10vh;
+	align-items: center;
+}
+
+#rpm,
+#time_resistance {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+#upper_body {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	height: 45vh;
+}
+#lower_body {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	height: 45vh;
+}
+#upper_recent_body {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	height: 45vh;
+}
+#lower_recent_body {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	height: 45vh;
+}
+
+.shares {
+	width: 33vw;
 }

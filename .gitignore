@@ -1,8 +1,12 @@
 .env
 <<<<<<< HEAD
+<<<<<<< HEAD
 *.DS_Store
 =======
 */.DS_Store
 >>>>>>> 81382b3 (basic dash styling)
 *venv/
 *__pycache__/
+=======
+**/.DS_Store
+>>>>>>> 08e0027 (Create Kafka Consumer and generate dict of logs)

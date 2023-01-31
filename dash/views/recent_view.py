@@ -9,6 +9,7 @@ recent_layout = html.Div(
 				html.Div(
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 					children = [
 						html.Div(
 							html.H2('00:00:00',id='time_text'),
@@ -36,6 +37,8 @@ recent_layout = html.Div(
 =======
 =======
 >>>>>>> a42d970 (basic dash styling)
+=======
+>>>>>>> 42c930f (basic dash styling)
 					dcc.Link(
 						children = html.Button(
 							id="view_switch",

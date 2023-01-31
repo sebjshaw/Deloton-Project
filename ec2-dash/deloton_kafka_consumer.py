@@ -48,10 +48,11 @@ def stream_data_from_kafka(c: Consumer) -> str:
         
     return log
 
-def create_entry_to_dataframe(c: Consumer) -> dict:
+def create_log_entry(c: Consumer) -> dict:
 
     """Polls the data stream twice to retrieve both unique log events and returns all the information 
-    in one dict
+    in one dict. If the log event contains 'SYSTEM' (i.e. the user info), this information is compiled 
+    into a dict and returned instead
 
     Args:
         c (Consumer): Consumer class from confluent kafka listening to deloton topic
@@ -61,18 +62,49 @@ def create_entry_to_dataframe(c: Consumer) -> dict:
     """
 
     info = {}
+    info1 = {}
+    info2 = {}
     for i in range(2):
-        log = stream_data_from_kafka(c)
-        if log != "":
+        log = stream_data_from_kafka(c) # polls the topic using the stream_data_from_kafka function
+
+        # if the log is the user information then this is compiled and returned 
+        if 'SYSTEM' in log:
+            data = log.split("EM] ")[1]
+            data = data[8:-2].split(',\"')
+            for detail in data:
+                stat = detail.replace('\"', '').split(':')
+                info[stat[0]] = stat[1]
+
+            return info
+
+        # if this is a regular log it is completed twice 
+        if 'INFO' in log:
             info['datetime'] = log.split(" men")[0]
             stats_str = log.split("O]:")
             stats = stats_str[1].split(" ")
             if 'Ride' in stats:
-                info['duration'] = stats[5][:-1]
-                info['resistance'] = stats[8][:-1]
+                info1['duration'] = stats[5][:-1]
+                info1['resistance'] = stats[8][:-1]
             else:
-                info['heart_rate'] = stats[5][:-1]
-                info['rpm'] = stats[8][:-1]
-                info['power'] = stats[11][:-1]
+                info2['heart_rate'] = stats[5][:-1]
+                info2['rpm'] = stats[8][:-1]
+                info2['power'] = stats[11][:-1]
 
+    info = info | info1 | info2 # dictates the format of the final dictionary to be the same every time 
     return info
+
+
+# really easy way to test is to create a new python file:
+
+# from deloton_kafka_consumer import create_log_entry, create_kafka_consumer
+# c = create_kafka_consumer()
+# while True:
+#     try: 
+#         print(create_log_entry(c))
+#     except KeyboardInterrupt:
+#         pass
+
+
+
+
+

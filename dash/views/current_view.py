@@ -4,7 +4,16 @@ current_layout = html.Div(
 	children=[
 		html.Div(
 			children = [
-				html.Div(id="icon"),
+				html.Div(
+					dcc.Link(
+						children = html.Button(
+							id="view_switch",
+							children='CURRENT'
+						),
+						href='/recent'
+					),
+					id="icon"
+				),
 				html.Div(id='rider_info')
 			],
 			id='header'
@@ -14,22 +23,27 @@ current_layout = html.Div(
 				html.Div(
 					children = [	
 						html.Div(
-							dcc.Graph(id='rpm_graph'),
-							dcc.Interval(
-								id='interval_component',
-								interval=1*1000, # in milliseconds
-								n_intervals=0
-							),
+							children = [
+								dcc.Graph(id='rpm_graph'),
+								dcc.Interval(
+									id='interval_component',
+									interval=1*1000, # in milliseconds
+									n_intervals=0
+								),
+								html.Div(
+									html.H2('32RPM',id='rpm_text')
+								)
+							],
 							id='rpm'
 						),
 						html.Div(
 							children = [	
 								html.Div(
-									html.H2(id='time_text'),
+									html.H2('00:00:00',id='time_text'),
 									id='time'
 								),
 								html.Div(
-									html.H2(id='resistance_text'),
+									html.H2('30',id='resistance_text'),
 									id='resistance'
 								)
 							],

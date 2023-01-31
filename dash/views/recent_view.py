@@ -5,10 +5,15 @@ recent_layout = html.Div(
 		html.Div(
 			children = [
 				html.Div(
-					html.Button(
-						
+					dcc.Link(
+						children = html.Button(
+							id="view_switch",
+							children='RECENT'
+						),
+						href='/current'
 					),
-					id="icon"),
+					id="icon"
+				),
 				html.Div(id='rider_info')
 			],
 			id='header'

@@ -37,10 +37,6 @@ recent_layout = html.Div(
 									html.H2('BPM',id='heart_rate_text'),
 									id='heart_rate'
 								),
-							]
-						),
-						html.Div(
-							children = [
 								html.Div(
 									html.H2("RPM", id="rpm_text"),
 									id="time"
@@ -50,7 +46,7 @@ recent_layout = html.Div(
 									id='resistance'
 								),
 							]
-						)
+						),
 					],
 					id='upper_recent_body'
 				),

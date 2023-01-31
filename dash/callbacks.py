@@ -1,48 +1,8 @@
-from dash import html, dcc, Input, Output
-import visualisations
 from app import app
-from views import current_view, recent_view
+from dash import Input, Output, html, dcc
+from visualisations import create_visualisation
+from index import page_references
 
-from SQLConnection import SQLConnection
-
-#SQL connection
-# sql = SQLConnection('./ec2-dash/dash.db')
-
-app.layout = html.Div(
-	children = [
-		dcc.Location(
-			id='url',
-			refresh=False,
-		),
-		html.Div(
-			children=[
-				html.Div(
-					children = [
-						html.Div(
-							dcc.Link(
-								children = html.Button(
-									'CURRENT',
-									id="view_switch",
-									n_clicks=0
-								),
-								href='/recent'
-							),
-							id="icon"
-						),
-						html.Div(id='rider_info')
-					],
-					id='header'
-				),
-			],
-			id='page_content'
-		)
-	]
-)
-
-page_references = {
-	"/": current_view.current_layout,
-	"/recent": recent_view.recent_layout
-}
 
 #Call backs for updating the components once a second
 @app.callback(
@@ -62,8 +22,6 @@ def display_page(pathname: str) -> html.Div:
 	else:
 			return '404'
 
-
-
 # @app.callback(
 # 	Output(
 # 		"rpm_graph",'figure'
@@ -78,8 +36,7 @@ def display_page(pathname: str) -> html.Div:
 # 	]
 # )
 # def update_rpm_figure(n):
-
-# 	return visualisations.create_visualisation()
+# 	return create_visualisation()
 
 # @app.callback(
 # 	Output(

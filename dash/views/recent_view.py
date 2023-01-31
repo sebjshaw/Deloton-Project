@@ -31,21 +31,26 @@ recent_layout = html.Div(
 							children = [
 								html.Div(
 									html.H2('00:00:00',id='time_text'),
-									id='time'
+									id='time',
+									className='bit'
 								),
 								html.Div(
 									html.H2('BPM',id='heart_rate_text'),
-									id='heart_rate'
+									id='heart_rate',
+									className='bit'
 								),
 								html.Div(
 									html.H2("RPM", id="rpm_text"),
-									id="time"
+									id="time",
+									className='bit'
 								),
 								html.Div(
 									html.H2('30',id='resistance_text'),
-									id='resistance'
+									id='resistance',
+									className='bit'
 								),
-							]
+							],
+							id='bit_container'
 						),
 					],
 					id='upper_recent_body'

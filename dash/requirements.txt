@@ -1,0 +1,6 @@
+pandas
+matplotlib
+numpy
+plotly
+dash
+dotenv

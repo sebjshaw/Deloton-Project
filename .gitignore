@@ -1,14 +1,5 @@
 .env
-<<<<<<< HEAD
 *.DS_Store
-<<<<<<< HEAD
 *venv/
 *__pycache__/
-=======
-*venv/
->>>>>>> 37dff4f (start dashboard)
-=======
-*/.DS_Store
-*venv/
-*__pycache__/
->>>>>>> 42c930f (basic dash styling)
+

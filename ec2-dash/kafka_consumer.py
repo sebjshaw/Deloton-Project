@@ -1,7 +1,7 @@
 import os
-import pandas as pd
 from confluent_kafka import Consumer
 import json
+from datetime import datetime 
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -73,13 +73,19 @@ def create_log_entry(c: Consumer) -> dict:
             data = data[8:-2].split(',\"')
             for detail in data:
                 stat = detail.replace('\"', '').split(':')
+                if stat[0] == 'date_of_birth' or stat[0] == 'account_create_date':
+                    date = datetime.fromtimestamp(int(stat[1])/1000.0).strftime('%Y-%m-%d')
+                    info[stat[0]] = date
+                    continue 
                 info[stat[0]] = stat[1]
 
             return info
 
         # if this is a regular log it is completed twice 
         if 'INFO' in log:
-            info['datetime'] = log.split(" men")[0]
+            date_time = log.split(" men")[0]
+            info['date'] = date_time.split(" ")[0]
+            info['time'] = date_time.split(" ")[1]
             stats_str = log.split("O]:")
             stats = stats_str[1].split(" ")
             if 'Ride' in stats:
@@ -103,6 +109,8 @@ def create_log_entry(c: Consumer) -> dict:
 #         print(create_log_entry(c))
 #     except KeyboardInterrupt:
 #         pass
+
+
 
 
 

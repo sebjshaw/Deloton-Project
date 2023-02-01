@@ -1,10 +1,15 @@
 from dash import Input, Output, callback, html, dcc
 from visualisations import create_visualisation
 from SQLConnection import SQLConnection
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # SQL connection variable
-# sql = SQLConnection('./ec2-dash/dash.db')
+sql = SQLConnection('./ec2-dash/dash_db.db')
+hr_sql = SQLConnection('./ec2-dash/dash_db.db')
+rpm_sql = SQLConnection('./ec2-dash/dash_db.db')
+power_sql = SQLConnection('./ec2-dash/dash_db.db')
+res_sql = SQLConnection('./ec2-dash/dash_db.db')
+time_sql = SQLConnection('./ec2-dash/dash_db.db')
 
 # Update current time
 @callback(
@@ -62,71 +67,129 @@ def change_link(n):
 # 	]
 # )
 # def update_user_info(n):
-# 	pass
+# 	info = sql.execute(
+# 		"""
+# 			SELECT *
+# 			FROM user_info
+# 		"""
+# 	)
+# 	return info[0], info[1], info[2]
 
-# # # Call backs for updating the components once a second
-# # RPM figure
-# @callback(
-# 	Output(
-# 		"rpm_graph",'figure'
-# 	),
-# 	Output(
-# 		"rpm_text",'children'
-# 	),
-# 	[
-# 		Input(
-# 			'interval_component', 'n_intervals'
-# 		)
-# 	]
-# )
-# def update_rpm_figure(n):
-# 	# df = sql.query("""
-# 	# 		SELECT rpm FROM 
-# 	# 	""")
-# 	return create_visualisation(df, range(n+1), 'rpm')
 
-# # Heart Rate figure
-# @callback(
-# 	Output(
-# 		"heart_rate_graph",'figure'
-# 	),
-# 	Output(
-# 		"heart_rate_text",'children'
-# 	),
-# 	[
-# 		Input(
-# 			'interval_component', 'n_intervals'
-# 		)
-# 	]
-# )
-# def update_heart_rate_figure(n):
-# 	return visualisations.create_visualisation()
+# # Call backs for updating the components once a second
+# RPM figure
+@callback(
+	Output(
+		"rpm_graph",'figure'
+	),
+	[
+		Input(
+			'interval_component', 'n_intervals'
+		)
+	]
+)
+def update_rpm_figure(n):
+	df = rpm_sql.query("""SELECT duration, rpm FROM current_ride""")
+	return create_visualisation(df, 'duration', 'rpm')
 
-# @app.callback(
-# 	Output(
-# 		"power_graph",'figure'
-# 	),
-# 	Output(
-# 		"power_text",'children'
-# 	),
-# 	[
-# 		Input(
-# 			'interval_component', 'n_intervals'
-# 		)
-# 	]
-# )
-# def update_power_figure(n):
-# 	return visualisations.create_visualisation()
+@callback(
+	Output(
+		"rpm_value",'children'
+	),
+	[
+		Input(
+			'interval_component', 'n_intervals'
+		)
+	]
+)
+def update_rpm_value(n):
+	value = rpm_sql.execute("""SELECT rpm FROM current_ride""")[-1][0]
 
-# @app.callback(
-# 	Output(
-# 		"rpm_graph",'figure'
-# 	),
-# 	[
-# 		Input(
-# 			'interval_component', 'n_intervals'
-# 		)
-# 	]
-# )
-# def update_resistance(n):
-# 	return visualisations.create_visualisation()
+	return value
+
+# HEART RATE
+@callback(
+	Output(
+		"heart_rate_graph",'figure'
+	),
+	[
+		Input(
+			'interval_component', 'n_intervals'
+		)
+	]
+)
+def update_heart_rate_figure(n):
+	df = hr_sql.query("""SELECT duration, heart_rate FROM current_ride""")
+	return create_visualisation(df, 'duration', 'heart_rate')
+
+@callback(
+	Output(
+		"heart_rate_value",'children'
+	),
+	[
+		Input(
+			'interval_component', 'n_intervals'
+		)
+	]
+)
+def update_heart_rate_value(n):
+	value = hr_sql.execute("""SELECT heart_rate FROM current_ride""")[-1][0]
+	return value
+
+# POWER
+@callback(
+	Output(
+		"power_value",'children'
+	),
+	[
+		Input(
+			'interval_component', 'n_intervals'
+		)
+	]
+)
+def update_power_value(n):
+	value = power_sql.execute("""SELECT power FROM current_ride""")[-1][0]
+	return value
+
+@callback(
+	Output(
+		"power_graph",'figure'
+	),
+	[
+		Input(
+			'interval_component', 'n_intervals'
+		)
+	]
+)
+def update_power_figure(n):
+	df = power_sql.query("""SELECT duration, ROUND(power, 3) as power FROM current_ride""")
+	return create_visualisation(df, 'duration', 'power')
+
+@callback(
+	Output(
+		"resistance_value",'children'
+	),
+	[
+		Input(
+			'interval_component', 'n_intervals'
+		)
+	]
+)
+def update_resistance_value(n):
+	value = res_sql.execute("""SELECT resistance FROM current_ride""")[-1][0]
+	return value
+
+# TIME
+@callback(
+	Output(
+		"time_value",'children'
+	),
+	[
+		Input(
+			'interval_component', 'n_intervals'
+		)
+	]
+)
+def update_resistance(n):
+	duration = int(time_sql.execute("""SELECT duration from current_ride""")[-1][0])
+	return str(timedelta(seconds=duration))

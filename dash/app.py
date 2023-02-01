@@ -1,5 +1,6 @@
 from dash import Dash
 import index
+import callbacks
 
 app = Dash(__name__)
 

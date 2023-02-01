@@ -61,22 +61,3 @@ current_layout = html.Div(
 	],
 	id='body'
 )
-
-# @app.callback(
-# 	Output(
-# 		"rpm_graph",'figure'
-# 	),
-# 	Output(
-# 		"rpm_text",'children'
-# 	),
-# 	[
-# 		Input(
-# 			'interval_component', 'n_intervals'
-# 		)
-# 	]
-# )
-# def update_rpm_figure(n):
-# 	# df = sql.query("""
-# 	# 		SELECT rpm FROM 
-# 	# 	""")
-# 	return create_visualisation(df, range(n+1), 'rpm')

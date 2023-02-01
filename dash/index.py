@@ -1,8 +1,6 @@
-from dash import html, dcc, Input, Output
-import visualisations
+from dash import html, dcc, Input, Output, callback
 from app import app
 from views import current_view, recent_view
-from datetime import datetime
 
 app.layout = html.Div(
 	children = [
@@ -88,7 +86,7 @@ page_references = {
 	"/recent": recent_view.recent_layout
 }
 
-@app.callback(
+@callback(
 	Output(
 			component_id='page_content',
 			component_property='children',
@@ -104,62 +102,3 @@ def display_page(pathname: str) -> html.Div:
 		return page_references[pathname]
 	else:
 			return '404'
-
-# Update page label button
-@app.callback(
-	Output(
-		'view_switch', 'children'
-	),
-	Output(
-		'page_link', 'href'
-	),
-	[
-		Input(
-			'view_switch', 'n_clicks'
-		)
-	]
-)
-def change_link(n):
-	print(n)
-	if n % 2 == 0:
-		return 'CURRENT', '/recent'
-	else:
-		return 'RECENT', '/'
-
-# Update user info at the start of a new ride
-# @app.callback(
-# 	Output(
-# 		'name', 'children'
-# 	),
-# 	Output(
-# 		'age', 'children',
-# 	),
-# 	Output(
-# 		'gender', 'children',
-# 	),
-# 	[
-# 		Input(
-# 			'interval_component', 'n_intervals'
-# 		)
-# 	]
-# )
-# def update_user_info(n):
-
-# 	pass
-
-#Update current time
-@app.callback(
-	Output(
-		"current_date",'children'
-	),
-	Output(
-		"current_time",'children'
-	),
-	[
-		Input(
-			'interval_component', 'n_intervals'
-		)
-	]
-)
-def update_current_time(n):
-	return datetime.now().strftime("%d/%m/%Y"),datetime.now().strftime("%H:%M")

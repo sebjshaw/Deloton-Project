@@ -1,7 +1,6 @@
 #header {
 	display: flex;
 	flex-direction: row;
-<<<<<<< HEAD
 	height: 10vh;
 	align-items: center;
 	color: #f3dfc1;
@@ -99,6 +98,4 @@ html {
 .js-plotly-plot {
 	height: 45vh;
 	width: auto;
-=======
->>>>>>> a42d970 (basic dash styling)
 }

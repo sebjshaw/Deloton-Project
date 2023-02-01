@@ -31,3 +31,5 @@ def compare_hr_to_max_hr(hr: str, max_hr: int) -> bool:
     
     return False
 
+# initial plan was to send to lambda then the lambda can talk to the SNS but seems 
+# that the EC2 can do this so will talk with the team in the morning 

@@ -19,7 +19,11 @@ blah
 ## Setup
 blah
 
-# Credits
+## Credits
+Direct contributors to the repository:
+* Seb Shaw: [sebjshaw](https://github.com/sebjshaw)
+* Dominic Lawson: [DomLaw82](https://github.com/DomLaw82)
+* Alexander Skowronski: [AlexSkowronski2](https://github.com/AlexSkowronski2)
 
 Welcome to the first edit - Alex
 Another edit - this time Seb

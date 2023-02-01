@@ -1,7 +1,4 @@
-from dash import html, dcc, Input, Output
-from app import app
-from visualisations import create_visualisation
-from datetime import datetime
+from dash import html, dcc
 
 current_layout = html.Div(
 	children = [

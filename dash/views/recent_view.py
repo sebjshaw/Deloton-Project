@@ -1,6 +1,4 @@
-from dash import html, dcc, Input,Output
-from app import app
-from visualisations import create_visualisation
+from dash import html, dcc
 
 recent_layout = html.Div(
 	children=[

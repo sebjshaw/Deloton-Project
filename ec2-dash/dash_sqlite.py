@@ -3,6 +3,9 @@ from kafka_consumer import create_kafka_consumer, create_log_entry
 import csv
 import boto3
 import os
+from datetime import datetime
+
+EPOCH = datetime.utcfromtimestamp(0) #the epoch as a datetime
 
 # create a boto3 client for when the csv needs to be uplaoded to the s3 bucket
 s3 = boto3.client('s3')
@@ -13,6 +16,25 @@ c = create_kafka_consumer()
 conn = sqlite3.connect('./ec2-dash/dash_db.db') #create an sqlite database and establish a connection
 
 cursor = conn.cursor() #create a cursor to allow querying of the database
+
+def recreate_ride_id_from_datetime(entry: dict) -> int:
+    """Takes the first log entry and using the date and time creates a ride id as the number of seconds
+    since the epoch
+
+    Args:
+        entry (dict): The log entry 
+
+    Returns:
+        int: returns the number of seconds since the epoch, to be used as ride_id
+    """
+
+    dt = entry['date'] + " " + entry['time'] #add the date and the time together
+    dt = dt[:-7] #remove the decimals from the seconds
+    dt = datetime.strptime(dt, '%Y-%m-%d %H:%M:%S') #convert to a datetime object
+
+    ride_id = (dt - EPOCH).total_seconds() #create a ride id (seconds since epoch)
+
+    return ride_id
 
 def recreate_current_ride_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection):
     """Drops the previous table called current_ride and creates a new one. This function will be 
@@ -30,6 +52,7 @@ def recreate_current_ride_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection
     # creates a new current_ride table 
     cursor.execute("""
     CREATE TABLE current_ride (
+        ride_id TEXT,
         date TEXT, 
         time TEXT,
         duration INTEGER NOT NULL,
@@ -42,7 +65,7 @@ def recreate_current_ride_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection
 
     conn.commit()
 
-def add_entry_to_table(cursor: sqlite3.Cursor,conn: sqlite3.Connection, entry: dict):
+def add_entry_to_table(cursor: sqlite3.Cursor,conn: sqlite3.Connection, entry: dict, ride_id: int):
     """Adds an entry to the current_ride table. Called every time a new log is received 
     from the kafka consumer
 
@@ -55,13 +78,13 @@ def add_entry_to_table(cursor: sqlite3.Cursor,conn: sqlite3.Connection, entry: d
     # query sent to the table current_ride to insert into table 
     cursor.execute(f"""
     INSERT INTO current_ride (
-        date, time, duration, resistance, heart_rate, rpm, power
+        ride_id, date, time, duration, resistance, heart_rate, rpm, power
     )
     VALUES (
-        "{entry['date']}", "{entry['time']}", 
-        {entry['duration']}, {entry['resistance']}, 
-        {entry['heart_rate']}, {entry['rpm']}, 
-        "{entry['power']}"
+        "{ride_id}", "{entry['date']}", 
+        "{entry['time']}", {entry['duration']}, 
+        {entry['resistance']}, {entry['heart_rate']}, 
+        {entry['rpm']}, "{entry['power']}"
     )
     """)
 
@@ -86,7 +109,6 @@ def most_recent_ride_to_csv(cursor: sqlite3.Cursor):
         csv_f.writerows(most_recent_ride)
 
 def recreate_user_info_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection, user_info: dict):
-
     """Deletes previous user table, creates a new one and inserts the user information
 
     Args:
@@ -111,8 +133,11 @@ def recreate_user_info_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection, u
         account_create_date TEXT NOT NULL,
         bike_serial TEXT,
         original_source TEXT
-    );
+    )
+    """)
+    conn.commit()
 
+    cursor.execute(f"""
     INSERT INTO user_info (
         user_id, name, gender, 
         address, date_of_birth, 
@@ -170,9 +195,23 @@ def push_to_s3():
 
     s3.upload_file('ec2-dash/most_recent_ride.csv', 'three-m-deloton-bucket', 'most_recent_ride')
     s3.upload_file('ec2-dash/user_info.csv', 'three-m-deloton-bucket', 'user_info')
+    s3.upload_file('ec2-dash/join_ids.csv', 'three-m-deloton-bucket', 'join_ids')
+
+def recreate_join_csv(user_id: str, ride_id):
+
+    # writes the data to a csv file 
+    with open("ec2-dash/join_ids.csv", "w") as f:
+        csv_f = csv.writer(f)
+        csv_f.writerow(
+            ['user_id', 'ride_id']
+        )
+        csv_f.writerow([user_id, ride_id])
+
 
 if __name__ == "__main__":
     recreate_current_ride_table(cursor, conn) #creates a table for the current ride data to be inserted into 
+    ride_id = 'N/A' #placeholder for ride_id until user info is received
+    recreate_join_csv('N/A', 'N/A') #placeholder for the join_csv until user info is received
 
     # constantly retrieving logs and creating tables and csvs
     while True:
@@ -185,18 +224,24 @@ if __name__ == "__main__":
                 most_recent_ride_to_csv(cursor)
                 user_info_to_csv(cursor)
                 push_to_s3()
+                
+                # delete expired csv files 
+                os.remove("ec2-dash/most_recent_ride.csv") 
+                os.remove("ec2-dash/user_info.csv") 
+                os.remove("ec2-dash/join_ids.csv") 
+
+                #regenerate the tables
                 recreate_current_ride_table(cursor, conn)
-                os.remove("ec2-dash/most_recent_ride.csv") # delete the old log csv
-                try:
-                    os.remove("ec2-dash/user_info.csv") # delete the old user csv
-                    recreate_user_info_table(cursor, conn, log_entry)
-                except:
-                    recreate_user_info_table(cursor, conn, log_entry)
+                recreate_user_info_table(cursor, conn, log_entry)
+
+                # regenerate the join_ids csv using new ride_id
+                ride_id = recreate_ride_id_from_datetime(log_entry)
+                recreate_join_csv(log_entry['user_id'], ride_id)
                 
 
             # only adds to the database if it is a full entry      
             if len(log_entry) == 7:
-                add_entry_to_table(cursor, conn, log_entry)
+                add_entry_to_table(cursor, conn, log_entry, ride_id)
 
         except KeyboardInterrupt:
             pass

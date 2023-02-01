@@ -69,6 +69,9 @@ def create_log_entry(c: Consumer) -> dict:
 
         # if the log is the user information then this is compiled and returned 
         if 'SYSTEM' in log:
+            date_time = log.split(" mendoza")[0] # split the log on mendoza to separate date and time
+            info['date'] = date_time.split(" ")[0]
+            info['time'] = date_time.split(" ")[1]
             data = log.split("EM] ")[1]
             data = data[8:-2].split(',\"')
             for detail in data:

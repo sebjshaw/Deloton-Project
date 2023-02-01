@@ -5,9 +5,12 @@ from datetime import datetime, timedelta
 
 # SQL connection variable
 sql = SQLConnection('./ec2-dash/dash_db.db')
-hr_sql = SQLConnection('./ec2-dash/dash_db.db')
-rpm_sql = SQLConnection('./ec2-dash/dash_db.db')
-power_sql = SQLConnection('./ec2-dash/dash_db.db')
+hr_sql_1 = SQLConnection('./ec2-dash/dash_db.db')
+hr_sql_2 = SQLConnection('./ec2-dash/dash_db.db')
+rpm_sql_1 = SQLConnection('./ec2-dash/dash_db.db')
+rpm_sql_2 = SQLConnection('./ec2-dash/dash_db.db')
+power_sql_1 = SQLConnection('./ec2-dash/dash_db.db')
+power_sql_2 = SQLConnection('./ec2-dash/dash_db.db')
 res_sql = SQLConnection('./ec2-dash/dash_db.db')
 time_sql = SQLConnection('./ec2-dash/dash_db.db')
 
@@ -89,7 +92,7 @@ def change_link(n):
 	]
 )
 def update_rpm_figure(n):
-	df = rpm_sql.query("""SELECT duration, rpm FROM current_ride""")
+	df = rpm_sql_1.query("""SELECT duration, rpm FROM current_ride""")
 	return create_visualisation(df, 'duration', 'rpm')
 
 @callback(
@@ -103,7 +106,7 @@ def update_rpm_figure(n):
 	]
 )
 def update_rpm_value(n):
-	value = rpm_sql.execute("""SELECT rpm FROM current_ride""")[-1][0]
+	value = rpm_sql_2.execute("""SELECT rpm FROM current_ride""")[-1][0]
 
 	return value
 
@@ -119,7 +122,7 @@ def update_rpm_value(n):
 	]
 )
 def update_heart_rate_figure(n):
-	df = hr_sql.query("""SELECT duration, heart_rate FROM current_ride""")
+	df = hr_sql_1.query("""SELECT duration, heart_rate FROM current_ride""")
 	return create_visualisation(df, 'duration', 'heart_rate')
 
 @callback(
@@ -133,7 +136,7 @@ def update_heart_rate_figure(n):
 	]
 )
 def update_heart_rate_value(n):
-	value = hr_sql.execute("""SELECT heart_rate FROM current_ride""")[-1][0]
+	value = hr_sql_2.execute("""SELECT heart_rate FROM current_ride""")[-1][0]
 	return value
 
 # POWER
@@ -148,7 +151,7 @@ def update_heart_rate_value(n):
 	]
 )
 def update_power_value(n):
-	value = power_sql.execute("""SELECT power FROM current_ride""")[-1][0]
+	value = power_sql_1.execute("""SELECT power FROM current_ride""")[-1][0]
 	return value
 
 @callback(
@@ -162,9 +165,10 @@ def update_power_value(n):
 	]
 )
 def update_power_figure(n):
-	df = power_sql.query("""SELECT duration, ROUND(power, 3) as power FROM current_ride""")
+	df = power_sql_2.query("""SELECT duration, ROUND(power, 3) as power FROM current_ride""")
 	return create_visualisation(df, 'duration', 'power')
 
+# RESISTANCE
 @callback(
 	Output(
 		"resistance_value",'children'

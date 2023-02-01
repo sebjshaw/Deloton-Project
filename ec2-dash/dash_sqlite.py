@@ -1,5 +1,6 @@
 import sqlite3
 from kafka_consumer import create_kafka_consumer, create_log_entry
+from abnormal_hr import calculate_max_heart_rate, compare_hr_to_max_hr, send_user_info_to_lambda
 import csv
 import boto3
 import os
@@ -172,8 +173,11 @@ def push_to_s3():
     s3.upload_file('ec2-dash/user_info.csv', 'three-m-deloton-bucket', 'user_info')
 
 if __name__ == "__main__":
-    create_new_current_ride_table(cursor, conn) #creates a table for the current ride data to be inserted into 
-
+    recreate_current_ride_table(cursor, conn) #creates a table for the current ride data to be inserted into 
+    ride_id = 'N/A' #placeholder for ride_id until user info is received
+    ride_date = 'N/A' #placeholder until user info is received
+    recreate_join_csv('N/A', 'N/A') #placeholder for the join_csv until user info is received
+    max_hr = 220
     # constantly retrieving logs and creating tables and csvs
     while True:
         try: 
@@ -183,7 +187,6 @@ if __name__ == "__main__":
             # creates csv and pushes to s3, then deletes old current_ride table and creates new one 
             if log_entry.get('user_id') is not None:
                 most_recent_ride_to_csv(cursor)
-                user_info_to_csv(cursor)
                 push_to_s3()
                 create_new_current_ride_table(cursor, conn)
                 os.remove("ec2-dash/most_recent_ride.csv") # delete the old log csv
@@ -193,10 +196,30 @@ if __name__ == "__main__":
                 except:
                     create_user_info_table(cursor, conn, log_entry)
                 
+                # delete expired csv files 
+                os.remove("ec2-dash/most_recent_ride.csv") 
+                os.remove("ec2-dash/user_info.csv") 
+                os.remove("ec2-dash/join_ids.csv") 
+
+                #regenerate the tables
+                recreate_current_ride_table(cursor, conn)
+                recreate_user_info_table(cursor, conn, log_entry)
+
+                # regenerate the join_ids and user_info csvs
+                ride_id = recreate_ride_id_from_datetime(log_entry)
+                ride_date = log_entry['date'] + " " + log_entry['time']
+                recreate_join_csv(log_entry['user_id'], ride_id)
+                user_info_to_csv(cursor)
+
+                # set new max_hr
+                max_hr = calculate_max_heart_rate(log_entry['date_of_birth'])
+                
 
             # only adds to the database if it is a full entry      
             if len(log_entry) == 7:
-                add_entry_to_table(cursor, conn, log_entry)
+                add_entry_to_table(cursor, conn, log_entry, ride_id)
+                if compare_hr_to_max_hr(log_entry['heart_rate'], max_hr) == True:
+                    send_user_info_to_lambda(log_entry['heart_rate'], log_entry['duration'])
 
         except KeyboardInterrupt:
             pass

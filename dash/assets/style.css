@@ -33,31 +33,37 @@
 	justify-content: space-between;
 }
 
-#rpm {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-}
-#time_resistance {
+.time_resistance {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-evenly;
 	width: 20vw;
 }
-
+#current_values {
+	width: 47.5vw;
+	display: flex;
+	justify-content: space-evenly;
+}
 #upper_body {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-around;
+	justify-content: space-evenly;
 	height: 45vh;
 }
 #lower_body {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-around;
+	justify-content: space-evenly;
 	height: 45vh;
 }
+#power_graph,
+#heart_rate_graph,
+#rpm_graph {
+	width: 47.5vw;
+	height: 45vh;
+}
+
 #upper_recent_body {
 	display: flex;
 	flex-direction: row;
@@ -93,11 +99,17 @@
 	color: #f3dfc1;
 }
 
+#current_values {
+	display: flex;
+	flex-direction: row;
+	text-align: center;
+}
+
 html {
 	background-color: #0d1f22;
 }
 
 .js-plotly-plot {
-	height: 45vh;
+	height: 40vh;
 	width: auto;
 }

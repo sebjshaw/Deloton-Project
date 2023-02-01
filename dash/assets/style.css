@@ -3,13 +3,47 @@
 	flex-direction: row;
 	height: 10vh;
 	align-items: center;
+	color: #f3dfc1;
 }
 
-#rpm,
-#time_resistance {
+#view_switch {
+	height: 8vh;
+	width: 8vw;
+}
+
+#icon {
+	width: 10vw;
+}
+#rider_info {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	align-items: center;
+	border: #8d5b4c 4px solid;
+	width: 90vw;
+}
+
+.info_div {
+	margin: 1.5vh;
+}
+
+#datetime {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
+}
+
+#rpm {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+#time_resistance {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+	width: 20vw;
 }
 
 #upper_body {
@@ -33,12 +67,20 @@
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	height: 45vh;
+	height: 75vh;
 	width: 100vw;
 }
 
 .shares {
 	width: 33vw;
+}
+
+/* Containers of info on the recent page */
+.bit {
+	border: #8d5b4c 4px solid;
+	width: 15vw;
+	text-align: center;
+	color: #f3dfc1;
 }
 #bit_container {
 	display: flex;
@@ -46,4 +88,14 @@
 	justify-content: space-evenly;
 	align-items: center;
 	width: 100vw;
+	color: #f3dfc1;
+}
+
+html {
+	background-color: #0d1f22;
+}
+
+.js-plotly-plot {
+	height: 45vh;
+	width: auto;
 }

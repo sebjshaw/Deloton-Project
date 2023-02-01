@@ -83,7 +83,7 @@ def create_log_entry(c: Consumer) -> dict:
 
         # if this is a regular log it is completed twice 
         if 'INFO' in log:
-            date_time = log.split(" men")[0][:-7]
+            date_time = log.split(" men")[0]
             info['date'] = date_time.split(" ")[0]
             info['time'] = date_time.split(" ")[1]
             stats_str = log.split("O]:")

@@ -15,7 +15,6 @@ conn = sqlite3.connect('./ec2-dash/dash_db.db') #create an sqlite database and e
 cursor = conn.cursor() #create a cursor to allow querying of the database
 
 
-
 def create_new_current_ride_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection):
     """Drops the previous table called current_ride and creates a new one. This function will be 
     called immediately after a new user information dict is received
@@ -79,9 +78,6 @@ def most_recent_ride_to_csv(cursor: sqlite3.Cursor):
 
     most_recent_ride = cursor.fetchall()
 
-    # delete the old csv 
-    os.remove("ec2-dash/most_recent_ride.csv")
-
     # writes the data to a csv file 
     with open("ec2-dash/most_recent_ride.csv", "w") as f:
         csv_f = csv.writer(f)
@@ -90,7 +86,7 @@ def most_recent_ride_to_csv(cursor: sqlite3.Cursor):
 
 def push_to_s3():
 
-    s3.upload_file('most_recent_ride.csv', bucket, most_recent_ride)
+    s3.upload_file('ec2-dash/most_recent_ride.csv', 'three-m-deloton-bucket', 'most_recent_ride')
 
 create_new_current_ride_table(cursor, conn) #creates a table for the current ride data to be inserted into 
 
@@ -104,6 +100,7 @@ while True:
             most_recent_ride_to_csv(cursor)
             push_to_s3()
             create_new_current_ride_table(cursor, conn)
+            os.remove("ec2-dash/most_recent_ride.csv") # delete the old csv 
 
         # only adds to the database if it is a full entry      
         if len(log_entry) == 7:

@@ -3,4 +3,6 @@ matplotlib
 numpy
 plotly
 dash
-dotenv
+python-dotenv
+confluent_kafka
+boto3

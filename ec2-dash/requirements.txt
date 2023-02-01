@@ -1,5 +1,0 @@
-python-dotenv
-pandas
-confluent_kafka
-sqlite3
-boto3

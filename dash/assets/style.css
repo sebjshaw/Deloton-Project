@@ -77,6 +77,8 @@
 
 /* Containers of info on the recent page */
 .bit {
+	display: flex;
+	flex-direction: column;
 	border: #8d5b4c 4px solid;
 	width: 15vw;
 	text-align: center;

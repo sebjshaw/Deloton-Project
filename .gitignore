@@ -1,4 +1,8 @@
 .env
+<<<<<<< HEAD
 *.DS_Store
+=======
+*/.DS_Store
+>>>>>>> 81382b3 (basic dash styling)
 *venv/
 *__pycache__/

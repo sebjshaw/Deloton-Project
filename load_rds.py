@@ -1,8 +1,8 @@
-import boto3
 import psycopg2
 import psycopg2.extras
 import os
 import dotenv
+import json
 
 dotenv.load_dotenv(override=True)
 
@@ -92,7 +92,7 @@ def lambda_handler(event, context):
             FOREIGN KEY (ride_id) REFERENCES rides (ride_id),
             FOREIGN KEY (user_id) REFERENCES users (user_id)
         );
-    """)
+    """, conn)
 
 
     """Populate rides table"""
@@ -116,13 +116,16 @@ def lambda_handler(event, context):
     """Populate join table"""
     execute_query(f"""
         SELECT aws_s3.table_import_from_s3(
-            'users_rides', 'ride_id,user_id',
-            '(format csv, header true)', 'three-m-deloton-bucket', '/user_info', 'eu-west-2',
+            'users_rides', 'user_id,ride_id',
+            '(format csv, header true)', 'three-m-deloton-bucket', '/join_ids', 'eu-west-2',
             '{AWS_ACCESS_KEY_ID}', '{AWS_SECRET_ACCESS_KEY}'
         );
     """, conn)
 
-    return {}
+    return {
+        'statusCode': 200,
+        'body': json.dumps('Hello from Lambda!')
+    }
 
 # https://www.youtube.com/watch?v=l-v6FodULk0
 # pandas to sql command but try above

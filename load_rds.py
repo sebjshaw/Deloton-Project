@@ -9,16 +9,12 @@ dotenv.load_dotenv(override=True)
 AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
 AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
 
-# s3 = boto3.client("s3")
-# S3_BUCKET_NAME = "three-m-deloton-bucket"
-# S3_OBJECT_NAME = "test_ride.csv"
-
-RDS_ENDPOINT = 'three-musketeers-warehouse.c1i5dspnearp.eu-west-2.rds.amazonaws.com'
-RDS_PORT = 5432
-RDS_USERNAME = 'three_musk'
-RDS_PASSWORD = 'password'
-RDS_DATABASE = 'postgres'
-RDS_SCHEMA_NAME = 'public'
+RDS_ENDPOINT = os.environ['RDS_ENDPOINT']
+RDS_PORT = os.environ['RDS_PORT']
+RDS_USERNAME = os.environ['RDS_USERNAME']
+RDS_PASSWORD = os.environ['RDS_PASSWORD']
+RDS_DATABASE = os.environ['RDS_DATABASE']
+RDS_SCHEMA_NAME = os.environ['RDS_SCHEMA_NAME']
 
 def get_db_connection():
     conn = psycopg2.connect(
@@ -126,9 +122,3 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'body': json.dumps('Hello from Lambda!')
     }
-
-# https://www.youtube.com/watch?v=l-v6FodULk0
-# pandas to sql command but try above
-
-event, context = {}, {}
-lambda_handler(event, context)

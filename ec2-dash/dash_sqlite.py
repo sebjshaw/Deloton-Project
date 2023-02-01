@@ -14,7 +14,7 @@ conn = sqlite3.connect('./ec2-dash/dash_db.db') #create an sqlite database and e
 
 cursor = conn.cursor() #create a cursor to allow querying of the database
 
-def create_new_current_ride_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection):
+def recreate_current_ride_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection):
     """Drops the previous table called current_ride and creates a new one. This function will be 
     called immediately after a new user information dict is received
 
@@ -85,7 +85,7 @@ def most_recent_ride_to_csv(cursor: sqlite3.Cursor):
         csv_f.writerow(['date', 'time', 'duration', 'resistance', 'heart_rate', 'rpm', 'power'])
         csv_f.writerows(most_recent_ride)
 
-def create_user_info_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection, user_info: dict):
+def recreate_user_info_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection, user_info: dict):
 
     """Deletes previous user table, creates a new one and inserts the user information
 
@@ -172,7 +172,7 @@ def push_to_s3():
     s3.upload_file('ec2-dash/user_info.csv', 'three-m-deloton-bucket', 'user_info')
 
 if __name__ == "__main__":
-    create_new_current_ride_table(cursor, conn) #creates a table for the current ride data to be inserted into 
+    recreate_current_ride_table(cursor, conn) #creates a table for the current ride data to be inserted into 
 
     # constantly retrieving logs and creating tables and csvs
     while True:
@@ -185,13 +185,13 @@ if __name__ == "__main__":
                 most_recent_ride_to_csv(cursor)
                 user_info_to_csv(cursor)
                 push_to_s3()
-                create_new_current_ride_table(cursor, conn)
+                recreate_current_ride_table(cursor, conn)
                 os.remove("ec2-dash/most_recent_ride.csv") # delete the old log csv
                 try:
                     os.remove("ec2-dash/user_info.csv") # delete the old user csv
-                    create_user_info_table(cursor, conn, log_entry)
+                    recreate_user_info_table(cursor, conn, log_entry)
                 except:
-                    create_user_info_table(cursor, conn, log_entry)
+                    recreate_user_info_table(cursor, conn, log_entry)
                 
 
             # only adds to the database if it is a full entry      

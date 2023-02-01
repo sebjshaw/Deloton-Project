@@ -83,11 +83,13 @@ def create_log_entry(c: Consumer) -> dict:
 
         # if this is a regular log it is completed twice 
         if 'INFO' in log:
-            date_time = log.split(" men")[0]
+            date_time = log.split(" mendoza")[0] # split the log on mendoza to separate date and time
             info['date'] = date_time.split(" ")[0]
             info['time'] = date_time.split(" ")[1]
             stats_str = log.split("O]:")
             stats = stats_str[1].split(" ")
+
+            # if log containing the duration it splits accordingly, otherwise splits in alternate way
             if 'Ride' in stats:
                 info1['duration'] = stats[5][:-1]
                 info1['resistance'] = stats[8][:-1]
@@ -98,18 +100,6 @@ def create_log_entry(c: Consumer) -> dict:
 
     info = info | info1 | info2 # dictates the format of the final dictionary to be the same every time 
     return info
-
-
-# really easy way to test is to create a new python file:
-
-# from deloton_kafka_consumer import create_log_entry, create_kafka_consumer
-# c = create_kafka_consumer()
-# while True:
-#     try: 
-#         print(create_log_entry(c))
-#     except KeyboardInterrupt:
-#         pass
-
 
 
 

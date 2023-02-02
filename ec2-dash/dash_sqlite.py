@@ -1,6 +1,6 @@
 import sqlite3
 from kafka_consumer import create_kafka_consumer, create_log_entry
-from abnormal_hr import calculate_max_heart_rate, compare_hr_to_max_hr, send_user_hr_warning
+from abnormal_hr import calculate_max_heart_rate, compare_hr_to_max_hr, create_dict_for_email
 from create_csv_files import most_recent_ride_to_csv, user_info_to_csv
 import boto3
 import os
@@ -186,10 +186,16 @@ if __name__ == "__main__":
                 
             # only adds to the database if it is a full entry      
             if len(log_entry) == 7:
-                add_entry_to_table(cursor, conn, log_entry, ride_id, user_info['user_id'])
+                # if no user_info, N/A is added as the user_id
+                try:
+                    add_entry_to_table(cursor, conn, log_entry, ride_id, user_info['user_id'])
+                except:
+                    add_entry_to_table(cursor, conn, log_entry, ride_id, 'N/A')
                 if compare_hr_to_max_hr(log_entry['heart_rate'], max_hr) == True:
-                    send_user_hr_warning(user_info, int(log_entry['heart_rate']), max_hr, log_entry['date'], int(log_entry['duration'][:-2]))
+                    create_dict_for_email(user_info, int(log_entry['heart_rate']), max_hr, log_entry['date'], int(log_entry['duration'][:-2]))
 
         except KeyboardInterrupt:
             pass
+
+
 

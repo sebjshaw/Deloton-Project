@@ -12,6 +12,15 @@ html {
 #view_switch {
 	height: 8vh;
 	width: 8vw;
+	background-color: #368f8b;
+	color: #f3dfc1;
+}
+#view_switch:hover {
+	border-color: #8d5b4c 4px solid;
+	background-color: #23625f;
+	width: 8.2vw;
+	height: 8.2vh;
+	transition: 0.1s;
 }
 
 #icon {
@@ -22,7 +31,8 @@ html {
 	flex-direction: row;
 	justify-content: space-evenly;
 	align-items: center;
-	border: #8d5b4c 4px solid;
+	border: #f3dfc1 4px solid;
+	background-color: #8d5b4c;
 	width: 90vw;
 }
 
@@ -93,9 +103,10 @@ html {
 .bit {
 	display: flex;
 	flex-direction: column;
-	border: #8d5b4c 4px solid;
+	border: #f3dfc1 4px solid;
 	width: 15vw;
 	text-align: center;
+	background-color: #8d5b4c;
 }
 #bit_container {
 	display: flex;

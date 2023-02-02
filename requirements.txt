@@ -7,3 +7,4 @@ python-dotenv
 confluent_kafka
 boto3
 botocore
+redis

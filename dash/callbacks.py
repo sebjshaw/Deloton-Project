@@ -64,11 +64,30 @@ def change_link(n):
 def update_user_info(n):
 	info = sql.get_list(
 		"""
-			SELECT *
+			SELECT name, date_of_birth, gender
 			FROM user_info
 		"""
 	)
-	return info[1], info[4], info[2]
+	name = info[0][0]
+	dob = info[0][1]
+	age = calculate_age(dob)
+	gender = info[0][2]
+	return name, age, gender
+
+def calculate_age(dob:str) -> int:
+	"""
+	Convert DOB to age
+
+	Args:
+			dob (str): date of birth as a string (YYYY/MM/DD)
+
+	Returns:
+			int: current age
+	"""
+	year=int(dob[:4])
+	month=int(dob[5:7])
+	day=int(dob[8:10])
+	return (datetime.now() - datetime(year=year, month=month, day=day)).total_seconds()//31536000
 
 
 # # Call backs for updating the components once a second

@@ -1,7 +1,7 @@
-from dash import Input, Output, callback, html, dcc
+from dash import Input, Output, callback
 from visualisations import create_visualisation
 from SQLConnection import SQLConnection
-from datetime import datetime, timedelta, time
+from datetime import datetime, timedelta
 
 # SQL connection variable
 sql = SQLConnection('./ec2-dash/dash_db.db')

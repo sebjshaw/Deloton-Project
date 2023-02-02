@@ -1,12 +1,12 @@
 html {
 	background-color: #0d1f22;
+	color: #f3dfc1;
 }
 #header {
 	display: flex;
 	flex-direction: row;
 	height: 10vh;
 	align-items: center;
-	color: #f3dfc1;
 }
 
 #view_switch {
@@ -80,7 +80,8 @@ html {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	height: 75vh;
+	text-align: center;
+	height: 65vh;
 	width: 100vw;
 }
 
@@ -95,7 +96,6 @@ html {
 	border: #8d5b4c 4px solid;
 	width: 15vw;
 	text-align: center;
-	color: #f3dfc1;
 }
 #bit_container {
 	display: flex;
@@ -103,7 +103,6 @@ html {
 	justify-content: space-evenly;
 	align-items: center;
 	width: 100vw;
-	color: #f3dfc1;
 }
 
 #current_values {

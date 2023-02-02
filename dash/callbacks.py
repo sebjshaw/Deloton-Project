@@ -1,18 +1,10 @@
 from dash import Input, Output, callback, html, dcc
 from visualisations import create_visualisation
 from SQLConnection import SQLConnection
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 
 # SQL connection variable
 sql = SQLConnection('./ec2-dash/dash_db.db')
-hr_sql_1 = SQLConnection('./ec2-dash/dash_db.db')
-hr_sql_2 = SQLConnection('./ec2-dash/dash_db.db')
-rpm_sql_1 = SQLConnection('./ec2-dash/dash_db.db')
-rpm_sql_2 = SQLConnection('./ec2-dash/dash_db.db')
-power_sql_1 = SQLConnection('./ec2-dash/dash_db.db')
-power_sql_2 = SQLConnection('./ec2-dash/dash_db.db')
-res_sql = SQLConnection('./ec2-dash/dash_db.db')
-time_sql = SQLConnection('./ec2-dash/dash_db.db')
 
 # Update current time
 @callback(
@@ -52,31 +44,31 @@ def change_link(n):
 	else:
 		return 'RECENT', '/'
 
-# # Update user info at the start of a new ride
-# @callback(
-# 	Output(
-# 		'name', 'children'
-# 	),
-# 	Output(
-# 		'age', 'children',
-# 	),
-# 	Output(
-# 		'gender', 'children',
-# 	),
-# 	[
-# 		Input(
-# 			'interval_component', 'n_intervals'
-# 		)
-# 	]
-# )
-# def update_user_info(n):
-# 	info = sql.execute(
-# 		"""
-# 			SELECT *
-# 			FROM user_info
-# 		"""
-# 	)
-# 	return info[0], info[1], info[2]
+# Update user info at the start of a new ride
+@callback(
+	Output(
+		'name', 'children'
+	),
+	Output(
+		'age', 'children',
+	),
+	Output(
+		'gender', 'children',
+	),
+	[
+		Input(
+			'interval_component', 'n_intervals'
+		)
+	]
+)
+def update_user_info(n):
+	info = sql.execute(
+		"""
+			SELECT *
+			FROM user_info
+		"""
+	)
+	return info[1], info[4], info[2]
 
 
 # # Call backs for updating the components once a second
@@ -92,7 +84,7 @@ def change_link(n):
 	]
 )
 def update_rpm_figure(n):
-	df = rpm_sql_1.query("""SELECT duration, rpm FROM current_ride""")
+	df = sql.query("""SELECT duration, rpm FROM current_ride""")
 	return create_visualisation(df, 'duration', 'rpm')
 
 @callback(
@@ -106,7 +98,7 @@ def update_rpm_figure(n):
 	]
 )
 def update_rpm_value(n):
-	value = rpm_sql_2.execute("""SELECT rpm FROM current_ride""")[-1][0]
+	value = sql.execute("""SELECT rpm FROM current_ride""")[-1][0]
 
 	return value
 
@@ -122,7 +114,7 @@ def update_rpm_value(n):
 	]
 )
 def update_heart_rate_figure(n):
-	df = hr_sql_1.query("""SELECT duration, heart_rate FROM current_ride""")
+	df = sql.query("""SELECT duration, heart_rate FROM current_ride""")
 	return create_visualisation(df, 'duration', 'heart_rate')
 
 @callback(
@@ -136,7 +128,7 @@ def update_heart_rate_figure(n):
 	]
 )
 def update_heart_rate_value(n):
-	value = hr_sql_2.execute("""SELECT heart_rate FROM current_ride""")[-1][0]
+	value = sql.execute("""SELECT heart_rate FROM current_ride""")[-1][0]
 	return value
 
 # POWER
@@ -151,7 +143,7 @@ def update_heart_rate_value(n):
 	]
 )
 def update_power_value(n):
-	value = power_sql_1.execute("""SELECT power FROM current_ride""")[-1][0]
+	value = sql.execute("""SELECT power FROM current_ride""")[-1][0]
 	return value
 
 @callback(
@@ -165,7 +157,7 @@ def update_power_value(n):
 	]
 )
 def update_power_figure(n):
-	df = power_sql_2.query("""SELECT duration, ROUND(power, 3) as power FROM current_ride""")
+	df = sql.query("""SELECT duration, ROUND(power, 3) as power FROM current_ride""")
 	return create_visualisation(df, 'duration', 'power')
 
 # RESISTANCE
@@ -180,7 +172,7 @@ def update_power_figure(n):
 	]
 )
 def update_resistance_value(n):
-	value = res_sql.execute("""SELECT resistance FROM current_ride""")[-1][0]
+	value = sql.execute("""SELECT resistance FROM current_ride""")[-1][0]
 	return value
 
 # TIME
@@ -195,5 +187,5 @@ def update_resistance_value(n):
 	]
 )
 def update_resistance(n):
-	duration = int(time_sql.execute("""SELECT duration from current_ride""")[-1][0])
-	return str(timedelta(seconds=duration))
+	duration = int(sql.execute("""SELECT duration from current_ride""")[-1][0])
+	return str(timedelta(seconds=duration))[2:]

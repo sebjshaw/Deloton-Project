@@ -14,7 +14,7 @@ class SQLConnection():
 		self.engine = sqlalchemy.create_engine(f'postgresql+psycopg2://{username}:{password}@{host}:{port}/{db_name}')
 		self.conn = self.engine.connect()
 	
-	def get_df(self, query:str) -> pd.DataFrame:
+	def get_df(self, query:str) -> pd.DataFrame | None:
 		"""
 		query the database
 
@@ -32,7 +32,7 @@ class SQLConnection():
 			print(e)
 			print('\n')
 
-	def get_list(self, query:str) -> list[tuple]:
+	def get_list(self, query:str) -> list[tuple] | None:
 		"""
 		Execute a query on the db
 

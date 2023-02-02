@@ -30,6 +30,6 @@ def create_visualisation(df: pd.DataFrame, x: str, y:str) -> px.line:
 		max_hr = sql.get_list("SELECT max_hr FROM user_info")[0][0]
 		x_values = df.duration.tolist()
 		y_values = [max_hr]*len(x_values)
-		fig.add_trace(go.Scatter(x=x_values, y=y_values, mode='lines', line_color="red")) # Add line for max heart rate
+		fig.add_trace(go.Scatter(x=x_values, y=y_values, mode='lines', line_color="red", name='Max')) # Add line for max heart rate
 	return fig
 

@@ -7,7 +7,7 @@ import dotenv
 dotenv.load_dotenv()
 
 app = Flask(__name__)
-CORS(app, origins=["http://127.0.0.1:8080"],  supports_credentials=True)
+CORS(app, origins=["http://127.0.0.1:8090"],  supports_credentials=True)
 
 USERNAME = os.getenv('USERNAME')
 PASSWORD = os.getenv('PASSWORD')
@@ -35,16 +35,38 @@ def rides_tuple_to_dict(ride_info:tuple) -> dict:
 		'average_power': ride_info[13]
 	}
 
+def users_tuple_to_dict(user_info:tuple) -> dict:
+	return { 
+		'user_id':user_info[0],
+		'first_name':user_info[1],
+		'last_name':user_info[2],
+		'gender':user_info[3],
+		'address':user_info[4],
+		'date_of_birth':user_info[5],
+		'email_address':user_info[6],
+		'height_cm':user_info[7],
+		'weight_kg':user_info[8],
+		'account_create_date':user_info[9],
+		'bike_serial':user_info[10],
+		'original_source':user_info[11]
+	}
+
+
+
 # # GET /ride/:id
 # Get a ride with a specific ID
 @app.route("/ride/<int:ride_id>", methods=["GET"])
 def get_ride_info(ride_id:int):
-	ride_info_tuple = sql.get_list(
-		f"""
-			SELECT *
-			FROM rides
-			WHERE rides_id = {ride_id}
-		""")[0]
+	try:
+		ride_info_tuple = sql.get_list(
+			f"""
+				SELECT *
+				FROM rides
+				WHERE rides_id = {ride_id}
+			"""
+		)[0]
+	except Exception as e:
+		return jsonify({'error':e})
 	ride_info = rides_tuple_to_dict(ride_info_tuple)
 	return jsonify(ride_info)
 
@@ -52,19 +74,50 @@ def get_ride_info(ride_id:int):
 # Get rider information (e.g. name, gender, age, avg. heart rate, number of rides)
 @app.route("/rider/<int:user_id>", methods=["GET"])
 def get_user_info(user_id:int):
-  return 
+	try:
+		user_info_tuple = sql.get_list(
+			f"""
+				SELECT *
+				FROM users
+				WHERE user_id = {user_id}
+			"""
+		)[0]
+	except Exception as e:
+		return jsonify({'error':e})
+	user_info = users_tuple_to_dict(user_info_tuple)
+	return jsonify(user_info)
 
 # # GET /rider/:user_id/rides
 # Get all rides for a rider with a specific ID
 @app.route("/rider/<int:user_id>/rides", methods=["GET"])
 def get_user_ride_info(user_id: int):
-  return 
+	try:
+		user_ride_info_tuple = sql.get_list(
+			f"""
+				SELECT *
+				FROM rides
+				WHERE user_id = {user_id}
+			"""
+		)[0]
+	except Exception as e:
+		return jsonify({'error':e})
+	user_ride_info = [rides_tuple_to_dict(entry) for entry in user_ride_info_tuple]
+	return jsonify(user_ride_info)
 
 # # DELETE /ride/:id
 # Delete a with a specific ID
 @app.route("/ride/<int:ride_id>", methods=["DELETE"])
-def delete_ride_info(user_id):
-  return 
+def delete_ride_info(ride_id:int):
+	try:
+		sql.get_list(
+			f"""
+				DELETE FROM rides
+				WHERE ride_id = {ride_id}
+			"""
+		)[0]
+	except Exception as e:
+		return jsonify({'error':e})
+	return jsonify({'success': f"Ride ID {ride_id} deleted"})
 
 # # GET /daily
 # Get all of the rides in the current day

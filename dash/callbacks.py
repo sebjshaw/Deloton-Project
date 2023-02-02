@@ -64,11 +64,11 @@ def change_link(n):
 def update_user_info(n):
 	info = sql.get_list(
 		"""
-			SELECT *
+			SELECT name, date_of_birth, gender
 			FROM user_info
 		"""
 	)
-	return info[1], info[4], info[2]
+	return info[0][0], info[0][1], info[0][2]
 
 
 # # Call backs for updating the components once a second

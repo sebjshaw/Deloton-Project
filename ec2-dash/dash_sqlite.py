@@ -1,6 +1,6 @@
 import sqlite3
 from kafka_consumer import create_kafka_consumer, create_log_entry
-from abnormal_hr import calculate_max_heart_rate, compare_hr_to_max_hr, create_dict_for_email
+from abnormal_hr import calculate_max_heart_rate, compare_hr_to_max_hr, create_dict_for_email, send_user_hr_warning
 from create_csv_files import most_recent_ride_to_csv, user_info_to_csv
 import boto3
 import os
@@ -193,7 +193,8 @@ if __name__ == "__main__":
                 except:
                     add_entry_to_table(cursor, conn, log_entry, ride_id, 'N/A')
                 if compare_hr_to_max_hr(log_entry['heart_rate'], max_hr) == True:
-                    create_dict_for_email(user_info, int(log_entry['heart_rate']), max_hr, log_entry['date'], int(log_entry['duration'][:-2]))
-
+                    user_email_dict = create_dict_for_email(user_info, int(log_entry['heart_rate']), max_hr, log_entry['date'], int(log_entry['duration'][:-2]))
+                    send_user_hr_warning(user_email_dict)
+                    
         except KeyboardInterrupt:
             pass

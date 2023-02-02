@@ -49,6 +49,6 @@ def user_info_to_csv(cursor: dict):
             'address', 'date_of_birth', 
             'email_address', 'height_cm', 
             'weight_kg', 'account_create_date', 
-            'bike_serial', 'original_source', 'max_hr']
+            'bike_serial', 'original_source']
         )
         csv_f.writerows(user_info)

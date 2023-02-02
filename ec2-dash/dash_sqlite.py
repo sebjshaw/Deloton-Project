@@ -144,7 +144,7 @@ def recreate_user_info_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection, u
 
     conn.commit()
 
-def push_to_s3():
+def push_csv_files_to_s3():
     """Push both the log csv file and the user info csv file to the s3 bucket
     """
     most_recent_ride_to_csv(cursor)
@@ -187,9 +187,9 @@ if __name__ == "__main__":
                 
             # only adds to the database if it is a full entry      
             if len(log_entry) == 7:
-                add_entry_to_table(cursor, conn, log_entry, ride_id, user_id)
+                add_entry_to_table(cursor, conn, log_entry, ride_id, user_info['user_id'])
                 if compare_hr_to_max_hr(log_entry['heart_rate'], max_hr) == True:
-                    send_user_hr_warning(log_entry['heart_rate'], log_entry['duration'])
+                    send_user_hr_warning(user_info, int(log_entry['heart_rate']), max_hr, log_entry['date'], int(log_entry['duration'][:-2]))
 
         except KeyboardInterrupt:
             pass

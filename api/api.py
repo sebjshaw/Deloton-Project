@@ -66,10 +66,13 @@ def get_ride_info(ride_id:int):
 				WHERE rides_id = {ride_id}
 			"""
 		)[0]
+		if ride_info_tuple:
+			ride_info = rides_tuple_to_dict(ride_info_tuple)
+			return jsonify(ride_info)
+		else:
+			return jsonify({"output": 'No matching records'})
 	except Exception as e:
 		return jsonify({'error':e})
-	ride_info = rides_tuple_to_dict(ride_info_tuple)
-	return jsonify(ride_info)
 
 # # GET /rider/:user_id
 # Get rider information (e.g. name, gender, age, avg. heart rate, number of rides)
@@ -83,10 +86,13 @@ def get_user_info(user_id:int):
 				WHERE user_id = {user_id}
 			"""
 		)[0]
+		if user_info_tuple:
+			user_info = users_tuple_to_dict(user_info_tuple)
+			return jsonify(user_info)
+		else:
+			return jsonify({"output": 'No matching records'})
 	except Exception as e:
 		return jsonify({'error':e})
-	user_info = users_tuple_to_dict(user_info_tuple)
-	return jsonify(user_info)
 
 # # GET /rider/:user_id/rides
 # Get all rides for a rider with a specific ID
@@ -100,10 +106,13 @@ def get_user_ride_info(user_id: int):
 				WHERE user_id = {user_id}
 			"""
 		)
+		if user_ride_info_tuple:
+			user_ride_info = [rides_tuple_to_dict(entry) for entry in user_ride_info_tuple]
+			return jsonify(user_ride_info)
+		else:
+			return jsonify({"output": 'No matching records'})
 	except Exception as e:
 		return jsonify({'error':e})
-	user_ride_info = [rides_tuple_to_dict(entry) for entry in user_ride_info_tuple]
-	return jsonify(user_ride_info)
 
 # # DELETE /ride/:id
 # Delete a with a specific ID
@@ -116,27 +125,9 @@ def delete_ride_info(ride_id:int):
 				WHERE ride_id = {ride_id}
 			"""
 		)
+		return jsonify({'success': f"Ride ID {ride_id} deleted"})
 	except Exception as e:
 		return jsonify({'error':e})
-	return jsonify({'success': f"Ride ID {ride_id} deleted"})
-
-# # GET /daily
-# Get all of the rides in the current day
-@app.route("/daily", methods=["GET"])
-def get_current_day_ride_info():
-	try:
-		day_before = datetime.now() - timedelta(day=1)
-		last_24_hours_rides = (
-			f"""
-				SELECT *
-				FROM rides
-				WHERE (date + time) > {day_before} 
-			"""
-		)
-	except Exception as e:
-		return jsonify({'error': e})
-	rides = [rides_tuple_to_dict(entry) for entry in last_24_hours_rides]
-	return jsonify(rides)
 
 # # GET /daily?date=01-01-2020
 # Get all rides for a specific date
@@ -144,18 +135,36 @@ def get_current_day_ride_info():
 def get_ride_info_for_specific_day():
 	try:
 		date = request.args.get('date')
-		day = int(date[:2])
-		month = int(date[3:5])
-		year = int(date[6:])
-		date = datetime(year=year, month=month, day=day).strftime("%Y-%m-%d")
-		days_rides = (
-			f"""
-				SELECT *
-				FROM rides
-				WHERE TO_DATE(date, YYYY-MM-DD) = TO_DATE({date}, YYYY-MM-DD)
-			"""
-		)
+		if date:
+			day = int(date[:2])
+			month = int(date[3:5])
+			year = int(date[6:])
+			date = datetime(year=year, month=month, day=day).strftime("%Y-%m-%d")
+			days_rides = sql.get_list(
+				f"""
+					SELECT *
+					FROM rides
+					WHERE TO_DATE(date, 'YYYY-MM-DD') = TO_DATE('{date}', 'YYYY-MM-DD')
+				"""
+			)
+			if days_rides:
+				days_rides_info = [rides_tuple_to_dict(entry) for entry in days_rides]
+				return jsonify(days_rides_info)
+			else:
+				return jsonify({"output": 'No matching records'})
+		else:
+			last_24_hours_rides = sql.get_list(
+				f"""
+					SELECT *
+					FROM rides
+					WHERE CAST(CONCAT(date,' ',time_started) AS TIMESTAMP) > now() - INTERVAL '1 day' 
+				"""
+			)
+			if last_24_hours_rides:
+				rides = [rides_tuple_to_dict(entry) for entry in last_24_hours_rides]
+				return jsonify(rides)
+			else:
+				return jsonify({"output": 'No matching records'})
 	except Exception as e:
-		return jsonify({'error': e})
-	days_rides_info = [rides_tuple_to_dict(entry) for entry in days_rides]
-	return jsonify(days_rides_info)
+		return jsonify({'error': str(e)})
+

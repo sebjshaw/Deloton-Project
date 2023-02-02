@@ -9,7 +9,7 @@ recent_layout = html.Div(
 						html.Div(
 							children = [
 								html.Div(
-									html.H2('TIME',id='time_text'),
+									html.H2('DURATION ⏱️',id='time_text', className='bit_title'),
 								),
 								html.H2('00:00:00',id='time_value')
 							],
@@ -19,7 +19,7 @@ recent_layout = html.Div(
 						html.Div(
 							children = [
 								html.Div(
-									html.H2('HEART RATE',id='heart_rate_text'),
+									html.H2('HEART RATE ❤️',id='heart_rate_text', className='bit_title'),
 								),
 								html.H2('BPM',id='heart_rate_value')
 							],
@@ -29,17 +29,17 @@ recent_layout = html.Div(
 						html.Div(
 							children = [
 								html.Div(
-									html.H2('REVOLUTION',id='rpm_text'),
+									html.H2('RPM 🔄',id='rpm_text', className='bit_title'),
 								),
 								html.H2('RPM',id='rpm_value')
 							],
-							id="rpm",
+							id="rpm_recent",
 							className='bit'
 						),
 						html.Div(
 							children = [
 								html.Div(
-									html.H2('RESISTANCE',id='resistance_text'),
+									html.H2('RESISTANCE 😤',id='resistance_text', className='bit_title'),
 								),
 								html.H2('RES',id='resistance_value')
 							],
@@ -59,7 +59,7 @@ recent_layout = html.Div(
 						html.Div(
 							html.H2('gender',id="gender_text")
 						),
-						dcc.Graph(id="gender_graph"),
+						dcc.Graph(id="gender_share_graph"),
 					],
 					id="gender_share",
 					className='shares'
@@ -69,7 +69,7 @@ recent_layout = html.Div(
 						html.Div(
 							html.H2('age',id="age_text")
 						),
-						dcc.Graph(id="age_graph"),
+						dcc.Graph(id="age_share_graph"),
 					],
 					id="age_share",
 					className='shares'
@@ -79,7 +79,7 @@ recent_layout = html.Div(
 						html.Div(
 							html.H2('power',id="power_text")
 						),
-						dcc.Graph(id="power_graph"),
+						dcc.Graph(id="power_share_graph"),
 					],
 					id="power_share",
 					className='shares'

@@ -1,14 +1,26 @@
+html {
+	background-color: #0d1f22;
+	color: #f3dfc1;
+}
 #header {
 	display: flex;
 	flex-direction: row;
 	height: 10vh;
 	align-items: center;
-	color: #f3dfc1;
 }
 
 #view_switch {
 	height: 8vh;
 	width: 8vw;
+	background-color: #368f8b;
+	color: #f3dfc1;
+}
+#view_switch:hover {
+	border-color: #8d5b4c 4px solid;
+	background-color: #23625f;
+	width: 8.2vw;
+	height: 8.2vh;
+	transition: 0.1s;
 }
 
 #icon {
@@ -19,7 +31,8 @@
 	flex-direction: row;
 	justify-content: space-evenly;
 	align-items: center;
-	border: #8d5b4c 4px solid;
+	border: #f3dfc1 4px solid;
+	background-color: #8d5b4c;
 	width: 90vw;
 }
 
@@ -33,31 +46,41 @@
 	justify-content: space-between;
 }
 
-#rpm {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-}
-#time_resistance {
+.time_resistance {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-evenly;
 	width: 20vw;
 }
-
+#current_values {
+	width: 47.5vw;
+	display: flex;
+	justify-content: space-evenly;
+}
 #upper_body {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-around;
+	justify-content: space-evenly;
 	height: 45vh;
 }
 #lower_body {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-around;
+	justify-content: space-evenly;
 	height: 45vh;
 }
+#power_graph,
+#heart_rate_graph,
+#rpm_graph {
+	width: 47.5vw;
+	height: 45vh;
+}
+.js-plotly-plot {
+	height: 40vh;
+	width: auto;
+}
+
 #upper_recent_body {
 	display: flex;
 	flex-direction: row;
@@ -67,7 +90,8 @@
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	height: 75vh;
+	text-align: center;
+	height: 65vh;
 	width: 100vw;
 }
 
@@ -79,10 +103,10 @@
 .bit {
 	display: flex;
 	flex-direction: column;
-	border: #8d5b4c 4px solid;
+	border: #f3dfc1 4px solid;
 	width: 15vw;
 	text-align: center;
-	color: #f3dfc1;
+	background-color: #8d5b4c;
 }
 #bit_container {
 	display: flex;
@@ -90,14 +114,10 @@
 	justify-content: space-evenly;
 	align-items: center;
 	width: 100vw;
-	color: #f3dfc1;
 }
 
-html {
-	background-color: #0d1f22;
-}
-
-.js-plotly-plot {
-	height: 45vh;
-	width: auto;
+#current_values {
+	display: flex;
+	flex-direction: row;
+	text-align: center;
 }

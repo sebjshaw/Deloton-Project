@@ -4,14 +4,18 @@ from views import current_view, recent_view
 
 app.layout = html.Div(
 	children = [
-		dcc.Location(
-			id='url',
-			refresh=False,
-		),
-		dcc.Interval(
-			id='interval_component',
-			interval=1*1000, # in milliseconds
-			n_intervals=0
+		html.Header(
+			children=[
+				dcc.Location(
+					id='url',
+					refresh=False,
+				),
+				dcc.Interval(
+					id='interval_component',
+					interval=1*1000, # in milliseconds
+					n_intervals=0
+				),
+			],
 		),
 		html.Div(
 			children=[

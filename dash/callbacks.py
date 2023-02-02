@@ -1,10 +1,10 @@
-from dash import Input, Output, callback, html, dcc
+from dash import Input, Output, callback
 from visualisations import create_visualisation
 from SQLConnection import SQLConnection
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # SQL connection variable
-# sql = SQLConnection('./ec2-dash/dash.db')
+sql = SQLConnection('./ec2-dash/dash_db.db')
 
 # Update current time
 @callback(
@@ -44,89 +44,148 @@ def change_link(n):
 	else:
 		return 'RECENT', '/'
 
-# # Update user info at the start of a new ride
-# @callback(
-# 	Output(
-# 		'name', 'children'
-# 	),
-# 	Output(
-# 		'age', 'children',
-# 	),
-# 	Output(
-# 		'gender', 'children',
-# 	),
-# 	[
-# 		Input(
-# 			'interval_component', 'n_intervals'
-# 		)
-# 	]
-# )
-# def update_user_info(n):
-# 	pass
+# Update user info at the start of a new ride
+@callback(
+	Output(
+		'name', 'children'
+	),
+	Output(
+		'age', 'children',
+	),
+	Output(
+		'gender', 'children',
+	),
+	[
+		Input(
+			'interval_component', 'n_intervals'
+		)
+	]
+)
+def update_user_info(n):
+	info = sql.get_list(
+		"""
+			SELECT *
+			FROM user_info
+		"""
+	)
+	return info[1], info[4], info[2]
 
-# # # Call backs for updating the components once a second
-# # RPM figure
-# @callback(
-# 	Output(
-# 		"rpm_graph",'figure'
-# 	),
-# 	Output(
-# 		"rpm_text",'children'
-# 	),
-# 	[
-# 		Input(
-# 			'interval_component', 'n_intervals'
-# 		)
-# 	]
-# )
-# def update_rpm_figure(n):
-# 	# df = sql.query("""
-# 	# 		SELECT rpm FROM 
-# 	# 	""")
-# 	return create_visualisation(df, range(n+1), 'rpm')
 
-# # Heart Rate figure
-# @callback(
-# 	Output(
-# 		"heart_rate_graph",'figure'
-# 	),
-# 	Output(
-# 		"heart_rate_text",'children'
-# 	),
-# 	[
-# 		Input(
-# 			'interval_component', 'n_intervals'
-# 		)
-# 	]
-# )
-# def update_heart_rate_figure(n):
-# 	return visualisations.create_visualisation()
+# # Call backs for updating the components once a second
+# RPM figure
+@callback(
+	Output(
+		"rpm_graph",'figure'
+	),
+	[
+		Input(
+			'interval_component', 'n_intervals'
+		)
+	]
+)
+def update_rpm_figure(n):
+	df = sql.get_df("""SELECT duration, rpm FROM current_ride""")
+	return create_visualisation(df, 'duration', 'rpm')
 
-# @app.callback(
-# 	Output(
-# 		"power_graph",'figure'
-# 	),
-# 	Output(
-# 		"power_text",'children'
-# 	),
-# 	[
-# 		Input(
-# 			'interval_component', 'n_intervals'
-# 		)
-# 	]
-# )
-# def update_power_figure(n):
-# 	return visualisations.create_visualisation()
+@callback(
+	Output(
+		"rpm_value",'children'
+	),
+	[
+		Input(
+			'interval_component', 'n_intervals'
+		)
+	]
+)
+def update_rpm_value(n):
+	value = sql.get_list("""SELECT rpm FROM current_ride""")[-1][0]
 
-# @app.callback(
-# 	Output(
-# 		"rpm_graph",'figure'
-# 	),
-# 	[
-# 		Input(
-# 			'interval_component', 'n_intervals'
-# 		)
-# 	]
-# )
-# def update_resistance(n):
-# 	return visualisations.create_visualisation()
+	return value
+
+# HEART RATE
+@callback(
+	Output(
+		"heart_rate_graph",'figure'
+	),
+	[
+		Input(
+			'interval_component', 'n_intervals'
+		)
+	]
+)
+def update_heart_rate_figure(n):
+	df = sql.get_df("""SELECT duration, heart_rate FROM current_ride""")
+	return create_visualisation(df, 'duration', 'heart_rate')
+
+@callback(
+	Output(
+		"heart_rate_value",'children'
+	),
+	[
+		Input(
+			'interval_component', 'n_intervals'
+		)
+	]
+)
+def update_heart_rate_value(n):
+	value = sql.get_list("""SELECT heart_rate FROM current_ride""")[-1][0]
+	return value
+
+# POWER
+@callback(
+	Output(
+		"power_value",'children'
+	),
+	[
+		Input(
+			'interval_component', 'n_intervals'
+		)
+	]
+)
+def update_power_value(n):
+	value = sql.get_list("""SELECT power FROM current_ride""")[-1][0]
+	return value
+
+@callback(
+	Output(
+		"power_graph",'figure'
+	),
+	[
+		Input(
+			'interval_component', 'n_intervals'
+		)
+	]
+)
+def update_power_figure(n):
+	df = sql.get_df("""SELECT duration, ROUND(power, 3) as power FROM current_ride""")
+	return create_visualisation(df, 'duration', 'power')
+
+# RESISTANCE
+@callback(
+	Output(
+		"resistance_value",'children'
+	),
+	[
+		Input(
+			'interval_component', 'n_intervals'
+		)
+	]
+)
+def update_resistance_value(n):
+	value = sql.get_list("""SELECT resistance FROM current_ride""")[-1][0]
+	return value
+
+# TIME
+@callback(
+	Output(
+		"time_value",'children'
+	),
+	[
+		Input(
+			'interval_component', 'n_intervals'
+		)
+	]
+)
+def update_resistance(n):
+	duration = int(sql.get_list("""SELECT duration from current_ride""")[-1][0])
+	return str(timedelta(seconds=duration))[2:]

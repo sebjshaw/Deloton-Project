@@ -184,7 +184,6 @@ if __name__ == "__main__":
                 ride_id = recreate_ride_id_from_datetime(log_entry)
                 user_info = log_entry
                 ride_date = log_entry['date'] + " " + log_entry['time']
-                recreate_join_csv(log_entry['user_id'], ride_id)
                 
             # only adds to the database if it is a full entry      
             if len(log_entry) == 7:

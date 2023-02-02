@@ -1,5 +1,9 @@
-python-dotenv
 pandas
+matplotlib
+numpy
+plotly
+dash
+python-dotenv
 confluent_kafka
-sqlite3
 boto3
+sqlite3

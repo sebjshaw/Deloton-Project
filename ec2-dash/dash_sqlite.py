@@ -4,9 +4,6 @@ from abnormal_hr import calculate_max_heart_rate, compare_hr_to_max_hr
 import csv
 import boto3
 import os
-from datetime import datetime
-
-EPOCH = datetime.utcfromtimestamp(0) #the epoch as a datetime
 
 # create a boto3 client for when the csv needs to be uplaoded to the s3 bucket
 s3 = boto3.client('s3')
@@ -18,26 +15,7 @@ conn = sqlite3.connect('./ec2-dash/dash_db.db') #create an sqlite database and e
 
 cursor = conn.cursor() #create a cursor to allow querying of the database
 
-def recreate_ride_id_from_datetime(entry: dict) -> int:
-    """Takes the first log entry and using the date and time creates a ride id as the number of seconds
-    since the epoch
-
-    Args:
-        entry (dict): The log entry 
-
-    Returns:
-        int: returns the number of seconds since the epoch, to be used as ride_id
-    """
-
-    dt = entry['date'] + " " + entry['time'] #add the date and the time together
-    dt = dt[:-7] #remove the decimals from the seconds
-    dt = datetime.strptime(dt, '%Y-%m-%d %H:%M:%S') #convert to a datetime object
-
-    ride_id = (dt - EPOCH).total_seconds() #create a ride id (seconds since epoch)
-
-    return ride_id
-
-def recreate_current_ride_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection):
+def create_new_current_ride_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection):
     """Drops the previous table called current_ride and creates a new one. This function will be 
     called immediately after a new user information dict is received
 
@@ -53,7 +31,6 @@ def recreate_current_ride_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection
     # creates a new current_ride table 
     cursor.execute("""
     CREATE TABLE current_ride (
-        ride_id TEXT,
         date TEXT, 
         time TEXT,
         duration INTEGER NOT NULL,
@@ -66,7 +43,7 @@ def recreate_current_ride_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection
 
     conn.commit()
 
-def add_entry_to_table(cursor: sqlite3.Cursor,conn: sqlite3.Connection, entry: dict, ride_id: int):
+def add_entry_to_table(cursor: sqlite3.Cursor,conn: sqlite3.Connection, entry: dict):
     """Adds an entry to the current_ride table. Called every time a new log is received 
     from the kafka consumer
 
@@ -79,13 +56,13 @@ def add_entry_to_table(cursor: sqlite3.Cursor,conn: sqlite3.Connection, entry: d
     # query sent to the table current_ride to insert into table 
     cursor.execute(f"""
     INSERT INTO current_ride (
-        ride_id, date, time, duration, resistance, heart_rate, rpm, power
+        date, time, duration, resistance, heart_rate, rpm, power
     )
     VALUES (
-        "{ride_id}", "{entry['date']}", 
-        "{entry['time']}", {entry['duration']}, 
-        {entry['resistance']}, {entry['heart_rate']}, 
-        {entry['rpm']}, "{entry['power']}"
+        "{entry['date']}", "{entry['time']}", 
+        {entry['duration']}, {entry['resistance']}, 
+        {entry['heart_rate']}, {entry['rpm']}, 
+        "{entry['power']}"
     )
     """)
 
@@ -106,10 +83,11 @@ def most_recent_ride_to_csv(cursor: sqlite3.Cursor):
     # writes the data to a csv file 
     with open("ec2-dash/most_recent_ride.csv", "w") as f:
         csv_f = csv.writer(f)
-        csv_f.writerow(['date', 'time', 'duration', 'resistance', 'heart_rate', 'rpm', 'power'])
+        csv_f.writerow(['ride_id', 'date', 'time', 'duration', 'resistance', 'heart_rate', 'rpm', 'power'])
         csv_f.writerows(most_recent_ride)
 
-def recreate_user_info_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection, user_info: dict):
+def create_user_info_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection, user_info: dict):
+
     """Deletes previous user table, creates a new one and inserts the user information
 
     Args:
@@ -134,11 +112,8 @@ def recreate_user_info_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection, u
         account_create_date TEXT NOT NULL,
         bike_serial TEXT,
         original_source TEXT
-    )
-    """)
-    conn.commit()
+    );
 
-    cursor.execute(f"""
     INSERT INTO user_info (
         user_id, name, gender, 
         address, date_of_birth, 
@@ -196,18 +171,6 @@ def push_to_s3():
 
     s3.upload_file('ec2-dash/most_recent_ride.csv', 'three-m-deloton-bucket', 'most_recent_ride')
     s3.upload_file('ec2-dash/user_info.csv', 'three-m-deloton-bucket', 'user_info')
-    s3.upload_file('ec2-dash/join_ids.csv', 'three-m-deloton-bucket', 'join_ids')
-
-def recreate_join_csv(user_id: str, ride_id):
-
-    # writes the data to a csv file 
-    with open("ec2-dash/join_ids.csv", "w") as f:
-        csv_f = csv.writer(f)
-        csv_f.writerow(
-            ['user_id', 'ride_id']
-        )
-        csv_f.writerow([user_id, ride_id])
-
 
 if __name__ == "__main__":
     recreate_current_ride_table(cursor, conn) #creates a table for the current ride data to be inserted into 
@@ -215,6 +178,7 @@ if __name__ == "__main__":
     ride_date = 'N/A' #placeholder until user info is received
     recreate_join_csv('N/A', 'N/A') #placeholder for the join_csv until user info is received
     max_hr = 220
+    
     # constantly retrieving logs and creating tables and csvs
     while True:
         try: 
@@ -240,7 +204,6 @@ if __name__ == "__main__":
                 ride_id = recreate_ride_id_from_datetime(log_entry)
                 ride_date = log_entry['date'] + " " + log_entry['time']
                 recreate_join_csv(log_entry['user_id'], ride_id)
-                
 
                 # set new max_hr
                 # max_hr = calculate_max_heart_rate(log_entry['date_of_birth'])

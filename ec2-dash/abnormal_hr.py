@@ -58,7 +58,7 @@ def create_dict_for_email(user_info: dict, curr_hr: int, max_hr:int, date: str, 
     new_user_info['time_elapsed'] = time_elapsed
     new_user_info['user_email'] = user_info['email_address']
 
-    return new_user_info
+    send_user_hr_warning(new_user_info)
 
 def send_user_hr_warning(user_info):
     """Receives the new user information dictionary and sends an email to the user 

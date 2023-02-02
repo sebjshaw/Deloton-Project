@@ -146,8 +146,11 @@ def recreate_user_info_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection, u
     conn.commit()
 
 def push_csv_files_to_s3():
+def push_csv_files_to_s3():
     """Push both the log csv file and the user info csv file to the s3 bucket
     """
+    most_recent_ride_to_csv(cursor)
+    user_info_to_csv(cursor)
     most_recent_ride_to_csv(cursor)
     user_info_to_csv(cursor)
     s3.upload_file('ec2-dash/most_recent_ride.csv', 'three-m-deloton-bucket', 'most_recent_ride')
@@ -160,6 +163,7 @@ if __name__ == "__main__":
     ride_date = 'N/A' #placeholder until user info is received
     max_hr = 220
     user_info = 'N/A' #placeholder until user info is received
+    user_info = 'N/A' #placeholder until user info is received
     user_id = 0000
     
     # constantly retrieving logs and creating tables and csvs
@@ -170,6 +174,7 @@ if __name__ == "__main__":
             
             # creates csv and pushes to s3, then deletes old current_ride table and creates new one 
             if log_entry.get('user_id') is not None:
+                push_csv_files_to_s3()
                 push_csv_files_to_s3()
                 
                 # delete expired csv files 

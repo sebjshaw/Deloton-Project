@@ -17,12 +17,36 @@ DB_NAME = os.getenv('DB_NAME')
 
 sql = SQLConnection(USERNAME, PASSWORD, HOST, PORT, DB_NAME)
 
+def rides_tuple_to_dict(ride_info:tuple) -> dict:
+	return { 
+		'user_id': ride_info[0],
+		'ride_id': ride_info[1],
+		'date': ride_info[2],
+		'time_started': ride_info[3],
+		'time_ended': ride_info[4],
+		'total_duration': ride_info[5],
+		'max_resistance':ride_info[6],
+		'max_heart_rate': ride_info[7],
+		'max_rpm': ride_info[8],
+		'max_power': ride_info[9],
+		'average_resistance': ride_info[10],
+		'average_heart_rate': ride_info[11],
+		'average_rpm': ride_info[12],
+		'average_power': ride_info[13]
+	}
+
 # # GET /ride/:id
 # Get a ride with a specific ID
 @app.route("/ride/<int:ride_id>", methods=["GET"])
 def get_ride_info(ride_id:int):
-	sql.get_list("SELECT ")
-	return jsonify()
+	ride_info_tuple = sql.get_list(
+		f"""
+			SELECT *
+			FROM rides
+			WHERE rides_id = {ride_id}
+		""")[0]
+	ride_info = rides_tuple_to_dict(ride_info_tuple)
+	return jsonify(ride_info)
 
 # # GET /rider/:user_id
 # Get rider information (e.g. name, gender, age, avg. heart rate, number of rides)

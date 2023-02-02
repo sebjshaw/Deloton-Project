@@ -19,28 +19,22 @@ DB_NAME = os.getenv('DB_NAME')
 # Creating connection to hosted postgres db
 sql = SQLConnection(USERNAME, PASSWORD, HOST, PORT, DB_NAME)
 
-# Converting the tuple to dicts to be sent as JSON in responses
-def tuple_to_dict(tup:tuple, table:str) -> dict:
-	"""
-	Convert the tuple for a row of table data into a dictionary
-	Args:
-			tup (tuple): tuple containing all data points from a specific row
-			table (str): name of table from which the row data has been taken,
-						must be exactly identical
-	Returns:
-			dict: dictionary containing the row data
-	"""
-	# All columns from each of the tables
-	table_columns = {
-		'rides' : [
-			'user_id','ride_id','date','time_started','time_ended','total_duration','max_resistance',
-			'max_heart_rate','max_rpm','max_power','average_resistance','average_heart_rate','average_rpm',
-			'average_power'
-		],
-		'users': [
-			'user_id','first_name','last_name','gender','address','date_of_birth','email_address','height_cm',
-			'weight_kg','account_create_date','bike_serial','original_source'
-		]
+def rides_tuple_to_dict(ride_info:tuple) -> dict:
+	return { 
+		'user_id': ride_info[0],
+		'ride_id': ride_info[1],
+		'date': ride_info[2],
+		'time_started': ride_info[3],
+		'time_ended': ride_info[4],
+		'total_duration': ride_info[5],
+		'max_resistance':ride_info[6],
+		'max_heart_rate': ride_info[7],
+		'max_rpm': ride_info[8],
+		'max_power': ride_info[9],
+		'average_resistance': ride_info[10],
+		'average_heart_rate': ride_info[11],
+		'average_rpm': ride_info[12],
+		'average_power': ride_info[13]
 	}
 	row_dict = {}
 	keys = table_columns[table]

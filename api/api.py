@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 dotenv.load_dotenv()
 
 app = Flask(__name__)
-CORS(app, origins=["http://127.0.0.1:8090"],  supports_credentials=True)
+CORS(app, origins=["http://127.0.0.1:8080"],  supports_credentials=True)
 
 USERNAME = os.getenv('USERNAME')
 PASSWORD = os.getenv('PASSWORD')

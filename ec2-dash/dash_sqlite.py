@@ -4,6 +4,9 @@ from abnormal_hr import calculate_max_heart_rate, compare_hr_to_max_hr
 import csv
 import boto3
 import os
+from datetime import datetime
+
+EPOCH = datetime.utcfromtimestamp(0) #the epoch as a datetime
 
 # create a boto3 client for when the csv needs to be uplaoded to the s3 bucket
 s3 = boto3.client('s3')
@@ -15,7 +18,26 @@ conn = sqlite3.connect('./ec2-dash/dash_db.db') #create an sqlite database and e
 
 cursor = conn.cursor() #create a cursor to allow querying of the database
 
-def create_new_current_ride_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection):
+def recreate_ride_id_from_datetime(entry: dict) -> int:
+    """Takes the first log entry and using the date and time creates a ride id as the number of seconds
+    since the epoch
+
+    Args:
+        entry (dict): The log entry 
+
+    Returns:
+        int: returns the number of seconds since the epoch, to be used as ride_id
+    """
+
+    dt = entry['date'] + " " + entry['time'] #add the date and the time together
+    dt = dt[:-7] #remove the decimals from the seconds
+    dt = datetime.strptime(dt, '%Y-%m-%d %H:%M:%S') #convert to a datetime object
+
+    ride_id = (dt - EPOCH).total_seconds() #create a ride id (seconds since epoch)
+
+    return ride_id
+
+def recreate_current_ride_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection):
     """Drops the previous table called current_ride and creates a new one. This function will be 
     called immediately after a new user information dict is received
 
@@ -87,7 +109,7 @@ def most_recent_ride_to_csv(cursor: sqlite3.Cursor):
     # writes the data to a csv file 
     with open("ec2-dash/most_recent_ride.csv", "w") as f:
         csv_f = csv.writer(f)
-        csv_f.writerow(['ride_id', 'date', 'time', 'duration', 'resistance', 'heart_rate', 'rpm', 'power'])
+        csv_f.writerow(['user_id', 'ride_id', 'date', 'time', 'duration', 'resistance', 'heart_rate', 'rpm', 'power'])
         csv_f.writerows(most_recent_ride)
 
 def recreate_user_info_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection, user_info: dict, max_hr: int):

@@ -62,7 +62,7 @@ def change_link(n):
 	]
 )
 def update_user_info(n):
-	info = sql.execute(
+	info = sql.get_list(
 		"""
 			SELECT *
 			FROM user_info
@@ -84,7 +84,7 @@ def update_user_info(n):
 	]
 )
 def update_rpm_figure(n):
-	df = sql.query("""SELECT duration, rpm FROM current_ride""")
+	df = sql.get_df("""SELECT duration, rpm FROM current_ride""")
 	return create_visualisation(df, 'duration', 'rpm')
 
 @callback(
@@ -98,7 +98,7 @@ def update_rpm_figure(n):
 	]
 )
 def update_rpm_value(n):
-	value = sql.execute("""SELECT rpm FROM current_ride""")[-1][0]
+	value = sql.get_list("""SELECT rpm FROM current_ride""")[-1][0]
 
 	return value
 
@@ -114,7 +114,7 @@ def update_rpm_value(n):
 	]
 )
 def update_heart_rate_figure(n):
-	df = sql.query("""SELECT duration, heart_rate FROM current_ride""")
+	df = sql.get_df("""SELECT duration, heart_rate FROM current_ride""")
 	return create_visualisation(df, 'duration', 'heart_rate')
 
 @callback(
@@ -128,7 +128,7 @@ def update_heart_rate_figure(n):
 	]
 )
 def update_heart_rate_value(n):
-	value = sql.execute("""SELECT heart_rate FROM current_ride""")[-1][0]
+	value = sql.get_list("""SELECT heart_rate FROM current_ride""")[-1][0]
 	return value
 
 # POWER
@@ -143,7 +143,7 @@ def update_heart_rate_value(n):
 	]
 )
 def update_power_value(n):
-	value = sql.execute("""SELECT power FROM current_ride""")[-1][0]
+	value = sql.get_list("""SELECT power FROM current_ride""")[-1][0]
 	return value
 
 @callback(
@@ -157,7 +157,7 @@ def update_power_value(n):
 	]
 )
 def update_power_figure(n):
-	df = sql.query("""SELECT duration, ROUND(power, 3) as power FROM current_ride""")
+	df = sql.get_df("""SELECT duration, ROUND(power, 3) as power FROM current_ride""")
 	return create_visualisation(df, 'duration', 'power')
 
 # RESISTANCE
@@ -172,7 +172,7 @@ def update_power_figure(n):
 	]
 )
 def update_resistance_value(n):
-	value = sql.execute("""SELECT resistance FROM current_ride""")[-1][0]
+	value = sql.get_list("""SELECT resistance FROM current_ride""")[-1][0]
 	return value
 
 # TIME
@@ -187,5 +187,5 @@ def update_resistance_value(n):
 	]
 )
 def update_resistance(n):
-	duration = int(sql.execute("""SELECT duration from current_ride""")[-1][0])
+	duration = int(sql.get_list("""SELECT duration from current_ride""")[-1][0])
 	return str(timedelta(seconds=duration))[2:]

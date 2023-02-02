@@ -19,7 +19,7 @@ recent_layout = html.Div(
 						html.Div(
 							children = [
 								html.Div(
-									html.H2('HEART RATE 🫀',id='heart_rate_text', className='bit_title'),
+									html.H2('HEART RATE ❤️',id='heart_rate_text', className='bit_title'),
 								),
 								html.H2('BPM',id='heart_rate_value')
 							],

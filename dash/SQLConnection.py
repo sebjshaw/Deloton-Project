@@ -7,11 +7,11 @@ lock = threading.Lock()
 class SQLConnection():
 	"""Create a SQLite connection class
 	"""
-	def __init__(self, database_file: str) -> pd.DataFrame | None:
+	def __init__(self, database_file: str) -> None:
 		self.conn = sqlite3.connect(f'{database_file}', check_same_thread=False)
 		self.curs = self.conn.cursor()
 	
-	def query(self, query:str) -> pd.DataFrame:
+	def get_df(self, query:str) -> pd.DataFrame:
 		"""
 		query the database
 
@@ -32,7 +32,7 @@ class SQLConnection():
 		finally:
 			lock.release()
 
-	def execute(self, query:str) -> list:
+	def get_list(self, query:str) -> list[tuple]:
 		"""
 		Execute a query on the db
 

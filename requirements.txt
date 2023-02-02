@@ -6,5 +6,5 @@ dash
 python-dotenv
 confluent_kafka
 boto3
+sqlite3
 botocore
-redis

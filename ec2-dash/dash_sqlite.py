@@ -193,7 +193,8 @@ if __name__ == "__main__":
                     add_entry_to_table(cursor, conn, log_entry, ride_id, user_info['user_id'])
                 except:
                     add_entry_to_table(cursor, conn, log_entry, ride_id, 'N/A')
-                if compare_hr_to_max_hr(log_entry['heart_rate'], max_hr) == True:
+                if compare_hr_to_max_hr(log_entry['heart_rate'], max_hr) == True and cache.check_cache_value(user_info['email_address']) is None:
+                    cache.set_cache_value(user_info['email_address'])
                     user_email_dict = create_dict_for_email(user_info, int(log_entry['heart_rate']), max_hr, log_entry['date'], int(log_entry['duration'][:-2]))
                     send_user_hr_warning(user_email_dict)
                     

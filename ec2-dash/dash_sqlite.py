@@ -143,10 +143,11 @@ def recreate_user_info_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection, u
 
     conn.commit()
 
-def push_to_s3():
+def push_csv_files_to_s3():
     """Push both the log csv file and the user info csv file to the s3 bucket
     """
-
+    most_recent_ride_to_csv(cursor)
+    user_info_to_csv(cursor)
     s3.upload_file('ec2-dash/most_recent_ride.csv', 'three-m-deloton-bucket', 'most_recent_ride')
     s3.upload_file('ec2-dash/user_info.csv', 'three-m-deloton-bucket', 'user_info')
 
@@ -154,8 +155,8 @@ if __name__ == "__main__":
     recreate_current_ride_table(cursor, conn) #creates a table for the current ride data to be inserted into 
     ride_id = 'N/A' #placeholder for ride_id until user info is received
     ride_date = 'N/A' #placeholder until user info is received
-    user_id = 'N/A'
     max_hr = 220
+    user_info = 'N/A' #placeholder until user info is received
     
     # constantly retrieving logs and creating tables and csvs
     while True:
@@ -165,9 +166,7 @@ if __name__ == "__main__":
             
             # creates csv and pushes to s3, then deletes old current_ride table and creates new one 
             if log_entry.get('user_id') is not None:
-                most_recent_ride_to_csv(cursor)
-                user_info_to_csv(cursor)
-                push_to_s3()
+                push_csv_files_to_s3()
                 
                 # delete expired csv files 
                 os.remove("ec2-dash/most_recent_ride.csv") 
@@ -182,17 +181,14 @@ if __name__ == "__main__":
 
                 # regenerate the ride_id, user_id and ride_date
                 ride_id = recreate_ride_id_from_datetime(log_entry)
-                user_id = log_entry['user_id']
+                user_info = log_entry
                 ride_date = log_entry['date'] + " " + log_entry['time']
                 
-                
-                
-
             # only adds to the database if it is a full entry      
             if len(log_entry) == 7:
-                add_entry_to_table(cursor, conn, log_entry, ride_id, user_id)
+                add_entry_to_table(cursor, conn, log_entry, ride_id, user_info['user_id'])
                 if compare_hr_to_max_hr(log_entry['heart_rate'], max_hr) == True:
-                    send_user_hr_warning(log_entry['heart_rate'], log_entry['duration'])
+                    send_user_hr_warning(user_info, int(log_entry['heart_rate']), max_hr, log_entry['date'], int(log_entry['duration'][:-2]))
 
         except KeyboardInterrupt:
             pass

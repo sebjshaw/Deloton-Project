@@ -1,15 +1,28 @@
 from SQLConnection import SQLConnection
 from flask import Flask, current_app, request, jsonify, abort,json, Response
 from flask_cors import CORS
+import os
+import dotenv
+
+dotenv.load_dotenv()
 
 app = Flask(__name__)
 CORS(app, origins=["http://127.0.0.1:8080"],  supports_credentials=True)
+
+USERNAME = os.getenv('USERNAME')
+PASSWORD = os.getenv('PASSWORD')
+HOST = os.getenv('HOST')
+PORT = os.getenv('PORT')
+DB_NAME = os.getenv('DB_NAME')
+
+sql = SQLConnection(USERNAME, PASSWORD, HOST, PORT, DB_NAME)
 
 # # GET /ride/:id
 # Get a ride with a specific ID
 @app.route("/ride/<int:ride_id>", methods=["GET"])
 def get_ride_info(ride_id:int):
-  return 
+	sql.get_list("SELECT ")
+	return jsonify()
 
 # # GET /rider/:user_id
 # Get rider information (e.g. name, gender, age, avg. heart rate, number of rides)

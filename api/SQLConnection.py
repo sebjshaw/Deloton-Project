@@ -5,17 +5,13 @@ import dotenv
 import os
 
 dotenv.load_dotenv()
-USERNAME = os.getenv('USERNAME')
-PASSWORD = os.getenv()
-HOST = os.getenv()
-PORT = os.getenv()
-DB_NAME = os.getenv()
+
 
 class SQLConnection():
 	"""Create a SQLite connection class
 	"""
-	def __init__(self, database_file: str) -> None:
-		self.engine = sqlalchemy.create_engine(f'postgresql+psycopg2://{USERNAME}:{PASSWORD}@{HOST}:{PORT}/{DB_NAME}')
+	def __init__(self, username:str, password:str, host:str, port:str, db_name:str) -> None:
+		self.engine = sqlalchemy.create_engine(f'postgresql+psycopg2://{username}:{password}@{host}:{port}/{db_name}')
 		self.conn = self.engine.connect()
 	
 	def get_df(self, query:str) -> pd.DataFrame:

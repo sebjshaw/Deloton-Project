@@ -1,7 +1,6 @@
 import redis
 
-redisClient = redis.Redis(host='dominicpharmacache.c1dlpv.ng.0001.euw2.cache.amazonaws.com', port=6379)
-# redis hashes, on for contries and one for institutes
+redisClient = redis.Redis(host='localhost', port=6379)
 
 def check_cache_value(email: str) -> bool | None:
 	"""

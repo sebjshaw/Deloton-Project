@@ -79,6 +79,10 @@ def create_log_entry(c: Consumer) -> dict:
                 if stat[0] == 'date_of_birth' or stat[0] == 'account_create_date':
                     date = datetime.fromtimestamp(int(stat[1])/1000.0).strftime('%Y-%m-%d')
                     info[stat[0]] = date
+                    continue
+                if stat[0] == 'address':
+                    address = stat[1].replace(',',';')
+                    info[stat[0]] = address 
                     continue 
                 info[stat[0]] = stat[1]
 

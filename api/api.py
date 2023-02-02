@@ -3,6 +3,7 @@ from flask import Flask, current_app, request, jsonify, abort,json, Response
 from flask_cors import CORS
 import os
 import dotenv
+from datetime import datetime, timedelta
 
 dotenv.load_dotenv()
 
@@ -98,7 +99,7 @@ def get_user_ride_info(user_id: int):
 				FROM rides
 				WHERE user_id = {user_id}
 			"""
-		)[0]
+		)
 	except Exception as e:
 		return jsonify({'error':e})
 	user_ride_info = [rides_tuple_to_dict(entry) for entry in user_ride_info_tuple]
@@ -114,7 +115,7 @@ def delete_ride_info(ride_id:int):
 				DELETE FROM rides
 				WHERE ride_id = {ride_id}
 			"""
-		)[0]
+		)
 	except Exception as e:
 		return jsonify({'error':e})
 	return jsonify({'success': f"Ride ID {ride_id} deleted"})
@@ -123,11 +124,38 @@ def delete_ride_info(ride_id:int):
 # Get all of the rides in the current day
 @app.route("/daily", methods=["GET"])
 def get_current_day_ride_info():
-  return 
+	try:
+		day_before = datetime.now() - timedelta(day=1)
+		last_24_hours_rides = (
+			f"""
+				SELECT *
+				FROM rides
+				WHERE (date + time) > {day_before} 
+			"""
+		)
+	except Exception as e:
+		return jsonify({'error': e})
+	rides = [rides_tuple_to_dict(entry) for entry in last_24_hours_rides]
+	return jsonify(rides)
 
 # # GET /daily?date=01-01-2020
 # Get all rides for a specific date
 @app.route("/daily", methods=["GET"])
 def get_ride_info_for_specific_day():
-	date = request.args.get('date')
-	return 
+	try:
+		date = request.args.get('date')
+		day = int(date[:2])
+		month = int(date[3:5])
+		year = int(date[6:])
+		date = datetime(year=year, month=month, day=day).strftime("%Y-%m-%d")
+		days_rides = (
+			f"""
+				SELECT *
+				FROM rides
+				WHERE TO_DATE(date, YYYY-MM-DD) = TO_DATE({date}, YYYY-MM-DD)
+			"""
+		)
+	except Exception as e:
+		return jsonify({'error': e})
+	days_rides_info = [rides_tuple_to_dict(entry) for entry in days_rides]
+	return jsonify(days_rides_info)

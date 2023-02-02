@@ -153,6 +153,7 @@ def push_csv_files_to_s3():
     s3.upload_file('ec2-dash/most_recent_ride.csv', 'three-m-deloton-bucket', 'most_recent_ride')
     s3.upload_file('ec2-dash/user_info.csv', 'three-m-deloton-bucket', 'user_info')
 
+
 if __name__ == "__main__":
     recreate_current_ride_table(cursor, conn) #creates a table for the current ride data to be inserted into 
     ride_id = str((NOW - FEB_1_2023_SECS).total_seconds())[:-6] #ride_id of interrupted ride is assigned now as start time 

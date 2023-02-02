@@ -121,6 +121,7 @@ def recreate_user_info_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection, u
     """)
     conn.commit()
 
+    cursor.execute(f"""
     INSERT INTO user_info (
         user_id, name, gender, 
         address, date_of_birth, 

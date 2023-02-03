@@ -15,7 +15,7 @@ PORT = os.getenv('PORT')
 DB_NAME = os.getenv('DB_NAME')
 
 # SQL connection variable
-sql = SQLConnection('./ec2-dash/dash_db.db')
+sql = SQLConnection('./ec2/ingestion/dash_db.db')
 pg = postgres(USERNAME, PASSWORD, HOST, PORT, DB_NAME)
 
 # Update current time

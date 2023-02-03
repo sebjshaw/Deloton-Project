@@ -16,7 +16,7 @@ s3 = boto3.client('s3')
 # import the confluent kafka consumer 
 c = create_kafka_consumer()
 
-conn = sqlite3.connect('./ec2-dash/dash_db.db') #create an sqlite database and establish a connection
+conn = sqlite3.connect('./ec2/ingestion/dash_db.db') #create an sqlite database and establish a connection
 
 cursor = conn.cursor() #create a cursor to allow querying of the database
 
@@ -146,15 +146,14 @@ def recreate_user_info_table(cursor: sqlite3.Cursor, conn: sqlite3.Connection, u
     conn.commit()
 
 def push_csv_files_to_s3():
-def push_csv_files_to_s3():
     """Push both the log csv file and the user info csv file to the s3 bucket
     """
     most_recent_ride_to_csv(cursor)
     user_info_to_csv(cursor)
     most_recent_ride_to_csv(cursor)
     user_info_to_csv(cursor)
-    s3.upload_file('ec2-dash/most_recent_ride.csv', 'three-m-deloton-bucket', 'most_recent_ride')
-    s3.upload_file('ec2-dash/user_info.csv', 'three-m-deloton-bucket', 'user_info')
+    s3.upload_file('./ec2/ingestion/most_recent_ride.csv', 'three-m-deloton-bucket', 'most_recent_ride')
+    s3.upload_file('./ec2/ingestion/user_info.csv', 'three-m-deloton-bucket', 'user_info')
 
 
 if __name__ == "__main__":
@@ -178,8 +177,8 @@ if __name__ == "__main__":
                 push_csv_files_to_s3()
                 
                 # delete expired csv files 
-                os.remove("ec2-dash/most_recent_ride.csv") 
-                os.remove("ec2-dash/user_info.csv") 
+                os.remove("./ec2/ingestion/most_recent_ride.csv") 
+                os.remove("./ec2/ingestion/user_info.csv") 
 
                 # set new max_hr
                 max_hr = calculate_max_heart_rate(log_entry['date_of_birth'])

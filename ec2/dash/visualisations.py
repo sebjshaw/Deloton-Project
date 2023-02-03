@@ -18,12 +18,12 @@ def create_line_graph(df: pd.DataFrame, x: str, y:str) -> px.line:
 	Returns:
 			px.line: line graph plotting x and y
 	"""
-	fig = px.line(df, x, y).update_layout(paper_bgcolor="#0d1f22", plot_bgcolor='#0d1f22')
+	fig = px.line(df, x, y).update_layout(paper_bgcolor="#333333", plot_bgcolor='#333333')
 
 	fig.update_xaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'))
-	fig.update_xaxes(gridcolor='#8d5b4c', zerolinecolor='#8d5b4c', zerolinewidth=3)
+	fig.update_xaxes(gridcolor='#7fc37e', zerolinecolor='#7fc37e', zerolinewidth=3)
 	fig.update_yaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'))
-	fig.update_yaxes(gridcolor='#8d5b4c', zerolinecolor='#8d5b4c', zerolinewidth=3)
+	fig.update_yaxes(gridcolor='#7fc37e', zerolinecolor='#7fc37e', zerolinewidth=3)
 	fig.update_layout(
     legend=dict(
         font=dict(
@@ -55,7 +55,7 @@ def create_bar_graph(df:pd.DataFrame, x:str, y:str) -> px.bar:
 	fig = px.bar(df, x, y, text_auto='.0f').update_layout(paper_bgcolor="#0d1f22", plot_bgcolor='#0d1f22')
 
 	fig.update_xaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'))
-	fig.update_xaxes(gridcolor='#8d5b4c', zerolinecolor='#8d5b4c', zerolinewidth=3)
+	fig.update_xaxes(gridcolor='#7fc37e', zerolinecolor='#7fc37e', zerolinewidth=3)
 	fig.update_yaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'))
-	fig.update_yaxes(gridcolor='#8d5b4c', zerolinecolor='#8d5b4c', zerolinewidth=3)
+	fig.update_yaxes(gridcolor='#7fc37e', zerolinecolor='#7fc37e', zerolinewidth=3)
 	return fig

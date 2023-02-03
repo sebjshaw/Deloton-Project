@@ -76,11 +76,12 @@ html {
 	width: 47.5vw;
 	height: 45vh;
 }
-.js-plotly-plot {
-	height: 40vh;
-	width: auto;
+.demo_graphs {
+	height: 65vh;
 }
-
+.recent_graph {
+	height: 30vh;
+}
 #upper_recent_body {
 	display: flex;
 	flex-direction: row;

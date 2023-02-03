@@ -389,7 +389,38 @@ def get_total_rides_by_age(n):
 	]
 )
 def get_avg_power_by_age(n):
-	pass
+	df = pg.get_df(
+		f"""
+			WITH ages AS (
+				SELECT 
+					EXTRACT(YEAR from AGE(NOW(), TO_DATE(u.date_of_birth,'YYYY-MM-DD'))) as age,
+					r.total_duration * r.average_power as power 
+				FROM rides r 
+				JOIN users u 
+					USING(user_id)
+			)
+			SELECT
+				DISTINCT CASE
+					WHEN age < 18
+						THEN '<18'
+					WHEN age < 24
+						THEN '18-24'
+					WHEN age < 34
+						THEN '25-34'
+					WHEN age < 44
+						THEN '35-44'
+					WHEN age < 54
+						THEN '45-54'
+					WHEN age < 64
+						THEN '55-64'
+					ELSE '65+'
+				END as age_group,
+				AVG(power) as average_power
+			FROM ages
+			GROUP BY age_group
+		"""
+	)
+	return create_bar_graph(df, 'age_group', 'average_power')
 
 @callback(
 	Output(
@@ -402,4 +433,16 @@ def get_avg_power_by_age(n):
 	]
 )
 def get_avg_power_by_gender(n):
-	pass
+	df = pg.get_df(
+		"""
+			SELECT
+				DISTINCT(u.gender) as gender,
+				AVG(r.total_duration * r.average_power) as average_power
+			FROM
+				users u
+			JOIN rides r
+				USING(user_id)
+			GROUP BY gender
+		"""
+	)
+	return create_bar_graph(df, 'gender', 'average_power')

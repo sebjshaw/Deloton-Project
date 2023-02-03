@@ -8,6 +8,7 @@ from datetime import datetime
 import cache
 
 FEB_1_2023_SECS = datetime.strptime('2023-02-01 00:00:00', '%Y-%m-%d %H:%M:%S') #the first of Feb as a datetime object
+NOW = datetime.now() #the second the program is initialised as a datetime object. For the ride_id of the interrupted ride
 
 # create a boto3 client for when the csv needs to be uplaoded to the s3 bucket
 s3 = boto3.client('s3')
@@ -154,7 +155,7 @@ def push_csv_files_to_s3():
 
 if __name__ == "__main__":
     recreate_current_ride_table(cursor, conn) #creates a table for the current ride data to be inserted into 
-    ride_id = 'N/A' #placeholder for ride_id until user info is received
+    ride_id = str((NOW - FEB_1_2023_SECS).total_seconds())[:-6] #ride_id of interrupted ride is assigned now as start time 
     ride_date = 'N/A' #placeholder until user info is received
     max_hr = 220
     user_info = 'N/A' #placeholder until user info is received

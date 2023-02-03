@@ -61,9 +61,10 @@ recent_layout = html.Div(
 						),
 						html.Div(
 							children = [
-								dcc.Graph(id="gender_total_graph"),
-								dcc.Graph(id="gender_avg_graph"),
-							]
+								dcc.Graph(id="gender_total_graph", className='recent_graph'),
+								dcc.Graph(id="gender_avg_graph", className='recent_graph'),
+							],
+							className='demo_graphs'
 						)
 					],
 					id="gender_share",
@@ -76,9 +77,10 @@ recent_layout = html.Div(
 						),
 						html.Div(
 							children = [
-								dcc.Graph(id="age_total_graph"),
-								dcc.Graph(id="age_avg_graph"),
-							]
+								dcc.Graph(id="age_total_graph", className='recent_graph'),
+								dcc.Graph(id="age_avg_graph", className='recent_graph'),
+							],
+							className='demo_graphs'
 						),
 					],
 					id="age_share",
@@ -91,9 +93,10 @@ recent_layout = html.Div(
 						),
 						html.Div(
 							children = [
-								dcc.Graph(id="avg_power_age_graph"),
-								dcc.Graph(id="avg_power_gender_graph"),
-							]
+								dcc.Graph(id="avg_power_age_graph", className='recent_graph'),
+								dcc.Graph(id="avg_power_gender_graph", className='recent_graph'),
+							],
+							className='demo_graphs'
 						),
 					],
 					id="power_share",

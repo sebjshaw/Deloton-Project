@@ -57,16 +57,17 @@ def get_ride_info(ride_id:int):
 			f"""
 				SELECT *
 				FROM rides
-				WHERE rides_id = {ride_id}
+				WHERE ride_id = {ride_id}
 			"""
 		)[0]
+		print(ride_info)
 		if ride_info_tuple:
 			ride_info = tuple_to_dict(ride_info_tuple, 'rides')
 			return jsonify(ride_info)
 		else:
 			return jsonify({"output": 'No matching records'})
 	except Exception as e:
-		return jsonify({'error':e})
+		return jsonify({'error':str(e)})
 
 # # GET /rider/:user_id
 # Get rider information (e.g. name, gender, age, avg. heart rate, number of rides)
@@ -86,7 +87,7 @@ def get_user_info(user_id:int):
 		else:
 			return jsonify({"output": 'No matching records'})
 	except Exception as e:
-		return jsonify({'error':e})
+		return jsonify({'error':str(e)})
 
 # # GET /rider/:user_id/rides
 # Get all rides for a rider with a specific ID
@@ -106,7 +107,7 @@ def get_user_ride_info(user_id: int):
 		else:
 			return jsonify({"output": 'No matching records'})
 	except Exception as e:
-		return jsonify({'error':e})
+		return jsonify({'error':str(e)})
 
 # # DELETE /ride/:id
 # Delete a ride with a specific ID
@@ -121,7 +122,7 @@ def delete_ride_info(ride_id:int):
 		)
 		return jsonify({'success': f"Ride ID {ride_id} deleted"})
 	except Exception as e:
-		return jsonify({'error':e})
+		return jsonify({'error':str(e)})
 
 # # GET /daily?date=01-01-2020
 # Get all rides for a specific date

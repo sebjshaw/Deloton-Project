@@ -8,6 +8,7 @@ from datetime import datetime
 import cache
 
 FEB_1_2023_SECS = datetime.strptime('2023-02-01 00:00:00', '%Y-%m-%d %H:%M:%S') #the first of Feb as a datetime object
+NOW = datetime.now() #the second the program is initialised as a datetime object. For the ride_id of the interrupted ride
 
 # create a boto3 client for when the csv needs to be uplaoded to the s3 bucket
 s3 = boto3.client('s3')
@@ -154,10 +155,11 @@ def push_csv_files_to_s3():
 
 if __name__ == "__main__":
     recreate_current_ride_table(cursor, conn) #creates a table for the current ride data to be inserted into 
-    ride_id = 'N/A' #placeholder for ride_id until user info is received
+    ride_id = str((NOW - FEB_1_2023_SECS).total_seconds())[:-6] #ride_id of interrupted ride is assigned now as start time 
     ride_date = 'N/A' #placeholder until user info is received
     max_hr = 220
     user_info = 'N/A' #placeholder until user info is received
+    user_id = 0000
     
     # constantly retrieving logs and creating tables and csvs
     while True:
@@ -183,15 +185,13 @@ if __name__ == "__main__":
                 # regenerate the ride_id, user_id and ride_date
                 ride_id = recreate_ride_id_from_datetime(log_entry)
                 user_info = log_entry
+                user_id = log_entry['user_id']
                 ride_date = log_entry['date'] + " " + log_entry['time']
                 
             # only adds to the database if it is a full entry      
             if len(log_entry) == 7:
-                # if no user_info, N/A is added as the user_id
-                try:
-                    add_entry_to_table(cursor, conn, log_entry, ride_id, user_info['user_id'])
-                except:
-                    add_entry_to_table(cursor, conn, log_entry, ride_id, 'N/A')
+                # adds entry to the table, user_id initially 0000 unless user_info has been received
+                add_entry_to_table(cursor, conn, log_entry, ride_id, user_id)
                 if compare_hr_to_max_hr(log_entry['heart_rate'], max_hr) == True and cache.check_cache_value(user_info['email_address']) is None:
                     cache.set_cache_value(user_info['email_address'])
                     user_email_dict = create_dict_for_email(user_info, int(log_entry['heart_rate']), max_hr, log_entry['date'], int(log_entry['duration'][:-2]))

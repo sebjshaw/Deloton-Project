@@ -63,26 +63,6 @@ def lambda_handler(event, context):
     with s3.open(file[0]) as f:
         df = pd.read_csv(f, usecols = [0,1,2,3,4,5,6,7,8,9,10])
 
-    # s3_client = boto3.client(
-    #     "s3",
-    #     aws_access_key_id = ACCESS_KEY,
-    #     aws_secret_access_key = SECRET_KEY
-    # )
-
-    # response = s3_client.get_object(Bucket = S3_BUCKET, Key = "user_info", config=botocore.config.Config(s3={'addressing_style':'path'}))
-
-    # status = response.get("ResponseMetadata", {}).get("HTTPStatusCode")
-
-    # if status == 200:
-    #     print(f"Successful S3 get_object response. Status - {status}")
-    #     df = pd.read_csv(response.get("Body"), usecols = [0,1,2,3,4,5,6,7,8,9,10])
-    # else:
-    #     print(f"Unsuccessful S3 get_object response. Status - {status}")
-
-    # FILE_NAME = "user_info"
-    # S3_BUCKET_URI = f"s3://{S3_BUCKET}/{FILE_NAME}"
-    # # df = pd.read_csv(S3_BUCKET_URI, usecols = [0,1,2,3,4,5,6,7,8,9,10])
-
     """Transformation"""
     name_split = df['name'].str.split()
 
@@ -91,7 +71,6 @@ def lambda_handler(event, context):
 
     df['first_name'] = first_name
     df['last_name'] = last_name
-    #df[['first_name','last_name']] = df['name'].loc[df['name'].str.split().str.len() == 2].str.split(expand=True)
 
     df.drop(['name'], axis = 1, inplace = True)
 
@@ -110,6 +89,7 @@ def lambda_handler(event, context):
 
     print(df_users)
 
+    user_id = df_users["user_id"]
 
     """Loading in the ride file from s3"""
 
@@ -150,7 +130,7 @@ def lambda_handler(event, context):
         "average_power": 25,
     }
 
-    ride_metrics["user_id"] = df["user_id"].iloc[0]
+    ride_metrics["user_id"] = user_id
     ride_metrics["ride_id"] = df["ride_id"].iloc[0]
     ride_metrics["date"] = df["date"].iloc[0]
     ride_metrics["time_started"] = df["time"].iloc[0]
@@ -166,6 +146,7 @@ def lambda_handler(event, context):
     ride_metrics["average_rpm"], ride_metrics["average_power"],  = df["rpm"].mean(), df["power"].mean()
 
     df_rides = pd.DataFrame([ride_metrics])
+
 
     print(df_rides)
 
@@ -218,8 +199,15 @@ def lambda_handler(event, context):
 
     conn = db.connect()
 
-    df_users.to_sql('users', con = conn, if_exists = 'append', index = False)
-    df_rides.to_sql('rides', con = conn, if_exists = 'append', index = False)
+    try:
+        df_users.to_sql('users', con = conn, if_exists = 'append', index = False)
+    except:
+        print("user already exists")
+
+    try:
+        df_rides.to_sql('rides', con = conn, if_exists = 'append', index = False)
+    except:
+        print("ride couldn't be uploaded")
 
     conn = psycopg2.connect(conn_string)
     conn.autocommit = True

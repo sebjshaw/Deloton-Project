@@ -10,11 +10,13 @@ html {
 }
 
 #view_switch {
-	height: 8vh;
-	width: 8vw;
+	height: 8.5vh;
+	width: 8.5vw;
 	background-color: #5b5b55;
 	color: #fefee2;
 	transition: 0.2s;
+	border-radius: 10px;
+	border-color: #8d5b4c 4px solid;
 }
 #logo {
 	width: 10vw;
@@ -22,8 +24,8 @@ html {
 #view_switch:hover {
 	border-color: #8d5b4c 4px solid;
 	background-color: #94948c;
-	width: 8.5vw;
-	height: 8.5vh;
+	width: 9vw;
+	height: 9vh;
 	transition: 0.3s;
 }
 
@@ -38,6 +40,7 @@ html {
 	border: #7e8073 4px solid;
 	background-color: #7fc37e;
 	width: 80vw;
+	border-radius: 10px;
 }
 
 .info_div {
@@ -84,7 +87,7 @@ html {
 	height: 65vh;
 }
 .recent_graph {
-	height: 30vh;
+	height: 55vh;
 }
 #upper_recent_body {
 	display: flex;
@@ -112,6 +115,7 @@ html {
 	width: 15vw;
 	text-align: center;
 	background-color: #7e8073;
+	border-radius: 10px;
 }
 #bit_container {
 	display: flex;

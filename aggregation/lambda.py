@@ -4,6 +4,9 @@ import dotenv
 import psycopg2
 import psycopg2.extras
 from sqlalchemy import create_engine
+import json
+import boto3
+import s3fs
 
 dotenv.load_dotenv(override=True)
 
@@ -49,17 +52,46 @@ def read_table(table_name, schema_name, connection):
     result = execute_query(get_table, connection)
     return result
 
-if __name__ == "__main__":
+def lambda_handler(event, context):
 
     """Loading in the user file from s3"""
 
-    FILE_NAME = "user_info"
-    S3_BUCKET_URI = f"s3://{S3_BUCKET}/{FILE_NAME}"
-    df = pd.read_csv(S3_BUCKET_URI, usecols = [0,1,2,3,4,5,6,7,8,9,10])
+    s3 = s3fs.S3FileSystem(anon=False)
+
+    file = s3.find(f'{S3_BUCKET}/user_info')
+
+    with s3.open(file[0]) as f:
+        df = pd.read_csv(f, usecols = [0,1,2,3,4,5,6,7,8,9,10])
+
+    # s3_client = boto3.client(
+    #     "s3",
+    #     aws_access_key_id = ACCESS_KEY,
+    #     aws_secret_access_key = SECRET_KEY
+    # )
+
+    # response = s3_client.get_object(Bucket = S3_BUCKET, Key = "user_info", config=botocore.config.Config(s3={'addressing_style':'path'}))
+
+    # status = response.get("ResponseMetadata", {}).get("HTTPStatusCode")
+
+    # if status == 200:
+    #     print(f"Successful S3 get_object response. Status - {status}")
+    #     df = pd.read_csv(response.get("Body"), usecols = [0,1,2,3,4,5,6,7,8,9,10])
+    # else:
+    #     print(f"Unsuccessful S3 get_object response. Status - {status}")
+
+    # FILE_NAME = "user_info"
+    # S3_BUCKET_URI = f"s3://{S3_BUCKET}/{FILE_NAME}"
+    # # df = pd.read_csv(S3_BUCKET_URI, usecols = [0,1,2,3,4,5,6,7,8,9,10])
 
     """Transformation"""
+    name_split = df['name'].str.split()
 
-    df[['first_name','last_name']] = df['name'].loc[df['name'].str.split().str.len() == 2].str.split(expand=True)
+    first_name = name_split[0][-2]
+    last_name = name_split[0][-1]
+
+    df['first_name'] = first_name
+    df['last_name'] = last_name
+    #df[['first_name','last_name']] = df['name'].loc[df['name'].str.split().str.len() == 2].str.split(expand=True)
 
     df.drop(['name'], axis = 1, inplace = True)
 
@@ -76,11 +108,29 @@ if __name__ == "__main__":
 
     df_users = df
 
+    print(df_users)
+
 
     """Loading in the ride file from s3"""
-    FILE_NAME = "most_recent_ride"
-    S3_BUCKET_URI = f"s3://{S3_BUCKET}/{FILE_NAME}"
-    df = pd.read_csv(S3_BUCKET_URI)
+
+    file = s3.find(f'{S3_BUCKET}/most_recent_ride')
+
+    with s3.open(file[0]) as f:
+        df = pd.read_csv(f)
+
+    # # FILE_NAME = "most_recent_ride"
+    # # S3_BUCKET_URI = f"s3://{S3_BUCKET}/{FILE_NAME}"
+    # # df = pd.read_csv(S3_BUCKET_URI)
+
+    # response = s3_client.get_object(Bucket = S3_BUCKET, Key = "most_recent_ride")
+
+    # status = response.get("ResponseMetadata", {}).get("HTTPStatusCode")
+
+    # if status == 200:
+    #     print(f"Successful S3 get_object response. Status - {status}")
+    #     df = pd.read_csv(response.get("Body"))
+    # else:
+    #     print(f"Unsuccessful S3 get_object response. Status - {status}")
 
     """Accumulate metrics in a dictionary"""
     ride_metrics = {
@@ -116,6 +166,8 @@ if __name__ == "__main__":
     ride_metrics["average_rpm"], ride_metrics["average_power"],  = df["rpm"].mean(), df["power"].mean()
 
     df_rides = pd.DataFrame([ride_metrics])
+
+    print(df_rides)
 
     conn = get_db_connection()
 
@@ -171,6 +223,13 @@ if __name__ == "__main__":
 
     conn = psycopg2.connect(conn_string)
     conn.autocommit = True
-    cursor = conn.cursor()
 
     conn.close()
+
+    return {
+        'statusCode': 200,
+        'body': json.dumps('Hello from Lambda!')
+    }
+
+event, context = {}, {}
+lambda_handler(event, context)

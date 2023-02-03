@@ -48,22 +48,6 @@ def tuple_to_dict(tup:tuple, table:str) -> dict:
 		row_dict[title] = tup[idx]
 	return row_dict
 
-def users_tuple_to_dict(user_info:tuple) -> dict:
-	return {
-		'user_id':user_info[0],
-		'first_name':user_info[1],
-    'last_name':user_info[2],
-    'gender':user_info[3],
-		'address':user_info[4],
-		'date_of_birth':user_info[5],
-		'email_address':user_info[6],
-		'height_cm':user_info[7],
-		'weight_kg':user_info[8],
-		'account_create_date':user_info[9],
-		'bike_serial':user_info[10],
-		'original_source':user_info[11]
-	}
-
 # # GET /ride/:id
 # Get a ride with a specific ID
 @app.route("/ride/<int:ride_id>", methods=["GET"])

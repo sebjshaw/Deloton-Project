@@ -3,9 +3,6 @@ import math
 import json
 from botocore.exceptions import ClientError
 import boto3
-import json
-from botocore.exceptions import ClientError
-import boto3
 
 TODAY = datetime.now()
 
@@ -37,7 +34,17 @@ def compare_hr_to_max_hr(hr: str, max_hr: int) -> bool:
     
     return False
 
-def create_JSON_for_email(user_info: dict, curr_hr: int, max_hr:int, date: str, time_elapsed: str):
+def create_dict_for_email(user_info: dict, curr_hr: int, max_hr:int, date: str, time_elapsed: str) -> dict:
+    """Takes the user, heart rate and time elapsed information and creates a new correctly
+    formatted dictionary and calls the sec_user_hr_warning() function
+
+    Args:
+        user_info (dict): dictionary of the user information
+        curr_hr (int): users current heart rate 
+        max_hr (int): the user maximum heart rate
+        date (str): the date of the ride 
+        time_elapsed (str): the number of seconds into the ride when the abnormal heart rate was detected
+    """
 
     new_user_info = {}
     new_user_info['user_forename'] = user_info['name'].split(" ")[0]
@@ -48,11 +55,15 @@ def create_JSON_for_email(user_info: dict, curr_hr: int, max_hr:int, date: str, 
     new_user_info['time_elapsed'] = time_elapsed
     new_user_info['user_email'] = user_info['email_address']
 
-    send_user_hr_warning(new_user_info)
+    return new_user_info
 
-def send_user_hr_warning(user_info: dict, curr_hr: int, max_hr: int, date: str, time_elapsed: str):
+def send_user_hr_warning(user_info):
+    """Receives the new user information dictionary and sends an email to the user 
+    warning of a high heart rate using SES 
 
-    user_json = create_JSON_for_email(user_info, curr_hr, max_hr, date, time_elapsed)
+    Args:
+        user_info (dict): dictionary of the formatted user information
+    """
 
     SENDER = "trainee.alex.skowronski@sigmalabs.co.uk"
     RECIPIENT = "three.musketeers.deloton@gmail.com"
@@ -71,10 +82,10 @@ def send_user_hr_warning(user_info: dict, curr_hr: int, max_hr: int, date: str, 
     BODY_HTML = f"""<html>
     <head></head>
     <body>
-    <h1>Hey {user_json["user_forename"]} {user_json["user_surname"]}, </h1>
+    <h1>Hey {user_info["user_forename"]} {user_info["user_surname"]}, </h1>
     
-    <h1>This email is to let you know that on {user_json["ride_date"]}, {user_json["time_elapsed"]} seconds into your ride
-     your heart rate reached {user_json["curr_heart_rate"]} bpm, exceeding the typical limit of {user_json["limit_heart_rate"]} bpm.</h1>
+    <h1>This email is to let you know that on {user_info["ride_date"]}, {user_info["time_elapsed"]} seconds into your ride
+     your heart rate reached {user_info["curr_heart_rate"]} bpm, exceeding the typical limit of {user_info["limit_heart_rate"]} bpm.</h1>
      <h1>Stay safe!</h1>
      
     <h2>This email was sent to you by Deloton.</p>

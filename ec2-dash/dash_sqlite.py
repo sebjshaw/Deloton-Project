@@ -7,7 +7,7 @@ import os
 from datetime import datetime
 import cache
 
-EPOCH = datetime.utcfromtimestamp(0) #the epoch as a datetime
+FEB_1_2023_SECS = datetime.strptime('2023-02-01 00:00:00', '%Y-%m-%d %H:%M:%S') #the first of Feb as a datetime object
 
 # create a boto3 client for when the csv needs to be uplaoded to the s3 bucket
 s3 = boto3.client('s3')
@@ -34,7 +34,7 @@ def recreate_ride_id_from_datetime(entry: dict) -> int:
     dt = dt[:-7] #remove the decimals from the seconds
     dt = datetime.strptime(dt, '%Y-%m-%d %H:%M:%S') #convert to a datetime object
 
-    ride_id = (dt - EPOCH).total_seconds() #create a ride id (seconds since epoch)
+    ride_id = (dt - FEB_1_2023_SECS).total_seconds() #create a ride id (seconds since epoch)
 
     return ride_id
 

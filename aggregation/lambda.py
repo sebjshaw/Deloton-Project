@@ -10,6 +10,7 @@ import s3fs
 
 dotenv.load_dotenv(override=True)
 
+# Loading environment variables
 S3_BUCKET = os.getenv("S3_BUCKET")
 ACCESS_KEY = os.getenv("ACCESS_KEY")
 SECRET_KEY = os.getenv("SECRET_KEY")

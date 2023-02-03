@@ -4,7 +4,7 @@ import plotly.graph_objs as go
 import pandas as pd
 from SQLConnection import SQLConnection
 
-sql = SQLConnection('./ec2-dash/dash_db.db')
+sql = SQLConnection('./ec2/ingestion/dash_db.db')
 
 def create_line_graph(df: pd.DataFrame, x: str, y:str) -> px.line:
 	"""

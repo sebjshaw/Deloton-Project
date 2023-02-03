@@ -24,6 +24,13 @@ def create_line_graph(df: pd.DataFrame, x: str, y:str) -> px.line:
 	fig.update_xaxes(gridcolor='#8d5b4c', zerolinecolor='#8d5b4c', zerolinewidth=3)
 	fig.update_yaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'))
 	fig.update_yaxes(gridcolor='#8d5b4c', zerolinecolor='#8d5b4c', zerolinewidth=3)
+	fig.update_layout(
+    legend=dict(
+        font=dict(
+            color="red"
+        )
+    )
+	)
 
 	if "heart_rate" in df.columns.tolist():
 		max_hr = sql.get_list("SELECT max_hr FROM user_info")[0][0]
@@ -31,6 +38,7 @@ def create_line_graph(df: pd.DataFrame, x: str, y:str) -> px.line:
 		y_values = [max_hr]*len(x_values)
 		fig.add_trace(go.Scatter(x=x_values, y=y_values, mode='lines', line_color="red", name='Max')) # Add line for max heart rate
 	return fig
+
 
 def create_bar_graph(df:pd.DataFrame, x:str, y:str) -> px.bar:
 	"""
@@ -44,10 +52,10 @@ def create_bar_graph(df:pd.DataFrame, x:str, y:str) -> px.bar:
 	Returns:
 			px.bar: bar graph
 	"""
-	fig = px.line(df, x, y).update_layout(paper_bgcolor="#0d1f22", plot_bgcolor='#0d1f22')
+	fig = px.bar(df, x, y, text_auto='.0f').update_layout(paper_bgcolor="#0d1f22", plot_bgcolor='#0d1f22')
 
 	fig.update_xaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'))
 	fig.update_xaxes(gridcolor='#8d5b4c', zerolinecolor='#8d5b4c', zerolinewidth=3)
 	fig.update_yaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'))
 	fig.update_yaxes(gridcolor='#8d5b4c', zerolinecolor='#8d5b4c', zerolinewidth=3)
-	pass
+	return fig

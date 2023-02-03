@@ -6,7 +6,7 @@ from SQLConnection import SQLConnection
 
 sql = SQLConnection('./ec2-dash/dash_db.db')
 
-def create_visualisation(df: pd.DataFrame, x: str, y:str) -> px.line:
+def create_line_graph(df: pd.DataFrame, x: str, y:str) -> px.line:
 	"""
 	Generate a line graph from a dataframe
 
@@ -18,7 +18,6 @@ def create_visualisation(df: pd.DataFrame, x: str, y:str) -> px.line:
 	Returns:
 			px.line: line graph plotting x and y
 	"""
-	cols = df.columns.tolist()
 	fig = px.line(df, x, y).update_layout(paper_bgcolor="#0d1f22", plot_bgcolor='#0d1f22')
 
 	fig.update_xaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'))
@@ -33,3 +32,22 @@ def create_visualisation(df: pd.DataFrame, x: str, y:str) -> px.line:
 		fig.add_trace(go.Scatter(x=x_values, y=y_values, mode='lines', line_color="red", name='Max')) # Add line for max heart rate
 	return fig
 
+def create_bar_graph(df:pd.DataFrame, x:str, y:str) -> px.bar:
+	"""
+	Create a bar graph visualisation for the dataframe passed in the function
+
+	Args:
+			df (pd.DataFrame): df containing the data
+			x (str): variable to be plotted on x
+			y (str): variable to be plotted in y
+
+	Returns:
+			px.bar: bar graph
+	"""
+	fig = px.line(df, x, y).update_layout(paper_bgcolor="#0d1f22", plot_bgcolor='#0d1f22')
+
+	fig.update_xaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'))
+	fig.update_xaxes(gridcolor='#8d5b4c', zerolinecolor='#8d5b4c', zerolinewidth=3)
+	fig.update_yaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'))
+	fig.update_yaxes(gridcolor='#8d5b4c', zerolinecolor='#8d5b4c', zerolinewidth=3)
+	pass

@@ -59,7 +59,12 @@ recent_layout = html.Div(
 						html.Div(
 							html.H2('gender',id="gender_text")
 						),
-						dcc.Graph(id="gender_share_graph"),
+						html.Div(
+							children = [
+								dcc.Graph(id="gender_total_graph"),
+								dcc.Graph(id="gender_avg_graph"),
+							]
+						)
 					],
 					id="gender_share",
 					className='shares'
@@ -69,7 +74,12 @@ recent_layout = html.Div(
 						html.Div(
 							html.H2('age',id="age_text")
 						),
-						dcc.Graph(id="age_share_graph"),
+						html.Div(
+							children = [
+								dcc.Graph(id="age_total_graph"),
+								dcc.Graph(id="age_avg_graph"),
+							]
+						),
 					],
 					id="age_share",
 					className='shares'
@@ -79,7 +89,12 @@ recent_layout = html.Div(
 						html.Div(
 							html.H2('power',id="power_text")
 						),
-						dcc.Graph(id="power_share_graph"),
+						html.Div(
+							children = [
+								dcc.Graph(id="avg_power_age_graph"),
+								dcc.Graph(id="avg_power_gender_graph"),
+							]
+						),
 					],
 					id="power_share",
 					className='shares'

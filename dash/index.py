@@ -15,6 +15,11 @@ app.layout = html.Div(
 					interval=1*1000, # in milliseconds
 					n_intervals=0
 				),
+				dcc.Interval(
+					id='fifteen_minute_refresh',
+					interval=900000, # in milliseconds
+					n_intervals=0
+				),
 			],
 		),
 		html.Div(

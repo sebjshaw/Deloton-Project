@@ -22,4 +22,4 @@ def set_cache_value(email: str) -> None:
 	Args:
 			email (str): user email
 	"""
-	redisClient.set(email, True, ex=15)
+	redisClient.set(email, 'True', ex=15)

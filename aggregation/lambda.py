@@ -175,7 +175,7 @@ def lambda_handler(event, context):
     try:
         df_rides.to_sql('rides', con = sql.engine, if_exists = 'append', index = False)
         print(f'ride id {df_rides.ride_id.iloc[0]} for user id {df_rides.user_id.iloc[0]} added')
-    except Exception as e:
+    except:
         print('ride already in database')
 
     return {

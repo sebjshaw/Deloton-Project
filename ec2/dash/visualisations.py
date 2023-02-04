@@ -69,7 +69,7 @@ def create_grouped_bar_graph(df:pd.DataFrame, x:str, y:str, group:str, title: st
         'x':0.5,
         'xanchor': 'center',
 		},
-		title_font_size=25,
+		title_font_size=22,
 		font_color='#fefee2'
 	)
 	return fig

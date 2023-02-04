@@ -123,9 +123,9 @@ def create_users_table_entry(file_name:str) -> pd.DataFrame:
     return df
 
 def lambda_handler(event, context):
-    df_users = create_users_table_entry('user_info')
+    df_users = create_users_table_entry('user_info.csv')
     user_id = df_users["user_id"]
-    df_rides = create_rides_table_entry('most_recent_ride', user_id)
+    df_rides = create_rides_table_entry('most_recent_ride.csv', user_id)
 
     sql.get_list(
         """

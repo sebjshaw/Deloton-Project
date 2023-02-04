@@ -14,7 +14,7 @@ def most_recent_ride_to_csv(cursor: sqlite3.Cursor):
     most_recent_ride = cursor.fetchall()
 
     # writes the data to a csv file 
-    with open("ec2-dash/most_recent_ride.csv", "w") as f:
+    with open("./ec2/ingestion/most_recent_ride.csv", "w") as f:
         csv_f = csv.writer(f)
         csv_f.writerow(['user_id', 'ride_id', 'date', 'time', 'duration', 'resistance', 'heart_rate', 'rpm', 'power'])
         csv_f.writerows(most_recent_ride)
@@ -42,7 +42,7 @@ def user_info_to_csv(cursor: dict):
             ]
 
     # writes the data to a csv file 
-    with open("ec2-dash/user_info.csv", "w") as f:
+    with open("./ec2/ingestion/user_info.csv", "w") as f:
         csv_f = csv.writer(f)
         csv_f.writerow(
             ['user_id', 'name', 'gender', 

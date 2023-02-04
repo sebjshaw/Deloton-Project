@@ -103,6 +103,7 @@ def create_users_table_entry(file_name:str) -> pd.DataFrame:
     with open(f'./{file_name}') as file:
         df = pd.read_csv(file)
     os.remove(f'./{file_name}')
+    
     #df = pd.read_csv(f's3://{S3_BUCKET}/{file_name}')
 
     # Transformation

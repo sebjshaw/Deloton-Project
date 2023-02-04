@@ -5,19 +5,20 @@ import json
 import s3fs
 from PGConnection import SQLConnection
 
+dotenv.load_dotenv()
+
 HOST = os.environ['HOST']
 PORT = os.environ['PORT']
 USERNAME = os.environ['USERNAME']
 PASSWORD = os.environ['PASSWORD']
-DB_NAME = os.environ['DATABASE']
+DB_NAME = os.environ['DB_NAME']
 sql = SQLConnection(USERNAME,PASSWORD,HOST,PORT,DB_NAME)
 
-dotenv.load_dotenv()
 
 # Loading environment variables
 S3_BUCKET = os.getenv("S3_BUCKET")
-ACCESS_KEY = os.getenv("ACCESS_KEY")
-SECRET_KEY = os.getenv("SECRET_KEY")
+# ACCESS_KEY = os.getenv("ACCESS_KEY")
+# SECRET_KEY = os.getenv("SECRET_KEY")
 
 s3 = s3fs.S3FileSystem(anon=False)
 
@@ -28,7 +29,7 @@ table_cols = {
         'average_heart_rate','average_rpm','average_power'
     ],
     'users': [
-        'first_name''last_name','gender','address','date_of_birth','email_address',
+        'user_id','first_name','last_name','gender','address','date_of_birth','email_address',
         'height_cm','weight_kg','account_create_date','bike_serial','original_source'
     ]
 }          
@@ -45,7 +46,7 @@ def reorder_columns(df:pd.DataFrame, table_name:str) -> pd.DataFrame:
     Returns:
         pd.DataFrame: reordered df
     """
-    df = df[[table_cols[table_name]]]
+    df = df[table_cols[table_name]]
     return df
 
 def create_rides_table_entry(file_name: str, user_id:str) -> pd.DataFrame:
@@ -97,7 +98,7 @@ def create_users_table_entry(file_name:str) -> pd.DataFrame:
     Returns:
         pd.DataFrame: dataframe containing user's data
     """
-    file = s3.find(f'{S3_BUCKET}/user_info')
+    file = s3.find(f'{S3_BUCKET}/{file_name}')
 
     with s3.open(file[0]) as f:
         df = pd.read_csv(f)
@@ -122,9 +123,9 @@ def create_users_table_entry(file_name:str) -> pd.DataFrame:
     return df
 
 def lambda_handler(event, context):
-    df_users = create_users_table_entry('user_info.csv')
+    df_users = create_users_table_entry('user_info')
     user_id = df_users["user_id"]
-    df_rides = create_rides_table_entry('most_recent_ride.csv', user_id)
+    df_rides = create_rides_table_entry('most_recent_ride', user_id)
 
     sql.get_list(
         """

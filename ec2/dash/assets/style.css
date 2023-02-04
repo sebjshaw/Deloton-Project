@@ -84,10 +84,10 @@ html {
 	height: 45vh;
 }
 .demo_graphs {
-	height: 65vh;
+	height: 60vh;
 }
 .recent_graph {
-	height: 55vh;
+	height: 60vh;
 }
 #upper_recent_body {
 	display: flex;

@@ -39,7 +39,7 @@ def create_line_graph(df: pd.DataFrame, x: str, y:str) -> px.line:
 		fig.add_trace(go.Scatter(x=x_values, y=y_values, mode='lines', line_color="red", name='Max')) # Add line for max heart rate
 	return fig
 
-def create_grouped_bar_graph(df:pd.DataFrame, x:str, y:str, group:str) -> px.bar:
+def create_grouped_bar_graph(df:pd.DataFrame, x:str, y:str, group:str, title: str) -> px.bar:
 	"""
 	Create a bar graph visualisation for the dataframe passed in the function
 
@@ -48,14 +48,28 @@ def create_grouped_bar_graph(df:pd.DataFrame, x:str, y:str, group:str) -> px.bar
 			x (str): variable to be plotted on x
 			y (str): variable to be plotted in y
 			group (str): group by column
+			title (str): graph title
 
 	Returns:
 			px.bar: bar graph
 	"""
-	fig = px.bar(df, x, y, color=group, text_auto='.0f').update_layout(paper_bgcolor="#333333", plot_bgcolor='#333333')
+	fig = px.bar(df, x, y, color=group, barmode='group', text_auto='.0f', title=title).update_layout(paper_bgcolor="#333333", plot_bgcolor='#333333')
 
 	fig.update_xaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'))
 	fig.update_xaxes(gridcolor='#7fc37e', zerolinecolor='#7fc37e', zerolinewidth=3)
 	fig.update_yaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'))
 	fig.update_yaxes(gridcolor='#7fc37e', zerolinecolor='#7fc37e', zerolinewidth=3)
+	fig.update_layout(
+    legend=dict(
+        font=dict(
+            color="#fefee2"
+        )
+    ),
+		title={
+        'x':0.5,
+        'xanchor': 'center',
+		},
+		title_font_size=25,
+		font_color='#fefee2'
+	)
 	return fig

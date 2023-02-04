@@ -118,7 +118,6 @@ def calculate_age(dob:str) -> int:
 def update_rpm_value(n):
 	value = sql.get_list("""SELECT rpm FROM current_ride""")[-1][0]
 	return value
-
 # HEART RATE
 @callback(
 	Output(
@@ -133,7 +132,6 @@ def update_rpm_value(n):
 def update_heart_rate_value(n):
 	value = sql.get_list("""SELECT heart_rate FROM current_ride""")[-1][0]
 	return value
-
 # POWER
 @callback(
 	Output(
@@ -148,7 +146,6 @@ def update_heart_rate_value(n):
 def update_power_value(n):
 	value = sql.get_list("""SELECT power FROM current_ride""")[-1][0]
 	return value
-
 # RESISTANCE
 @callback(
 	Output(
@@ -163,7 +160,6 @@ def update_power_value(n):
 def update_resistance_value(n):
 	value = sql.get_list("""SELECT resistance FROM current_ride""")[-1][0]
 	return value
-
 # TIME
 @callback(
 	Output(
@@ -195,7 +191,6 @@ def update_resistance(n):
 def update_rpm_figure(n):
 	df = sql.get_df("""SELECT duration, rpm FROM current_ride""")
 	return create_line_graph(df, 'duration', 'rpm')
-
 # HEART RATE
 @callback(
 	Output(
@@ -210,7 +205,6 @@ def update_rpm_figure(n):
 def update_heart_rate_figure(n):
 	df = sql.get_df("""SELECT duration, heart_rate FROM current_ride""")
 	return create_line_graph(df, 'duration', 'heart_rate')
-
 # POWER
 @callback(
 	Output(
@@ -284,11 +278,10 @@ def get_avg_ride_length_by_gender_and_age(n):
 					ages
 				JOIN rides r
 					USING(user_id)
-				WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ', r.time_started) as TIMESTAMP)))/3600 < 12;
+				WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ', r.time_started) as TIMESTAMP)))/3600 < 36;
 		"""
 	)
-	return create_grouped_bar_graph(df, 'age_group', 'average_duration', 'gender')
-
+	return create_grouped_bar_graph(df, 'age_group', 'average_duration', 'gender', 'Average Ride Duration')
 # TOTAL NUMBER OF RIDES
 @callback(
 	Output(
@@ -335,11 +328,10 @@ def get_total_rides_by_gender_and_age(n):
 					ages
 				JOIN rides r
 					USING(user_id)
-				WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ', r.time_started) as TIMESTAMP)))/3600 < 12;
+				WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ', r.time_started) as TIMESTAMP)))/3600 < 36;
 		"""
 	)
-	return create_grouped_bar_graph(df, 'age_group', 'count', 'gender')
-
+	return create_grouped_bar_graph(df, 'age_group', 'count', 'gender','Total No. of Rides')
 # POWER
 @callback(
 	Output(
@@ -386,8 +378,8 @@ def get_avg_power_by_age(n):
 					ages
 				JOIN rides r
 					USING(user_id)
-				WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ', r.time_started) as TIMESTAMP)))/3600 < 12;
+				WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ', r.time_started) as TIMESTAMP)))/3600 < 36;
 		"""
 	)
-	return create_grouped_bar_graph(df, 'age_group', 'average_power', 'gender')
+	return create_grouped_bar_graph(df, 'age_group', 'average_power', 'gender', 'Average Power')
 

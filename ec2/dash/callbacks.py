@@ -246,39 +246,23 @@ def update_power_figure(n):
 def get_avg_ride_length_by_gender_and_age(n):
 	df = pg.get_df(
 		"""
-			WITH ages AS (
-				SELECT
-					u.gender as gender,
-					u.user_id as user_id,
-					EXTRACT(YEAR from AGE(NOW(), TO_DATE(u.date_of_birth,'YYYY-MM-DD'))) as age,
-					r.total_duration as duration
-				FROM rides r
-				JOIN users u
-					USING(user_id)
-			)
-				SELECT
-					DISTINCT CASE
-						WHEN age < 18
-							THEN '<18'
-						WHEN age < 24
-							THEN '18-24'
-						WHEN age < 34
-							THEN '25-34'
-						WHEN age < 44
-							THEN '35-44'
-						WHEN age < 54
-							THEN '45-54'
-						WHEN age < 64
-							THEN '55-64'
-						ELSE '65+'
-					END as age_group,
-					gender,
-					AVG(duration) OVER (PARTITION BY gender, age) as average_duration
-				FROM
-					ages
+			SELECT 
+				u.gender,
+				CASE
+					WHEN AGE(TO_DATE(u.date_of_birth,'YYYY-MM-DD')) < '18 years' THEN '<18'
+					WHEN AGE(TO_DATE(u.date_of_birth,'YYYY-MM-DD')) BETWEEN '18 years' AND '24 years' THEN '18-24'
+					WHEN AGE(TO_DATE(u.date_of_birth,'YYYY-MM-DD')) BETWEEN '25 years' AND '34 years' THEN '25-34'
+					WHEN AGE(TO_DATE(u.date_of_birth,'YYYY-MM-DD')) BETWEEN '35 years' AND '44 years' THEN '35-44'
+					WHEN AGE(TO_DATE(u.date_of_birth,'YYYY-MM-DD')) BETWEEN '45 years' AND '54 years' THEN '45-54'
+					WHEN AGE(TO_DATE(u.date_of_birth,'YYYY-MM-DD')) BETWEEN '55 years' AND '64 years' THEN '55-64'
+					ELSE '65+'
+				END AS age_group,
+				AVG(r.total_duration) AS average_duration
+			FROM users u
 				JOIN rides r
 					USING(user_id)
-				WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ', r.time_started) as TIMESTAMP)))/3600 < 36;
+			WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ',r.time_started) as TIMESTAMP)))/3600 < 12
+			GROUP BY gender, age_group;
 		"""
 	)
 	return create_grouped_bar_graph(df, 'age_group', 'average_duration', 'gender', 'Average Ride Duration')
@@ -296,39 +280,22 @@ def get_avg_ride_length_by_gender_and_age(n):
 def get_total_rides_by_gender_and_age(n):
 	df = pg.get_df(
 		"""
-			WITH ages AS (
-				SELECT
-					u.gender as gender,
-					u.user_id as user_id,
-					EXTRACT(YEAR from AGE(NOW(), TO_DATE(u.date_of_birth,'YYYY-MM-DD'))) as age,
-					r.total_duration as duration
-				FROM rides r
-				JOIN users u
-					USING(user_id)
-			)
-				SELECT
-					DISTINCT CASE
-						WHEN age < 18
-							THEN '<18'
-						WHEN age < 24
-							THEN '18-24'
-						WHEN age < 34
-							THEN '25-34'
-						WHEN age < 44
-							THEN '35-44'
-						WHEN age < 54
-							THEN '45-54'
-						WHEN age < 64
-							THEN '55-64'
-						ELSE '65+'
-					END as age_group,
-					gender,
-					COUNT(user_id) OVER (PARTITION BY gender, age) as count
-				FROM
-					ages
+			SELECT u.gender,
+       CASE
+         WHEN AGE(TO_DATE(u.date_of_birth,'YYYY-MM-DD')) < '18 years' THEN '<18'
+         WHEN AGE(TO_DATE(u.date_of_birth,'YYYY-MM-DD')) BETWEEN '18 years' AND '24 years' THEN '18-24'
+         WHEN AGE(TO_DATE(u.date_of_birth,'YYYY-MM-DD')) BETWEEN '25 years' AND '34 years' THEN '25-34'
+         WHEN AGE(TO_DATE(u.date_of_birth,'YYYY-MM-DD')) BETWEEN '35 years' AND '44 years' THEN '35-44'
+         WHEN AGE(TO_DATE(u.date_of_birth,'YYYY-MM-DD')) BETWEEN '45 years' AND '54 years' THEN '45-54'
+         WHEN AGE(TO_DATE(u.date_of_birth,'YYYY-MM-DD')) BETWEEN '55 years' AND '64 years' THEN '55-64'
+         ELSE '65+'
+       END AS age_group,
+       COUNT(r.user_id) AS count
+			FROM users u
 				JOIN rides r
 					USING(user_id)
-				WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ', r.time_started) as TIMESTAMP)))/3600 < 36;
+			WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ',r.time_started) as TIMESTAMP)))/3600 < 12
+			GROUP BY gender, age_group;
 		"""
 	)
 	return create_grouped_bar_graph(df, 'age_group', 'count', 'gender','Total No. of Rides')
@@ -346,39 +313,23 @@ def get_total_rides_by_gender_and_age(n):
 def get_avg_power_by_age(n):
 	df = pg.get_df(
 		f"""
-			WITH ages AS (
-				SELECT
-					u.gender as gender,
-					u.user_id as user_id,
-					EXTRACT(YEAR from AGE(NOW(), TO_DATE(u.date_of_birth,'YYYY-MM-DD'))) as age,
-					r.average_power * r.total_duration as power
-				FROM rides r
-				JOIN users u
-					USING(user_id)
-			)
-				SELECT
-					DISTINCT CASE
-						WHEN age < 18
-							THEN '<18'
-						WHEN age < 24
-							THEN '18-24'
-						WHEN age < 34
-							THEN '25-34'
-						WHEN age < 44
-							THEN '35-44'
-						WHEN age < 54
-							THEN '45-54'
-						WHEN age < 64
-							THEN '55-64'
+				SELECT 
+					u.gender,
+					CASE
+						WHEN AGE(TO_DATE(u.date_of_birth,'YYYY-MM-DD')) < '18 years' THEN '<18'
+						WHEN AGE(TO_DATE(u.date_of_birth,'YYYY-MM-DD')) BETWEEN '18 years' AND '24 years' THEN '18-24'
+						WHEN AGE(TO_DATE(u.date_of_birth,'YYYY-MM-DD')) BETWEEN '25 years' AND '34 years' THEN '25-34'
+						WHEN AGE(TO_DATE(u.date_of_birth,'YYYY-MM-DD')) BETWEEN '35 years' AND '44 years' THEN '35-44'
+						WHEN AGE(TO_DATE(u.date_of_birth,'YYYY-MM-DD')) BETWEEN '45 years' AND '54 years' THEN '45-54'
+						WHEN AGE(TO_DATE(u.date_of_birth,'YYYY-MM-DD')) BETWEEN '55 years' AND '64 years' THEN '55-64'
 						ELSE '65+'
-					END as age_group,
-					gender,
-					AVG(power) OVER (PARTITION BY gender, age) as average_power
-				FROM
-					ages
-				JOIN rides r
-					USING(user_id)
-				WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ', r.time_started) as TIMESTAMP)))/3600 < 36;
+					END AS age_group,
+					AVG(r.average_power*r.total_duration) AS average_power
+				FROM users u
+					JOIN rides r
+						USING(user_id)
+				WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ',r.time_started) as TIMESTAMP)))/3600 < 12
+				GROUP BY gender, age_group;
 		"""
 	)
 	return create_grouped_bar_graph(df, 'age_group', 'average_power', 'gender', 'Average Power')

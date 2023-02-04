@@ -159,23 +159,26 @@ def lambda_handler(event, context):
             );
         """
     )
+    res = {}
     try:
         df_users.to_sql('users', con = sql.engine, if_exists = 'append', index = False)
         print(f'user id {df_users.user_id.iloc[0]} added')
+        res['user_info'] = f'user id {df_users.user_id.iloc[0]} added'
     except:
-        print("user already exists")
+        print(f"user id {df_users.user_id.iloc[0]} already exists")
+        res['user_info'] = f"user id {df_users.user_id.iloc[0]} already exists"
 
     try:
         df_rides.to_sql('rides', con = sql.engine, if_exists = 'append', index = False)
         print(f'ride id {df_rides.ride_id.iloc[0]} for user id {df_rides.user_id.iloc[0]} added')
+        res['ride_info'] = f'ride id {df_rides.ride_id.iloc[0]} for user id {df_rides.user_id.iloc[0]} added'
     except:
-        print('ride already in database')
+        print(f'ride id {df_rides.ride_id.iloc[0]} already in database')
+        res['ride_info'] = f'ride id {df_rides.ride_id.iloc[0]} already in database'
 
     
 
     return {
         'statusCode': 200,
-        'body': json.dumps('Hello from Lambda!')
+        'body': res
     }
-
-lambda_handler({},{})

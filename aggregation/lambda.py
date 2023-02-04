@@ -3,7 +3,6 @@ import os
 import dotenv
 import json
 from PGConnection import SQLConnection
-import s3fs
 import boto3
 
 dotenv.load_dotenv()
@@ -59,13 +58,8 @@ def create_rides_table_entry(file_name: str, user_id:str) -> pd.DataFrame:
     Returns:
         pd.DataFrame: dataframe containing aggregated data from the user's ride
     """
-
-    s3.download_file(S3_BUCKET, file_name, f'./{file_name}')
-    with open(f'./{file_name}') as file:
-        df = pd.read_csv(file)
-    os.remove(f'./{file_name}')
-
-    #df = pd.read_csv(f's3://{S3_BUCKET}/{file_name}')
+    
+    df = pd.read_csv(f's3://{S3_BUCKET}/{file_name}')
 
     # Accumulate metrics in a dictionary
     rides_object = {}
@@ -98,13 +92,8 @@ def create_users_table_entry(file_name:str) -> pd.DataFrame:
     Returns:
         pd.DataFrame: dataframe containing user's data
     """
-
-    s3.download_file(S3_BUCKET, file_name, f'./{file_name}')
-    with open(f'./{file_name}') as file:
-        df = pd.read_csv(file)
-    os.remove(f'./{file_name}')
     
-    #df = pd.read_csv(f's3://{S3_BUCKET}/{file_name}')
+    df = pd.read_csv(f's3://{S3_BUCKET}/{file_name}')
 
     # Transformation
     name_split = df['name'].str.split()

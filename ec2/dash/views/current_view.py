@@ -16,10 +16,10 @@ current_layout = html.Div(
 							children = [	
 								html.Div(
 									children = [
-										html.H2('DURATION',id='time_text', className='bit_title'),
-										html.H2(id='time_value')
+										html.H2('RPM',id='rpm_text', className='bit_title'),
+										html.H2(id='rpm_value'),
 									],
-									id='time',
+									id='rpm',
 									className='bit'
 								),
 								html.Div(
@@ -37,10 +37,10 @@ current_layout = html.Div(
 							children = [	
 								html.Div(
 									children = [
-										html.H2('RPM',id='rpm_text', className='bit_title'),
-										html.H2(id='rpm_value'),
+										html.H2('DURATION',id='time_text', className='bit_title'),
+										html.H2(id='time_value')
 									],
-									id='rpm',
+									id='time',
 									className='bit'
 								),
 								html.Div(

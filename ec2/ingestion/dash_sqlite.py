@@ -152,8 +152,8 @@ def push_csv_files_to_s3():
     user_info_to_csv(cursor)
     most_recent_ride_to_csv(cursor)
     user_info_to_csv(cursor)
-    s3.upload_file('./ec2/ingestion/most_recent_ride.csv', 'three-m-deloton-bucket', 'most_recent_ride')
-    s3.upload_file('./ec2/ingestion/user_info.csv', 'three-m-deloton-bucket', 'user_info')
+    s3.upload_file('./ec2/ingestion/most_recent_ride.csv', 'three-m-deloton-bucket', 'most_recent_ride.csv')
+    s3.upload_file('./ec2/ingestion/user_info.csv', 'three-m-deloton-bucket', 'user_info.csv')
 
 
 if __name__ == "__main__":

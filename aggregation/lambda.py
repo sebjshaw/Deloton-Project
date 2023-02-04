@@ -68,7 +68,6 @@ def create_rides_table_entry(file_name: str, user_id:str) -> pd.DataFrame:
 
     # Accumulate metrics in a dictionary
     rides_object = {}
-
     rides_object["user_id"] = user_id
     rides_object["ride_id"] = df["ride_id"].iloc[0]
     rides_object["date"] = df["date"].iloc[0]
@@ -124,9 +123,8 @@ def create_users_table_entry(file_name:str) -> pd.DataFrame:
 
 def lambda_handler(event, context):
     df_users = create_users_table_entry('user_info.csv')
-    user_id = df_users["user_id"]
+    user_id = df_users.user_id.iloc[0]
     df_rides = create_rides_table_entry('most_recent_ride.csv', user_id)
-
     sql.get_list(
         """
             CREATE TABLE IF NOT EXISTS rides (
@@ -169,14 +167,16 @@ def lambda_handler(event, context):
         """
     )
     try:
-        df_users.to_sql('users', con = sql.conn, if_exists = 'append', index = False)
+        df_users.to_sql('users', con = sql.engine, if_exists = 'append', index = False)
+        print(f'user id {df_users.user_id.iloc[0]} added')
     except:
         print("user already exists")
 
     try:
-        df_rides.to_sql('rides', con = sql.conn, if_exists = 'append', index = False)
-    except:
-        print("ride couldn't be uploaded")
+        df_rides.to_sql('rides', con = sql.engine, if_exists = 'append', index = False)
+        print(f'ride id {df_rides.ride_id.iloc[0]} for user id {df_rides.user_id.iloc[0]} added')
+    except Exception as e:
+        print('ride already in database')
 
     return {
         'statusCode': 200,

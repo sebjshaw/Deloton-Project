@@ -262,7 +262,8 @@ def get_avg_ride_length_by_gender_and_age(n):
 				JOIN rides r
 					USING(user_id)
 			WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ',r.time_started) as TIMESTAMP)))/3600 < 12
-			GROUP BY gender, age_group;
+			GROUP BY gender, age_group
+			ORDER BY age_group;
 		"""
 	)
 	return create_grouped_bar_graph(df, 'age_group', 'average_duration', 'gender', 'Average Ride Duration')
@@ -295,7 +296,8 @@ def get_total_rides_by_gender_and_age(n):
 				JOIN rides r
 					USING(user_id)
 			WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ',r.time_started) as TIMESTAMP)))/3600 < 12
-			GROUP BY gender, age_group;
+			GROUP BY gender, age_group
+			ORDER BY age_group;
 		"""
 	)
 	return create_grouped_bar_graph(df, 'age_group', 'count', 'gender','Total No. of Rides')
@@ -329,7 +331,8 @@ def get_avg_power_by_age(n):
 					JOIN rides r
 						USING(user_id)
 				WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ',r.time_started) as TIMESTAMP)))/3600 < 12
-				GROUP BY gender, age_group;
+				GROUP BY gender, age_group
+				ORDER BY age_group;
 		"""
 	)
 	return create_grouped_bar_graph(df, 'age_group', 'average_power', 'gender', 'Average Power')

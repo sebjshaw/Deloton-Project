@@ -1,0 +1,6 @@
+python-dotenv
+pandas
+psycopg2
+sqlalchemy
+flask
+flask_cors

@@ -87,7 +87,7 @@ def get_user_info(path: list) -> dict:
 		else:
 			return {"output": 'No matching records'}
 	except Exception as e:
-		return jsonify({'error':str(e)})
+		return {'error':str(e)}
 
 def get_user_ride_info(path: list) -> dict:
 	"""
@@ -105,11 +105,11 @@ def get_user_ride_info(path: list) -> dict:
 		)
 		if user_ride_info_tuple:
 			user_ride_info = [tuple_to_dict(entry, 'rides') for entry in user_ride_info_tuple]
-			return jsonify(user_ride_info)
+			return user_ride_info
 		else:
-			return jsonify({"output": 'No matching records'})
+			return {"output": 'No matching records'}
 	except Exception as e:
-		return jsonify({'error':str(e)})
+		return {'error':str(e)}
 
 def get_ride_info_for_specific_day(path:list) -> dict:
 	"""
@@ -134,9 +134,9 @@ def get_ride_info_for_specific_day(path:list) -> dict:
 			)
 			if days_rides:
 				days_rides_info = [tuple_to_dict(entry, 'rides') for entry in days_rides]
-				return jsonify(days_rides_info)
+				return days_rides_info
 			else:
-				return jsonify({"output": 'No matching records'})
+				return {"output": 'No matching records'}
 		else:
 			last_24_hours_rides = sql.get_list(
 				f"""
@@ -147,11 +147,11 @@ def get_ride_info_for_specific_day(path:list) -> dict:
 			)
 			if last_24_hours_rides:
 				rides = [tuple_to_dict(entry, 'rides') for entry in last_24_hours_rides]
-				return jsonify(rides)
+				return rides
 			else:
-				return jsonify({"output": 'No matching records'})
+				return {"output": 'No matching records'}
 	except Exception as e:
-		return jsonify({'error': str(e)})
+		return {'error': str(e)}
 
 def lambda_handler(event, context):
 	path = event['rawPath'].split('/')

@@ -16,7 +16,7 @@ s3 = boto3.client('s3')
 # import the confluent kafka consumer 
 c = create_kafka_consumer()
 
-conn = sqlite3.connect('./ec2-dash/dash_db.db') #create an sqlite database and establish a connection
+conn = sqlite3.connect('./ec2/ingestion/dash_db.db') #create an sqlite database and establish a connection
 
 cursor = conn.cursor() #create a cursor to allow querying of the database
 
@@ -150,14 +150,18 @@ def push_csv_files_to_s3():
     """
     most_recent_ride_to_csv(cursor)
     user_info_to_csv(cursor)
-    s3.upload_file('ec2-dash/most_recent_ride.csv', 'three-m-deloton-bucket', 'most_recent_ride')
-    s3.upload_file('ec2-dash/user_info.csv', 'three-m-deloton-bucket', 'user_info')
+    most_recent_ride_to_csv(cursor)
+    user_info_to_csv(cursor)
+    s3.upload_file('./ec2/ingestion/most_recent_ride.csv', 'three-m-deloton-bucket', 'most_recent_ride.csv')
+    s3.upload_file('./ec2/ingestion/user_info.csv', 'three-m-deloton-bucket', 'user_info.csv')
+
 
 if __name__ == "__main__":
     recreate_current_ride_table(cursor, conn) #creates a table for the current ride data to be inserted into 
     ride_id = str((NOW - FEB_1_2023_SECS).total_seconds())[:-6] #ride_id of interrupted ride is assigned now as start time 
     ride_date = 'N/A' #placeholder until user info is received
     max_hr = 220
+    user_info = 'N/A' #placeholder until user info is received
     user_info = 'N/A' #placeholder until user info is received
     user_id = 0000
     
@@ -170,10 +174,11 @@ if __name__ == "__main__":
             # creates csv and pushes to s3, then deletes old current_ride table and creates new one 
             if log_entry.get('user_id') is not None:
                 push_csv_files_to_s3()
+                push_csv_files_to_s3()
                 
                 # delete expired csv files 
-                os.remove("ec2-dash/most_recent_ride.csv") 
-                os.remove("ec2-dash/user_info.csv") 
+                os.remove("./ec2/ingestion/most_recent_ride.csv") 
+                os.remove("./ec2/ingestion/user_info.csv") 
 
                 # set new max_hr
                 max_hr = calculate_max_heart_rate(log_entry['date_of_birth'])

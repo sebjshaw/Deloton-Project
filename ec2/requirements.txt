@@ -1,0 +1,10 @@
+pandas
+matplotlib
+numpy
+plotly
+dash
+python-dotenv
+confluent_kafka
+boto3
+botocore
+redis

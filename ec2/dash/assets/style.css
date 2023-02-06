@@ -1,0 +1,132 @@
+html {
+	background-color: #333333;
+	color: #fefee2;
+}
+#header {
+	display: flex;
+	flex-direction: row;
+	height: 10vh;
+	align-items: center;
+}
+
+#view_switch {
+	height: 8.5vh;
+	width: 8.5vw;
+	background-color: #5b5b55;
+	color: #fefee2;
+	transition: 0.2s;
+	border-radius: 10px;
+	border-color: #8d5b4c 4px solid;
+}
+#logo {
+	width: 10vw;
+}
+#view_switch:hover {
+	border-color: #8d5b4c 4px solid;
+	background-color: #94948c;
+	width: 9vw;
+	height: 9vh;
+	transition: 0.3s;
+}
+
+#icon {
+	width: 10vw;
+}
+#rider_info {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	align-items: center;
+	border: #7e8073 4px solid;
+	background-color: #7fc37e;
+	width: 80vw;
+	border-radius: 10px;
+}
+
+.info_div {
+	margin: 1.5vh;
+}
+
+#datetime {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.time_resistance {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+	width: 20vw;
+}
+#current_values {
+	width: 47.5vw;
+	display: flex;
+	justify-content: space-evenly;
+}
+#upper_body {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	height: 45vh;
+}
+#lower_body {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	height: 45vh;
+}
+#power_graph,
+#heart_rate_graph,
+#rpm_graph {
+	width: 47.5vw;
+	height: 45vh;
+}
+.demo_graphs {
+	height: 60vh;
+}
+.recent_graph {
+	height: 60vh;
+}
+#upper_recent_body {
+	display: flex;
+	flex-direction: row;
+	height: 25vh;
+}
+#lower_recent_body {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	text-align: center;
+	height: 65vh;
+	width: 100vw;
+}
+
+.shares {
+	width: 33vw;
+}
+
+/* Containers of info on the recent page */
+.bit {
+	display: flex;
+	flex-direction: column;
+	border: #7fc37e 4px solid;
+	width: 15vw;
+	text-align: center;
+	background-color: #7e8073;
+	border-radius: 10px;
+}
+#bit_container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	align-items: center;
+	width: 100vw;
+}
+
+#current_values {
+	display: flex;
+	flex-direction: row;
+	text-align: center;
+}

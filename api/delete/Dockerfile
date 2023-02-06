@@ -4,10 +4,10 @@ COPY requirements.txt .
 RUN pip3 install -r requirements.txt --target "${LAMBDA_TASK_ROOT}"
 
 COPY .env .
-COPY lambda.py ${LAMBDA_TASK_ROOT}
+COPY api_delete.py ${LAMBDA_TASK_ROOT}
 COPY SQLConnection.py .
 
 ENV PYTHONUNBUFFERED True
 
 
-CMD [ "lambda.lambda_handler" ]
+CMD [ "api_delete.lambda_handler" ]

@@ -105,7 +105,7 @@ def create_log_entry(c: Consumer) -> dict:
                 info2['rpm'] = stats[8][:-1]
                 info2['power'] = stats[11][:-1]
 
-    info = info | info1 | info2 # dictates the format of the final dictionary to be the same every time 
+    info = {**info, **info1, **info2} # dictates the format of the final dictionary to be the same every time 
     return info
 
 

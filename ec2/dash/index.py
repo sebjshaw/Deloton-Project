@@ -77,7 +77,13 @@ app.layout = html.Div(
 								),
 							],
 							id='rider_info'
-						)
+						),
+						html.Div(
+							html.Img(
+								src='./assets/deleton_logo.png',
+								id='logo'
+							)
+						),
 					],
 					id='header'
 				),

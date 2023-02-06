@@ -32,7 +32,7 @@ class SQLConnection():
 		finally:
 			lock.release()
 
-	def get_list(self, query:str) -> list[tuple]:
+	def get_list(self, query:str) -> list:
 		"""
 		Execute a query on the db
 

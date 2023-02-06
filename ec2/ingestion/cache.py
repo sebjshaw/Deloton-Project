@@ -2,7 +2,7 @@ import redis
 
 redisClient = redis.Redis(host='localhost', port=6379)
 
-def check_cache_value(email: str) -> bool | None:
+def check_cache_value(email: str) -> bool:
 	"""
 	Check cache for user_email
 

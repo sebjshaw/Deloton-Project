@@ -48,10 +48,12 @@ def tuple_to_dict(tup:tuple, table:str) -> dict:
 		row_dict[title] = tup[idx]
 	return row_dict
 
-# # GET /ride/:id
-# Get a ride with a specific ID
-@app.route("/ride/<int:ride_id>", methods=["GET"])
-def get_ride_info(ride_id:int):
+def get_ride_by_id(path:list) -> dict:
+	"""
+	GET /ride/:id\n
+	Get a ride with a specific ID
+	"""
+	ride_id = path[-1]
 	try:
 		ride_info_tuple = sql.get_list(
 			f"""
@@ -63,16 +65,14 @@ def get_ride_info(ride_id:int):
 		print(ride_info)
 		if ride_info_tuple:
 			ride_info = tuple_to_dict(ride_info_tuple, 'rides')
-			return jsonify(ride_info)
+			return ride_info
 		else:
-			return jsonify({"output": 'No matching records'})
+			return {"output": 'No matching records'}
 	except Exception as e:
-		return jsonify({'error':str(e)})
+		return {'error':str(e)}
 
-# # GET /rider/:user_id
-# Get rider information (e.g. name, gender, age, avg. heart rate, number of rides)
-@app.route("/rider/<int:user_id>", methods=["GET"])
-def get_user_info(user_id:int):
+def get_user_info(path: list) -> dict:
+	user_id = path[-1]
 	try:
 		user_info_tuple = sql.get_list(
 			f"""
@@ -83,16 +83,18 @@ def get_user_info(user_id:int):
 		)[0]
 		if user_info_tuple:
 			user_info = tuple_to_dict(user_info_tuple, 'users')
-			return jsonify(user_info)
+			return user_info
 		else:
-			return jsonify({"output": 'No matching records'})
+			return {"output": 'No matching records'}
 	except Exception as e:
 		return jsonify({'error':str(e)})
 
-# # GET /rider/:user_id/rides
-# Get all rides for a rider with a specific ID
-@app.route("/rider/<int:user_id>/rides", methods=["GET"])
-def get_user_ride_info(user_id: int):
+def get_user_ride_info(path: list) -> dict:
+	"""
+		GET /rider/:user_id/rides\n
+		Get all rides for a rider with a specific ID
+	"""
+	user_id = path[-2]
 	try:
 		user_ride_info_tuple = sql.get_list(
 			f"""
@@ -109,32 +111,19 @@ def get_user_ride_info(user_id: int):
 	except Exception as e:
 		return jsonify({'error':str(e)})
 
-# # DELETE /ride/:id
-# Delete a ride with a specific ID
-@app.route("/ride/<int:ride_id>", methods=["DELETE"])
-def delete_ride_info(ride_id:int):
+def get_ride_info_for_specific_day(path:list) -> dict:
+	"""
+		GET /daily?date=01-01-2020\n
+		Get all rides for a specific date\n
+		If no date has been specified, return all rides from the last 24 hours
+	"""
+	date = path['rawQueryString']
 	try:
-		sql.get_list(
-			f"""
-				DELETE FROM rides
-				WHERE ride_id = {ride_id}
-			"""
-		)
-		return jsonify({'success': f"Ride ID {ride_id} deleted"})
-	except Exception as e:
-		return jsonify({'error':str(e)})
-
-# # GET /daily?date=01-01-2020
-# Get all rides for a specific date
-# If no date has been specified, return all rides from the last 24 hours
-@app.route("/daily", methods=["GET"])
-def get_ride_info_for_specific_day():
-	try:
-		date = request.args.get('date')
-		if date:
+		if 'date' in date:
+			date = date.split('=')[-1]
 			day = int(date[:2])
 			month = int(date[3:5])
-			year = int(date[6:])
+			year = int(date[6:8])
 			date = datetime(year=year, month=month, day=day).strftime("%Y-%m-%d")
 			days_rides = sql.get_list(
 				f"""
@@ -163,3 +152,15 @@ def get_ride_info_for_specific_day():
 				return jsonify({"output": 'No matching records'})
 	except Exception as e:
 		return jsonify({'error': str(e)})
+
+def lambda_handler(event, context):
+	path = event['rawPath'].split('/')
+	if path[1] == 'ride':
+		return jsonify(get_ride_by_id(path))
+	elif path[1] == 'rider' and path[-1] != 'rides':
+		return jsonify(get_user_info(path))
+	elif path[1] == 'rider':
+		return jsonify(get_user_ride_info(path))
+	elif path[1] == 'daily':
+		return jsonify(get_user_ride_info(path))
+	

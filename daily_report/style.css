@@ -7,6 +7,7 @@ body {
   width: 800px;
   margin-left: auto;
   margin-right: auto;
+  padding: 10px;
 }
 
 #header {
@@ -77,16 +78,29 @@ body {
 #stat1 {
   width: 260px;
   float: left;
+  text-align: center;
 }
 #stat2 {
   width: 260px;
   float: right;
+  text-align: center;
 }
 #stat3 {
   width: 260px;
   float: right;
+  text-align: center;
 }
 
 #footer {
+  padding: 10px;
   clear: both;
+}
+#logo {
+  float: left;
+  width: 390px;
+}
+#authors {
+  float: right;
+  width: 390px;
+  text-align: right;
 }

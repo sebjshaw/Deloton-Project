@@ -1,9 +1,11 @@
 
 from jinja2 import FileSystemLoader, Environment
 import pdfkit
+from datetime import datetime
 
+today = datetime.now().date()
 
-date = "Today's Date"
+today
 item_1 = 'Total_Daily_Rides_Graph'
 item_2 = 'Avg. Power'
 item_3 = 'Total Ride Time'
@@ -14,12 +16,13 @@ item_7 = 'Avg. Ride resistance split by gender'
 item_8 = 'x riders went over max heart rate today'
 item_9 = 'x new riders today'
 item_10 = 'The Longest ride today'
-footer = 'footer'
+logo = 'logo'
+authors = 'authors'
 
 context = {
-    'date': date, 'item_1': item_1, 'item_2': item_2, 'item_3': item_3,
+    'date': today, 'item_1': item_1, 'item_2': item_2, 'item_3': item_3,
     'item_4': item_4, 'item_5': item_5, 'item_6': item_6, 'item_7': item_7, 
-    'item_8': item_8, 'item_9': item_9, 'item_10': item_10, 'footer':footer
+    'item_8': item_8, 'item_9': item_9, 'item_10': item_10, 'logo': logo, 'authors':authors
     }
 
 
@@ -49,8 +52,6 @@ def create_pdf_output(report_str:str):
     # load text into pdf using pdfkit and wkhtmltopdf and the style.css file as styling
     config = pdfkit.configuration(wkhtmltopdf='/usr/local/bin/wkhtmltopdf')
     pdfkit.from_string(report_str, 'pdf_generated.pdf', configuration=config, css='style.css')
-
-
 
 
 output_text = load_html_template()

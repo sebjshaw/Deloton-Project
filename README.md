@@ -120,6 +120,7 @@ Resources used:
     - Lambda
     - S3
     - RDS
+    - SES
 - [Tableau Cloud](https://www.tableau.com/en-gb/products/cloud-bi)
 
 ## Further Development

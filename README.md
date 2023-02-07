@@ -7,9 +7,13 @@
 - [General Info](#general-info)
 - [Project Roadmap](#project-roadmap)
 - [Usage](#usage)
-     - [Live Dashboard](live-dashboard)
-- [Credits](#credits)
-- [Further Developments](#further-developments)
+     - [Live Dashboard](#live-dashboard)
+     - [RESTful API](#restful-api)
+     - [Daily Report](#daily-report)
+     - [Email Alerts](#email-alerts)
+     - [Tableau Dashboard](#tableau-dashboard)
+- [Credits & Acknowledgments](#credits-and-acknowledgements)
+- [Further Development](#further-development)
 - [Legacy Contributions](#legacy-contributions)
 
 ## General Info
@@ -46,9 +50,9 @@ These take the form of:
 
 ### RESTful API
 
-### Daily Report generator
+### Daily Report
 
-### Heart Rate Email Alerts
+### Email Alerts
 
 1. EC2 hosting Kafka data stream automatically alerts user when their heart rate exceeds a certain level
 2. Heart Rate Level calculated by age and weight
@@ -66,7 +70,7 @@ These take the form of:
 
 ![Screenshot_Tableau](https://user-images.githubusercontent.com/115073814/217216401-ccf2e62f-8258-485f-9d56-18a5df5a5859.png)
 
-## Credits
+## Credits and Acknowledgements
 
 Direct contributors to the repository:
 
@@ -74,7 +78,7 @@ Direct contributors to the repository:
 - Dominic Lawson: [DomLaw82](https://github.com/DomLaw82)
 - Alexander Skowronski: [AlexSkowronski2](https://github.com/AlexSkowronski2)
 
-## Further Developments
+## Further Development
 
 - Having a dedicated email address for sending heart rate exceeding limit email to a user's email that they have verified.
 - Age bin filter on Tableau dashboard for filtering specific ages of users, suggested bins could be: under 18s, 18-25, 25-35, 35-45, 45-55, over 55s

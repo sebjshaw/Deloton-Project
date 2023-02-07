@@ -334,3 +334,27 @@ def get_avg_power_by_age(n):
 	)
 	return create_grouped_bar_graph(df, 'age_group', 'average_power', 'gender', 'Average Power')
 
+@callback(
+	Output(
+		"total_power_value",'children'
+	),
+	Output(
+		"avg_power_value",'children'
+	),
+	[
+		Input(
+			'fifteen_minute_refresh', 'n_intervals'
+		)
+	]
+)
+def total_average_power(n):
+	power = pg.get_list(
+	"""
+		SELECT 
+			SUM(r.power),
+			AVG(r.power)
+		FROM rides r
+		WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ',r.time_started) as TIMESTAMP)))/3600 < 12
+	"""
+	)[0]
+	return power[0], power[1]

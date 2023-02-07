@@ -5,9 +5,11 @@
 ## Table of contents
 
 - [General Info](#general-info)
-- [Technologies](#technologies)
-- [Setup](#setup)
+- [Project Roadmap](#project-roadmap)
+- [Usage](#setup)
+     - [Live Dashboard](live-dashboard)
 - [Credits](#credits)
+- [Further Developments](#further-developments)
 - [Legacy Contributions](#legacy-contributions)
 
 ## General Info
@@ -40,7 +42,7 @@ These take the form of:
 
 ## Usage
 
-### Live Dashboard hosted on EC2
+### Live Dashboard
 
 ### RESTful API
 

@@ -124,7 +124,7 @@ def update_rpm_value(n):
 		"heart_rate_value",'children'
 	),
 	Output(
-		"heart_rate",'style'
+		"heart_rate_value",'style'
 	),
 	[
 		Input(

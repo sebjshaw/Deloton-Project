@@ -28,7 +28,9 @@ These take the form of:
 
 1. EC2 hosting Kafka data stream automatically alerts user when their heart rate exceeds a certain level
 2. Heart Rate Level calculated by age and weight
-3. Currently, emails sent to this address: [three.musketeers.deloton@gmail.com](three.musketeers.deloton@gmail.com)
+3. Currently, emails sent to this address: three.musketeers.deloton@gmail.com
+
+![Screenshot_Email](https://user-images.githubusercontent.com/115073814/217221056-2253c7c2-8ace-41bc-91f5-7f412795570c.png)
 
 ### Tableau Dashboard
 

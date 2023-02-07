@@ -39,7 +39,7 @@ These take the form of:
 2. Parses logs and cleans data, passes into SQLite table ready for querying from the Live Dashboard, displaying recent and current pages
 3. At any point current user heart rate exceeds heart rate limit during the ride, calculated as a function of the user's age, email alert trigger sent using Amazon simple email service (SES)
 4. For a given ride for a specific user, at the end of their current ride, two csv files (user_info & ride_info) sent to s3 bucket (file storage service)
-5. AWS Lambda function reads csv files from s3 bucket and extracts key metrics (using Pandas) for long term storage in AWS RDS postgres table
+5. AWS Lambda function reads csv files from s3 bucket and extracts key metrics (using Pandas) for long term storage in AWS RDS PostgreSQL table
 6. RDS comprised of two tables, users and rides, joined by user_id
 7. Tableau dashboard connected to RDS schemas and visuals created from it, live streaming the information
 8. API hosted on EC2 performing SQL queries from RDS

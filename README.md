@@ -22,9 +22,11 @@ These take the form of:
 - RESTful API
 - Tableau integration to perform data querying and dashboard creation
 
-## Setup
+## Usage
 
-### Tableau 
+### Tableau Dashboard
+
+Create a Tableau Cloud account if not done already [](https://www.tableau.com/tableau-login-hub)
 
 ## Credits
 

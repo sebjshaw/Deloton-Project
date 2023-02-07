@@ -48,6 +48,11 @@ These take the form of:
 
 ### Live Dashboard
 
+1. You will find the live dashboard up and running here: [Live Dashboard](http://18.130.141.140:8080/)
+2. Top left button allows user to switch between viewing the current ride (user details along with their current performance) and recent ride details.
+
+<img width="1411" alt="Screenshot_LiveDashboard" src="https://user-images.githubusercontent.com/115073814/217261046-79872c89-567d-4f6e-bf45-7550f1fbcbdf.png">
+
 ### RESTful API
 
 ### Daily Report

@@ -60,7 +60,7 @@ These take the form of:
 
 ### RESTful API
 
-[API](https://jzrx9wfk25.execute-api.eu-west-2.amazonaws.com/), can search the following endpoints:
+[API](https://jzrx9wfk25.execute-api.eu-west-2.amazonaws.com/) can search the following endpoints:
 
 ```GET``` ```/ride/:id```
 Get a ride with a specific ID

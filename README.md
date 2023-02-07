@@ -60,25 +60,29 @@ These take the form of:
 
 ### RESTful API
 
-1. [API](https://jzrx9wfk25.execute-api.eu-west-2.amazonaws.com/), can search the following endpoints
+[API](https://jzrx9wfk25.execute-api.eu-west-2.amazonaws.com/), can search the following endpoints:
 
-```GET``` /ride/:id
+```GET``` ```/ride/:id```
 Get a ride with a specific ID
 
-GET /rider/:user_id
+```GET``` ```/rider/:user_id```
 Get rider information (e.g. name, gender, age, avg. heart rate, number of rides)
 
-GET /rider/:user_id/rides
+```GET``` ```/rider/:user_id/rides```
 Get all rides for a rider with a specific ID
 
-DELETE /ride/:id
+```DELETE``` ```/ride/:id```
 Delete a with a specific ID
 
-GET /daily
+```GET``` ```/daily```
 Get all of the rides in the current day
 
-GET /daily?date=01-01-2020
+```GET``` ```/daily?date=01-01-2020```
 Get all rides for a specific date
+
+![Screenshot_API](https://user-images.githubusercontent.com/115073814/217295721-d7c80429-1267-4095-b8b6-67b73a49f0e4.png)
+
+![Screenshot_API2](https://user-images.githubusercontent.com/115073814/217295783-d2d7a3f8-cba7-48f2-913a-ff723081caa1.png)
 
 ### Daily Report
 

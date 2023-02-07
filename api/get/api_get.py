@@ -1,14 +1,10 @@
 from SQLConnection import SQLConnection
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+import json
 import os
 import dotenv
 from datetime import datetime
 
 dotenv.load_dotenv()
-
-app = Flask(__name__)
-CORS(app, origins=["http://127.0.0.1:8090"],  supports_credentials=True)
 
 USERNAME = os.getenv('USERNAME')
 PASSWORD = os.getenv('PASSWORD')
@@ -45,7 +41,7 @@ def tuple_to_dict(tup:tuple, table:str) -> dict:
 	row_dict = {}
 	keys = table_columns[table]
 	for idx, title in enumerate(keys):
-		row_dict[title] = tup[idx]
+		row_dict[title] = str(tup[idx])
 	return row_dict
 
 def get_ride_by_id(path:list) -> dict:
@@ -156,11 +152,14 @@ def get_ride_info_for_specific_day(path:list) -> dict:
 def lambda_handler(event, context):
 	path = event['rawPath'].split('/')
 	if path[1] == 'ride':
-		return jsonify(get_ride_by_id(path))
+		print(path[1])
+		return json.dumps(get_ride_by_id(path))
 	elif path[1] == 'rider' and path[-1] != 'rides':
-		return jsonify(get_user_info(path))
+		print(path[1])
+		return json.dumps(get_user_info(path))
 	elif path[1] == 'rider':
-		return jsonify(get_user_ride_info(path))
+		print(path[1])
+		return json.dumps(get_user_ride_info(path))
 	elif path[1] == 'daily':
-		return jsonify(get_user_ride_info(path))
-	
+		print(path[1])
+		return json.dumps(get_user_ride_info(path))

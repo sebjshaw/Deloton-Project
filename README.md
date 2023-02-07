@@ -14,6 +14,7 @@
      - [Tableau Dashboard](#tableau-dashboard)
 - [Credits & Acknowledgments](#credits-and-acknowledgements)
 - [Further Development](#further-development)
+- [Ways to Contribute](#ways-to-contribute)
 - [Legacy Contributions](#legacy-contributions)
 
 ## General Info
@@ -89,9 +90,20 @@ Direct contributors to the repository:
 
 ## Further Development
 
+### Email Alerts
+
 - Having a dedicated email address for sending heart rate exceeding limit email to a user's email that they have verified.
+
+### Tableau Dashboard
+
 - Age bin filter on Tableau dashboard for filtering specific ages of users, suggested bins could be: under 18s, 18-25, 25-35, 35-45, 45-55, over 55s
-- Perhaps adding in resistance dashboard onto Tableau dashboard 
+- Perhaps adding in resistance dashboard onto Tableau dashboard
+- Parse through postcodes of users and have a map indicating where a current ride is happening or heat map of existing ride locations
+
+## Ways to Contribute
+
+1. Clone repo and create a new branch: ```bash $ git checkout https://github.com/alichtman/stronghold -b name_for_new_branch```
+
 
 ## Legacy Contributions
 

@@ -20,13 +20,9 @@ These take the form of:
 - RESTful API
 - Tableau integration to perform data querying and dashboard creation
 
-## Technologies
-
-blah
-
 ## Setup
 
-blah
+### Tableau 
 
 ## Credits
 

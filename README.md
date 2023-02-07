@@ -22,7 +22,17 @@ These take the form of:
 - RESTful API
 - Tableau integration to perform data querying and dashboard creation
 
+## Project Roadmap
+
+![Screenshot_Excalidraw](https://user-images.githubusercontent.com/115073814/217223449-26e6a315-d01c-4a11-a743-ceee6c4e60d7.png)
+
 ## Usage
+
+### Live Dashboard hosted on EC2
+
+### RESTful API
+
+### Daily Report generator
 
 ### Heart Rate Email Alerts
 
@@ -49,6 +59,12 @@ Direct contributors to the repository:
 - Seb Shaw: [sebjshaw](https://github.com/sebjshaw)
 - Dominic Lawson: [DomLaw82](https://github.com/DomLaw82)
 - Alexander Skowronski: [AlexSkowronski2](https://github.com/AlexSkowronski2)
+
+## Further Developments
+
+- Having a dedicated email address for sending heart rate exceeding limit email to a user's email that they have verified.
+- Age bin filter on Tableau dashboard for filtering specific ages of users, suggested bins could be: under 18s, 18-25, 25-35, 35-45, 45-55, over 55s
+- Perhaps adding in resistance dashboard onto Tableau dashboard 
 
 ## Legacy Contributions
 

@@ -152,14 +152,14 @@ def get_ride_info_for_specific_day(path:list) -> dict:
 def lambda_handler(event, context):
 	path = event['rawPath'].split('/')
 	if path[1] == 'ride':
-		print(path[1])
+		print(path)
 		return json.dumps(get_ride_by_id(path))
 	elif path[1] == 'rider' and path[-1] != 'rides':
-		print(path[1])
+		print(path)
 		return json.dumps(get_user_info(path))
 	elif path[1] == 'rider':
-		print(path[1])
+		print(path)
 		return json.dumps(get_user_ride_info(path))
 	elif path[1] == 'daily':
-		print(path[1])
+		print(path)
 		return json.dumps(get_user_ride_info(path))

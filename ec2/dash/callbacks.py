@@ -219,16 +219,13 @@ def update_heart_rate_figure(n):
 def update_power_figure(n):
 	df = sql.get_df(
 		"""
-			SELECT 
-				duration,
-				AVG(power) OVER (ORDER BY duration asc ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as 'moving avg. power'
-			FROM current_ride
+			SELECT duration, ROUND(power, 0) AS power FROM current_ride
 		"""
 	)
 	# INTERESTING
 	# Raw power graph is correlated with the rpm
 	# Moving average power graph looks correlated with the hr 
-	return create_line_graph(df, 'duration', 'moving avg. power')
+	return create_line_graph(df, 'duration', 'power')
 
 
 # # RECENT RIDES FIGURES
@@ -262,7 +259,7 @@ def get_avg_ride_length_by_gender_and_age(n):
 				JOIN rides r
 					USING(user_id)
 			WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ',r.time_started) as TIMESTAMP)))/3600 < 12
-			GROUP BY gender, age_group
+			GROUP BY age_group, gender
 			ORDER BY age_group;
 		"""
 	)

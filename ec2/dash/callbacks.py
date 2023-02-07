@@ -221,14 +221,14 @@ def update_power_figure(n):
 		"""
 			SELECT 
 				duration,
-				AVG(power) OVER (ORDER BY duration asc ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) as 'moving avg. power'
+				power
 			FROM current_ride
 		"""
 	)
 	# INTERESTING
 	# Raw power graph is correlated with the rpm
 	# Moving average power graph looks correlated with the hr 
-	return create_line_graph(df, 'duration', 'moving avg. power')
+	return create_line_graph(df, 'duration', 'power')
 
 
 # # RECENT RIDES FIGURES

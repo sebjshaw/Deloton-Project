@@ -26,8 +26,11 @@ These take the form of:
 
 ### Tableau Dashboard
 
-Create a Tableau Cloud account if not done already ([Tableau](https://www.tableau.com/tableau-login-hub)). Following link to [Deloton-Project](https://prod-uk-a.online.tableau.com/t/threemusketeers/views/safe-copy/Dashboard-RidesCompleted) prompts a login with AWS RDS credentials. Postgres account login details provided on day of presentation.
-Dashboard consists of eight pages, each of which a leaderboard for the top users for that measured metric i.e. Number of rides completed by user, Highest average heart rate per ride per user. 
+1. Create a Tableau Cloud account if not done already ([Tableau](https://www.tableau.com/tableau-login-hub)).
+2. Following link to [Deloton-Project](https://prod-uk-a.online.tableau.com/t/threemusketeers/views/safe-copy/Dashboard-RidesCompleted) prompts a login with AWS RDS credentials. Postgres account login details provided on day of presentation.
+3. Dashboard consists of eight pages, each of which a leaderboard for the top users for that measured metric i.e. Number of rides completed by user, Highest average heart rate per ride per user.
+4. User may navigate via the buttons on the righthand side of each page
+5. Filters by gender, minimum & maximum value, and date of ride for interactability
 
 ## Credits
 

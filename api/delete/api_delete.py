@@ -1,14 +1,10 @@
 from SQLConnection import SQLConnection
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+import json
 import os
 import dotenv
 from datetime import datetime
 
 dotenv.load_dotenv()
-
-app = Flask(__name__)
-CORS(app, origins=["http://127.0.0.1:8090"],  supports_credentials=True)
 
 USERNAME = os.getenv('USERNAME')
 PASSWORD = os.getenv('PASSWORD')
@@ -45,7 +41,7 @@ def tuple_to_dict(tup:tuple, table:str) -> dict:
 	row_dict = {}
 	keys = table_columns[table]
 	for idx, title in enumerate(keys):
-		row_dict[title] = tup[idx]
+		row_dict[title] = str(tup[idx])
 	return row_dict	
 	
 def delete_ride_by_id(path: list) -> dict:
@@ -67,4 +63,4 @@ def delete_ride_by_id(path: list) -> dict:
 
 def lambda_handler(event,context):
 	path = event['rawPath'].split('/')
-	return jsonify(delete_ride_by_id(path))
+	return json.dumps(delete_ride_by_id(path))

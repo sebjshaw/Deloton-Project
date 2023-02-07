@@ -107,13 +107,13 @@ def get_user_ride_info(path: list) -> dict:
 	except Exception as e:
 		return {'error':str(e)}
 
-def get_ride_info_for_specific_day(path:list) -> dict:
+def get_ride_info_for_specific_day(event:dict) -> dict:
 	"""
 		GET /daily?date=01-01-2020\n
 		Get all rides for a specific date\n
 		If no date has been specified, return all rides from the last 24 hours
 	"""
-	date = path['rawQueryString']
+	date = event['rawQueryString']
 	try:
 		if 'date' in date:
 			date = date.split('=')[-1]
@@ -152,14 +152,14 @@ def get_ride_info_for_specific_day(path:list) -> dict:
 def lambda_handler(event, context):
 	path = event['rawPath'].split('/')
 	if path[1] == 'ride':
-		print(path[1])
+		print(path)
 		return json.dumps(get_ride_by_id(path))
 	elif path[1] == 'rider' and path[-1] != 'rides':
-		print(path[1])
+		print(path)
 		return json.dumps(get_user_info(path))
 	elif path[1] == 'rider':
-		print(path[1])
+		print(path)
 		return json.dumps(get_user_ride_info(path))
 	elif path[1] == 'daily':
-		print(path[1])
-		return json.dumps(get_user_ride_info(path))
+		print(path)
+		return json.dumps(get_ride_info_for_specific_day(event))

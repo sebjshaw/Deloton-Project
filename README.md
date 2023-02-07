@@ -6,7 +6,7 @@
 
 - [General Info](#general-info)
 - [Project Roadmap](#project-roadmap)
-- [Usage](#setup)
+- [Usage](#usage)
      - [Live Dashboard](live-dashboard)
 - [Credits](#credits)
 - [Further Developments](#further-developments)

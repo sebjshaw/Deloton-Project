@@ -219,10 +219,7 @@ def update_heart_rate_figure(n):
 def update_power_figure(n):
 	df = sql.get_df(
 		"""
-			SELECT 
-				duration,
-				power
-			FROM current_ride
+			SELECT duration, ROUND(power, 0) AS power FROM current_ride
 		"""
 	)
 	# INTERESTING
@@ -262,7 +259,7 @@ def get_avg_ride_length_by_gender_and_age(n):
 				JOIN rides r
 					USING(user_id)
 			WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ',r.time_started) as TIMESTAMP)))/3600 < 12
-			GROUP BY gender, age_group
+			GROUP BY age_group, gender
 			ORDER BY age_group;
 		"""
 	)

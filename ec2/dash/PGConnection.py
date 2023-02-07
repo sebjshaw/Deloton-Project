@@ -29,6 +29,7 @@ class SQLConnection():
 			print(f"Querying: '{query}'")
 			return res
 		except Exception as e:
+			print('Exception Thrown:')
 			print(e)
 			print('\n')
 		finally:
@@ -52,6 +53,7 @@ class SQLConnection():
 			print(f"'{query}' executed")
 			return res
 		except Exception as e:
+			print('Exception Thrown:')
 			print(e)
 			print('\n')
 		finally:

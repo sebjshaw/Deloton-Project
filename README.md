@@ -83,10 +83,20 @@ These take the form of:
 ## Credits and Acknowledgements
 
 Direct contributors to the repository:
-
 - Seb Shaw: [sebjshaw](https://github.com/sebjshaw)
 - Dominic Lawson: [DomLaw82](https://github.com/DomLaw82)
 - Alexander Skowronski: [AlexSkowronski2](https://github.com/AlexSkowronski2)
+
+Resources used:
+- [Pandas](https://pandas.pydata.org/)
+- [Amazon Web Services](https://aws.amazon.com/)
+    - API Gateway
+    - EC2
+    - ECR
+    - Lambda
+    - S3
+    - RDS
+- [Tableau Cloud](https://www.tableau.com/en-gb/products/cloud-bi)
 
 ## Further Development
 
@@ -103,7 +113,8 @@ Direct contributors to the repository:
 ## Ways to Contribute
 
 1. Clone repo and create a new branch: ```bash $ git checkout https://github.com/alichtman/stronghold -b name_for_new_branch```
-
+2. Make changes and test
+3. Submit Pull Request with comprehensive description of changes
 
 ## Legacy Contributions
 

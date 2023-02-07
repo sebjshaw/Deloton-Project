@@ -36,7 +36,7 @@ These take the form of:
 ### Summary of above roadmap:
 
 1. Kafka Consumer in EC2 takes logs from Kafka Data stream every second
-2. Parses through logs and cleans data, passes into SQLite table ready for querying for Live Dashboard, displays information on current ride and recent rides
+2. Parses logs and cleans data, passes into SQLite table ready for querying from the Live Dashboard, displaying recent and current pages
 3. At any point cleaned data suggests current user exceeds heart rate limit during ride, email alert trigger sent using Amazon simple email service (SES)
 4. For a given ride for a specific user, at the end of their current ride, two csv files (user_info & ride_info) sent to s3 bucket (file storage service)
 5. AWS Lambda function reads csv files from s3 bucket and extracts key metrics (using Pandas) for long term storage in AWS RDS postgres table

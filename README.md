@@ -26,7 +26,7 @@ These take the form of:
 
 ### Tableau Dashboard
 
-Create a Tableau Cloud account if not done already [](https://www.tableau.com/tableau-login-hub)
+Create a Tableau Cloud account if not done already ([Tableau](https://www.tableau.com/tableau-login-hub))
 
 ## Credits
 

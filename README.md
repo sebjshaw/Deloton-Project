@@ -60,6 +60,26 @@ These take the form of:
 
 ### RESTful API
 
+1. [API](https://jzrx9wfk25.execute-api.eu-west-2.amazonaws.com/), can search the following endpoints
+
+```GET``` /ride/:id
+Get a ride with a specific ID
+
+GET /rider/:user_id
+Get rider information (e.g. name, gender, age, avg. heart rate, number of rides)
+
+GET /rider/:user_id/rides
+Get all rides for a rider with a specific ID
+
+DELETE /ride/:id
+Delete a with a specific ID
+
+GET /daily
+Get all of the rides in the current day
+
+GET /daily?date=01-01-2020
+Get all rides for a specific date
+
 ### Daily Report
 
 ### Email Alerts

@@ -42,7 +42,7 @@ These take the form of:
 5. AWS Lambda function reads csv files from s3 bucket and extracts key metrics (using Pandas) for long term storage in AWS RDS PostgreSQL table
 6. RDS comprised of two tables, users and rides, joined by user_id
 7. Tableau dashboard connected to RDS schemas and visuals created from it, live streaming the information
-8. API hosted on EC2 performing SQL queries from RDS
+8. API hosted using AWS API Gateway, integrated with AWS Lambda Functions
 9. Daily report hosted on AWS Lambda, extracting key metrics and formatted as an insightful summary, ran daily using Crontab
 
 ## Usage

@@ -32,6 +32,8 @@ These take the form of:
 4. User may navigate via the buttons on the righthand side of each page
 5. Filters by gender, minimum & maximum value, and date of ride for interactability
 
+![Sample](file:///var/folders/tn/my7fmgyj3gx8811h_mwsw1mh0000gn/T/TemporaryItems/NSIRD_screencaptureui_qv9QIX/Screenshot%202023-02-07%20at%2010.10.40.png)
+
 ## Credits
 
 Direct contributors to the repository:

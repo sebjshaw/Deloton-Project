@@ -1,3 +1,5 @@
+![Logo](https://github.com/sebjshaw/Deloton-Project/tree/read-me#:~:text=17%20hours%20ago-,DelotonLogo.png,-Add%20files%20via)
+
 # Deloton-Project
 
 ## Table of contents

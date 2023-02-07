@@ -24,6 +24,12 @@ These take the form of:
 
 ## Usage
 
+### Heart Rate Email Alerts
+
+1. EC2 hosting Kafka data stream automatically alerts user when their heart rate exceeds a certain level
+2. Heart Rate Level calculated by age and weight
+3. Currently, emails sent to this address: [three.musketeers.deloton@gmail.com](three.musketeers.deloton@gmail.com)
+
 ### Tableau Dashboard
 
 1. Create a Tableau Cloud account if not done already ([Tableau](https://www.tableau.com/tableau-login-hub)).

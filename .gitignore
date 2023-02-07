@@ -3,3 +3,4 @@
 *venv/
 *__pycache__/
 *dash_db.db
+*.pdf

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Deloton Daily Report</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="container">
+      <div id="header">
+        <div id="title">
+          <h1>Deloton Daily Report</h1>
+        </div>
+        <div id="date">
+          <h1>{{date}}</h1>
+        </div>
+      </div>
+      <div id="content1">
+        <div id="rides_graph">{{item_1}}</div>
+        <div id="metrics">
+          <div id="row1">
+            <div id="metric1">{{item_2}}</div>
+            <div id="metric2">{{item_3}}</div>
+          </div>
+          <div id="row2">
+            <div id="metric3">{{item_4}}</div>
+            <div id="metric4">{{item_5}}</div>
+          </div>
+        </div>
+      </div>
+      <div id="content2">
+        <div id="avg_dur_graph">{{item_6}}</div>
+        <div id="avg_res_graph">{{item_7}}</div>
+      </div>
+      <div id="content3">
+        <div id="stat1">{{item_8}}</div>
+        <div id="stat2">{{item_9}}</div>
+        <div id="stat3">{{item_10}}</div>
+      </div>
+      <div id="footer">{{footer}}</div>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>

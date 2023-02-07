@@ -1,0 +1,92 @@
+body {
+  background-color: #333333;
+}
+
+#container {
+  background-color: white;
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#header {
+  padding: 10px;
+  clear: both;
+}
+#title {
+  width: 590px;
+  float: left;
+}
+#date {
+  width: 190px;
+  float: right;
+}
+
+#content1 {
+  padding: 10px;
+  clear: both;
+}
+#rides_graph {
+  width: 390px;
+  float: left;
+}
+#metrics {
+  width: 390px;
+  float: right;
+}
+#row1 {
+  padding: 6px;
+}
+#metric1 {
+  float: left;
+  width: 186px;
+}
+#metric2 {
+  float: right;
+  width: 186px;
+}
+#row2 {
+  padding: 6px;
+}
+#metric3 {
+  float: left;
+  width: 186px;
+}
+#metric4 {
+  float: right;
+  width: 186px;
+}
+
+#content2 {
+  padding: 10px;
+  clear: both;
+}
+#avg_dur_graph {
+  width: 390px;
+  float: left;
+}
+#avg_res_graph {
+  width: 390px;
+  float: right;
+}
+
+#content3 {
+  padding: 10px;
+  clear: both;
+}
+#stat1 {
+  width: 260px;
+  float: left;
+}
+#stat2 {
+  width: 260px;
+  float: right;
+}
+#stat3 {
+  width: 260px;
+  float: right;
+}
+
+#footer {
+  clear: both;
+}

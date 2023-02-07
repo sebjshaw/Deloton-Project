@@ -89,7 +89,7 @@ Get all rides for a specific date
 ### Email Alerts
 
 1. EC2 hosting Kafka data stream automatically alerts user when their heart rate exceeds a certain level
-2. Heart Rate Level calculated by age and weight
+2. Heart Rate Level calculated by age
 3. Currently, emails sent to this address: three.musketeers.deloton@gmail.com
 
 ![Screenshot_Email](https://user-images.githubusercontent.com/115073814/217221056-2253c7c2-8ace-41bc-91f5-7f412795570c.png)

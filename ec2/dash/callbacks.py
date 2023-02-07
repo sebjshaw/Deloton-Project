@@ -258,7 +258,7 @@ def get_avg_ride_length_by_gender_and_age(n):
 			FROM users u
 				JOIN rides r
 					USING(user_id)
-			WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ',r.time_started) as TIMESTAMP)))/3600 < 12
+			WHERE (date || ' ' || time_started)::timestamp >= (current_timestamp - interval '12 hours')::timestamp
 			GROUP BY age_group, gender
 			ORDER BY age_group;
 		"""
@@ -292,7 +292,7 @@ def get_total_rides_by_gender_and_age(n):
 			FROM users u
 				JOIN rides r
 					USING(user_id)
-			WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ',r.time_started) as TIMESTAMP)))/3600 < 12
+			WHERE (date || ' ' || time_started)::timestamp >= (current_timestamp - interval '12 hours')::timestamp
 			GROUP BY gender, age_group
 			ORDER BY age_group;
 		"""
@@ -327,7 +327,7 @@ def get_avg_power_by_age(n):
 				FROM users u
 					JOIN rides r
 						USING(user_id)
-				WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ',r.time_started) as TIMESTAMP)))/3600 < 12
+				WHERE (date || ' ' || time_started)::timestamp >= (current_timestamp - interval '12 hours')::timestamp
 				GROUP BY gender, age_group
 				ORDER BY age_group;
 		"""
@@ -339,7 +339,7 @@ def get_avg_power_by_age(n):
 		"total_power_value",'children'
 	),
 	Output(
-		"avg_power_value",'children'
+		"average_power_value",'children'
 	),
 	[
 		Input(
@@ -351,10 +351,11 @@ def total_average_power(n):
 	power = pg.get_list(
 	"""
 		SELECT 
-			SUM(r.power),
-			AVG(r.power)
-		FROM rides r
-		WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ',r.time_started) as TIMESTAMP)))/3600 < 12
+			ROUND(SUM(average_power*total_duration), 1),
+			ROUND(AVG(average_power*total_duration), 1)
+		FROM rides
+		WHERE (date || ' ' || time_started)::timestamp >= (current_timestamp - interval '12 hours')::timestamp
 	"""
 	)[0]
+	print(power)
 	return power[0], power[1]

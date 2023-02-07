@@ -123,6 +123,9 @@ def update_rpm_value(n):
 	Output(
 		"heart_rate_value",'children'
 	),
+	Output(
+		"heart_rate",'style'
+	),
 	[
 		Input(
 			'interval_component', 'n_intervals'
@@ -131,7 +134,16 @@ def update_rpm_value(n):
 )
 def update_heart_rate_value(n):
 	value = sql.get_list("""SELECT heart_rate FROM current_ride""")[-1][0]
-	return value
+	max = sql.get_list("""SELECT max_hr from user_info""")[-1][0]
+	if int(value) == 0.9 * int(max):
+		return value, {'color': '#ffe700', 'borderColor': '#ffe700'}
+	elif int(value) == 0.95 * int(max):
+		return value, {'color': '#ff6700', 'borderColor': '#ff6700'}
+	elif int(value) >= int(max):
+		return value, {'color': '#ff0018', 'borderColor': '#ff0018'}
+	else:
+		return value, {}
+
 # POWER
 @callback(
 	Output(

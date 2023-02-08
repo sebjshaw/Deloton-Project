@@ -106,13 +106,14 @@ def get_user_ride_info(path: list) -> dict:
 			return {"output": 'No matching records'}
 	except Exception as e:
 		return {'error':str(e)}
-
+    
 def get_ride_info_for_specific_day(event:dict) -> dict:
 	"""
 		GET /daily?date=01-01-2020\n
 		Get all rides for a specific date\n
 		If no date has been specified, return all rides from the last 24 hours
 	"""
+  
 	date = event['rawQueryString']
 	try:
 		if 'date' in date:

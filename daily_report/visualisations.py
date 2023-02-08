@@ -1,6 +1,4 @@
-import plotly
 import plotly.express as px
-import plotly.graph_objs as go
 import pandas as pd
 
 def create_line_graph(df: pd.DataFrame, x: str, y:str) -> px.line:

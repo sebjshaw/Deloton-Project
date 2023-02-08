@@ -1,6 +1,4 @@
 import base64
-from IPython.display import display, HTML
-from xhtml2pdf import pisa
 from datetime import datetime
 from PGConnection import SQLConnection as postgres
 import os
@@ -188,6 +186,19 @@ def get_longest_ride():
             """)[-1][0]
     return value
 
+def get_largest_power():
+    value = pg.get_list(f"""
+            SELECT 
+                max_power
+            FROM rides AS r
+            WHERE 
+                EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ',r.time_started) as TIMESTAMP)))/3600 < 24
+            ORDER BY 
+                max_power DESC
+            LIMIT 1
+            """)[-1][0]
+    return value
+
 def figure_to_base64(figure):
 
     image = str(base64.b64encode(figure.to_image(format="png", scale=2)))[2:-1]
@@ -199,7 +210,7 @@ def figure_to_base64(figure):
 today = str(datetime.now().date())
 total_rides = get_total_daily_rides()
 total_rides_html = figure_to_base64(total_rides)
-avg_power = f"{(math.floor(get_avg_power()))} W"
+avg_power = f"{(round(get_avg_power(), 2))} W"
 total_ride_time = f"{get_total_ride_time('both')} s"
 ride_time_m = f"{get_total_ride_time('Male')} s"
 ride_time_f = f"{get_total_ride_time('Female')} s"
@@ -209,7 +220,7 @@ avg_ride_dur_html = figure_to_base64(avg_ride_dur)
 avg_ride_pow = get_avg_power_by_gender_and_age()
 avg_ride_pow_html = figure_to_base64(avg_ride_pow)
 over_max_hr = pull_txt_file_from_s3()
-new_riders = 'x new riders today'
+max_power = f"{round(get_largest_power(), 2)} W"
 longest_ride = f"{get_longest_ride()} s"
 
 content_dict = {
@@ -217,7 +228,7 @@ content_dict = {
     '{{ avg_power }}':avg_power,'{{ total_ride_time }}':total_ride_time,
     '{{ ride_time_m }}': ride_time_m, '{{ ride_time_f }}': ride_time_f, '{{ avg_hr }}':avg_hr,
     '{{ avg_dur_graph }}':avg_ride_dur_html,'{{ avg_pow_graph }}':avg_ride_pow_html,
-    '{{ over_max_hr }}':over_max_hr,'{{ new_riders }}':new_riders,
+    '{{ over_max_hr }}':over_max_hr,'{{ max_power }}':max_power,
     '{{ longest_ride }}':longest_ride}
 
 def create_html_report(template_file, content_dict):

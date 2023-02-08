@@ -9,7 +9,7 @@ class SQLConnection():
 	"""Create a PostgreSQL connection class
 	"""
 	def __init__(self, username:str, password:str, host:str, port:str, db_name:str) -> None:
-		self.engine = sqlalchemy.create_engine(f'postgresql+psycopg2://{username}:{password}@{host}:{port}/{db_name}')
+		self.engine = sqlalchemy.create_engine(f'postgresql+psycopg2://{username}:{password}@{host}:{port}/{db_name}', isolation_level='AUTOCOMMIT')
 		self.conn = self.engine.connect()
 	
 	def get_df(self, query:str) -> pd.DataFrame:

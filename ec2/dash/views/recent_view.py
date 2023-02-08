@@ -29,9 +29,9 @@ recent_layout = html.Div(
 						html.Div(
 							children = [
 								html.Div(
-									html.H2('RPM',id='rpm_text', className='bit_title'),
+									html.H2('Total Power',id='total_power_text', className='bit_title'),
 								),
-								html.H2('RPM',id='rpm_value')
+								html.H2('Watts',id='total_power_value')
 							],
 							id="rpm_recent",
 							className='bit'
@@ -39,9 +39,9 @@ recent_layout = html.Div(
 						html.Div(
 							children = [
 								html.Div(
-									html.H2('RESISTANCE',id='resistance_text', className='bit_title'),
+									html.H2('Average Power',id='avg_power_text', className='bit_title'),
 								),
-								html.H2('RES',id='resistance_value')
+								html.H2('Watts',id='average_power_value')
 							],
 							id='resistance',
 							className='bit'

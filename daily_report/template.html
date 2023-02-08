@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Deloton Daily Report</title>  
+    <link rel="stylesheet" href="style.css">
+    <style>
+      body {
+        background-color: #333333;
+      }
+
+      #container {
+        background-color: white;
+        width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+      }
+
+      #header {
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+      #title {
+        width: 590px;
+      }
+      #date {
+        width: 190px;
+      }
+
+
+      #content1 {
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+      }
+      #rides_graph {
+        width: 390px;
+        float: left;
+      }
+      #metrics {
+        width: 390px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+      }
+      #row1 {
+        padding: 6px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+      }
+      #metric1 {
+        width: 186px;
+      }
+      #metric2 {
+        width: 186px;
+      }
+      #row2 {
+        padding: 6px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+      }
+      #metric3 {
+        width: 186px;
+      }
+      #metric4 {
+        width: 186px;
+      }
+
+      #content2 {
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+      }
+      #avg_dur_graph_div {
+        width: 40vw;
+      }
+      #avg_res_graph_div {
+        width: 40vw;
+      }
+
+      .figure{
+        width:40vw
+      }
+
+      #content3 {
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+      }
+      #stat1 {
+        width: 260px;
+        text-align: center;
+      }
+      #stat2 {
+        width: 260px;
+        text-align: center;
+      }
+      #stat3 {
+        width: 260px;
+        text-align: center;
+      }
+
+      #footer {
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+      #logo {
+        width: 390px;
+      }
+      #authors {
+        width: 390px;
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div id="header">
+        <div id="title">
+          <h1>Deloton Daily Report</h1>
+        </div>
+        <div id="date">
+          <h1>{{ date }}</h1>
+        </div>
+      </div>
+      <div id="content1">
+        <div id="rides_graph">{{ item1 }}</div>
+        <div id="metrics">
+          <div id="row1">
+            <div id="metric1">{{ item2 }}</div>
+            <div id="metric2">{{ item3 }}</div>
+          </div>
+          <div id="row2">
+            <div id="metric3">{{ item4 }}</div>
+            <div id="metric4">{{ item5 }}</div>
+          </div>
+        </div>
+      </div>
+      <div id="content2">
+        <div id="avg_dur_graph_div">{{ item6 }}</div>
+        <div id="avg_res_graph_div">{{ item7 }}</div>
+      </div>
+      <div id="content3">
+        <div id="stat1">{{ item8 }}</div>
+        <div id="stat2">{{ item9 }}</div>
+        <div id="stat3">{{ item10 }}</div>
+      </div>
+      <div id="footer"> 
+        <div id="logo">{{ logo }}</div>
+        <div id="authors">{{ authors }}</div>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>

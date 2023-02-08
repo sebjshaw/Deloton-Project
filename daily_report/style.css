@@ -8,24 +8,27 @@ body {
   margin-left: auto;
   margin-right: auto;
   padding: 10px;
+  display: flex;
 }
 
 #header {
   padding: 10px;
-  clear: both;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 #title {
   width: 590px;
-  float: left;
 }
 #date {
   width: 190px;
-  float: right;
 }
 
 #content1 {
   padding: 10px;
-  clear: both;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 #rides_graph {
   width: 390px;
@@ -33,74 +36,77 @@ body {
 }
 #metrics {
   width: 390px;
-  float: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }
 #row1 {
   padding: 6px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 #metric1 {
-  float: left;
   width: 186px;
 }
 #metric2 {
-  float: right;
   width: 186px;
 }
 #row2 {
   padding: 6px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 #metric3 {
-  float: left;
   width: 186px;
 }
 #metric4 {
-  float: right;
   width: 186px;
 }
 
 #content2 {
   padding: 10px;
-  clear: both;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 #avg_dur_graph {
   width: 390px;
-  float: left;
 }
 #avg_res_graph {
   width: 390px;
-  float: right;
 }
 
 #content3 {
   padding: 10px;
-  clear: both;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 #stat1 {
   width: 260px;
-  float: left;
   text-align: center;
 }
 #stat2 {
   width: 260px;
-  float: right;
   text-align: center;
 }
 #stat3 {
   width: 260px;
-  float: right;
   text-align: center;
 }
 
 #footer {
   padding: 10px;
-  clear: both;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 #logo {
-  float: left;
   width: 390px;
 }
 #authors {
-  float: right;
   width: 390px;
   text-align: right;
 }

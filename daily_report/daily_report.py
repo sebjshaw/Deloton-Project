@@ -5,10 +5,13 @@ from datetime import datetime
 from PGConnection import SQLConnection as postgres
 import os
 import math
+import s3fs
 from visualisations import create_line_graph, create_grouped_bar_graph
 from dotenv import load_dotenv
 load_dotenv()
 
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 
 USERNAME = os.getenv('USERNAME')
 PASSWORD = os.getenv('PASSWORD')
@@ -18,6 +21,20 @@ DB_NAME = os.getenv('DB_NAME')
 
 pg = postgres(USERNAME, PASSWORD, HOST, PORT, DB_NAME)
 
+def pull_txt_file_from_s3() -> object:
+    """Pulls the txt file from the bucket that contains the number of hr warning emails that were sent in the last 24 hours
+
+    Returns:
+        str: the number of emails as a string
+    """
+    s3 = s3fs.S3FileSystem(anon=False)
+    file = s3.find('three-m-deloton-bucket/hr_emails.txt')
+
+    with s3.open(file[0]) as f:
+        total_emails = f.read()
+        total_emails = total_emails.decode("utf-8")
+
+    return total_emails
 
 def get_total_daily_rides():
     """Creates a line graph tracking the total rides over the last 7 days 
@@ -178,6 +195,7 @@ def figure_to_base64(figure):
  
     return image_html
 
+
 today = str(datetime.now().date())
 total_rides = get_total_daily_rides()
 total_rides_html = figure_to_base64(total_rides)
@@ -190,11 +208,9 @@ avg_ride_dur = get_avg_ride_length_by_gender_and_age()
 avg_ride_dur_html = figure_to_base64(avg_ride_dur)
 avg_ride_pow = get_avg_power_by_gender_and_age()
 avg_ride_pow_html = figure_to_base64(avg_ride_pow)
-over_max_hr = 'x riders went over max heart rate today'
+over_max_hr = pull_txt_file_from_s3()
 new_riders = 'x new riders today'
 longest_ride = f"{get_longest_ride()} s"
-logo = 'logo'
-authors = 'authors'
 
 content_dict = {
     '{{ date }}':today,'{{ total_rides_graph }}':total_rides_html,

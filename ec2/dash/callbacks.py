@@ -123,6 +123,9 @@ def update_rpm_value(n):
 	Output(
 		"heart_rate_value",'children'
 	),
+	Output(
+		"heart_rate_value",'style'
+	),
 	[
 		Input(
 			'interval_component', 'n_intervals'
@@ -131,7 +134,16 @@ def update_rpm_value(n):
 )
 def update_heart_rate_value(n):
 	value = sql.get_list("""SELECT heart_rate FROM current_ride""")[-1][0]
-	return value
+	max = sql.get_list("""SELECT max_hr from user_info""")[-1][0]
+	if int(value) == 0.9 * int(max):
+		return value, {'color': '#ffe700'}
+	elif int(value) == 0.95 * int(max):
+		return value, {'color': '#ff6700'}
+	elif int(value) >= int(max):
+		return value, {'color': '#ff0018'}
+	else:
+		return value, {}
+
 # POWER
 @callback(
 	Output(
@@ -258,7 +270,7 @@ def get_avg_ride_length_by_gender_and_age(n):
 			FROM users u
 				JOIN rides r
 					USING(user_id)
-			WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ',r.time_started) as TIMESTAMP)))/3600 < 12
+			WHERE (date || ' ' || time_started)::timestamp >= (current_timestamp - interval '12 hours')::timestamp
 			GROUP BY age_group, gender
 			ORDER BY age_group;
 		"""
@@ -292,7 +304,7 @@ def get_total_rides_by_gender_and_age(n):
 			FROM users u
 				JOIN rides r
 					USING(user_id)
-			WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ',r.time_started) as TIMESTAMP)))/3600 < 12
+			WHERE (date || ' ' || time_started)::timestamp >= (current_timestamp - interval '12 hours')::timestamp
 			GROUP BY gender, age_group
 			ORDER BY age_group;
 		"""
@@ -327,10 +339,35 @@ def get_avg_power_by_age(n):
 				FROM users u
 					JOIN rides r
 						USING(user_id)
-				WHERE EXTRACT(EPOCH FROM AGE(NOW(), CAST(CONCAT(r.date, ' ',r.time_started) as TIMESTAMP)))/3600 < 12
+				WHERE (date || ' ' || time_started)::timestamp >= (current_timestamp - interval '12 hours')::timestamp
 				GROUP BY gender, age_group
 				ORDER BY age_group;
 		"""
 	)
 	return create_grouped_bar_graph(df, 'age_group', 'average_power', 'gender', 'Average Power')
 
+@callback(
+	Output(
+		"total_power_value",'children'
+	),
+	Output(
+		"average_power_value",'children'
+	),
+	[
+		Input(
+			'fifteen_minute_refresh', 'n_intervals'
+		)
+	]
+)
+def total_average_power(n):
+	power = pg.get_list(
+	"""
+		SELECT 
+			ROUND(SUM(average_power*total_duration), 1),
+			ROUND(AVG(average_power*total_duration), 1)
+		FROM rides
+		WHERE (date || ' ' || time_started)::timestamp >= (current_timestamp - interval '12 hours')::timestamp
+	"""
+	)[0]
+	print(power)
+	return power[0], power[1]

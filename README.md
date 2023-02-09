@@ -86,6 +86,12 @@ Get all rides for a specific date
 
 ### Daily Report
 
+16:45 every day, daily report is generated and sent off to the Deloton CEO's email detailing main findings over the last 24 hours.
+Included in email as a link to index.html page which contains links to all historic daily reports. The index.html and daily reports are on an s3 bucket which acts as a host for the page. The most recent daily report is at the top. 
+Automated using Crontab
+
+<img width="435" alt="daily_reportoooo" src="https://user-images.githubusercontent.com/115073814/217875230-8b640656-a526-4593-bcbc-29b06380c902.png">
+
 ### Email Alerts
 
 1. EC2 hosting Kafka data stream automatically alerts user when their heart rate exceeds a certain level
@@ -125,6 +131,17 @@ Resources used:
 
 ## Further Development
 
+### Live Dashboard
+
+- Button to change the theme of the dashboard between light-mode and dark-mode
+- Backtrack kafka logs to find user info when starting the EC2 middway through a ride
+
+### API
+
+- Authentication layer
+### Daily Report
+- Customise the summary in the report to be a bespoke overview of that specific days metrics and insights. 
+- Have a !!WARNING!! at the top of the page if there are more than 5 heart rate emails sent in one day
 ### Email Alerts
 
 - Having a dedicated email address for sending heart rate exceeding limit email to a user's email that they have verified.

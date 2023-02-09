@@ -135,9 +135,9 @@ def update_rpm_value(n):
 def update_heart_rate_value(n):
 	value = sql.get_list("""SELECT heart_rate FROM current_ride""")[-1][0]
 	max = sql.get_list("""SELECT max_hr from user_info""")[-1][0]
-	if int(value) == 0.9 * int(max):
+	if 0.9 * int(max) < int(value) < 0.95 * int(max):
 		return value, {'color': '#ffe700'}
-	elif int(value) == 0.95 * int(max):
+	elif 0.95 * int(max) < int(value) <  int(max):
 		return value, {'color': '#ff6700'}
 	elif int(value) >= int(max):
 		return value, {'color': '#ff0018'}
@@ -202,7 +202,7 @@ def update_resistance(n):
 )
 def update_rpm_figure(n):
 	df = sql.get_df("""SELECT duration, rpm FROM current_ride""")
-	return create_line_graph(df, 'duration', 'rpm')
+	return create_line_graph(df, 'duration', 'rpm', 'RPM')
 # HEART RATE
 @callback(
 	Output(
@@ -216,7 +216,7 @@ def update_rpm_figure(n):
 )
 def update_heart_rate_figure(n):
 	df = sql.get_df("""SELECT duration, heart_rate FROM current_ride""")
-	return create_line_graph(df, 'duration', 'heart_rate')
+	return create_line_graph(df, 'duration', 'heart_rate', 'Heart Rate')
 # POWER
 @callback(
 	Output(
@@ -237,7 +237,7 @@ def update_power_figure(n):
 	# INTERESTING
 	# Raw power graph is correlated with the rpm
 	# Moving average power graph looks correlated with the hr 
-	return create_line_graph(df, 'duration', 'power')
+	return create_line_graph(df, 'duration', 'power', 'Power')
 
 
 # # RECENT RIDES FIGURES

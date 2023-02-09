@@ -10,12 +10,13 @@ key = os.getenv('aws_access_key_id')
 secret = os.getenv('aws_secret_access_key')
 
 s3 = s3fs.S3FileSystem(anon=False, key=key, secret=secret)
-boto = boto3.resource('s3', key=key, secret=secret)
+boto = boto3.resource('s3')
 bucket = "three-m-deleton-report"
 
 def lambda_handler(event, context):
 	contents = s3.ls(bucket)
-	contents = [page.split("/")[-1] for page in contents if ('.html' in page and 'index.html' not in page)].sort(reverse=True)
+	contents = [page.split("/")[-1] for page in contents if '.html' in page and 'index.html' not in page]
+	contents.sort(reverse=True)
 	file = open("index.html", "r")
 	html = file.read()
 

@@ -73,8 +73,8 @@ def lambda_handler(event,context):
 					"GET /rider/<rider_id>": "rider by user_id",
 					"GET /rider/<rider_id>/rides": "all rides from a specific rider",
 					"DELETE /ride/<ride_id>": "delete ride by ride_id",
-					"/daily": "rides from the last 24 hour period",
-					"/daily?date=dd-mm-yyyy": "rides from a specified day",
+					"GET /daily": "rides from the last 24 hour period",
+					"GET /daily?date=dd-mm-yyyy": "rides from a specified day",
 				}
 			}
 		)

@@ -63,4 +63,18 @@ def delete_ride_by_id(path: list) -> dict:
 
 def lambda_handler(event,context):
 	path = event['rawPath'].split('/')
-	return json.dumps(delete_ride_by_id(path))
+	if path[1] == 'ride':
+		return json.dumps(delete_ride_by_id(path))
+	else:
+		return json.dumps(
+			{
+				"available_endpoints": {
+					"GET /ride/<ride_id>": "ride by id",
+					"GET /rider/<rider_id>": "rider by user_id",
+					"GET /rider/<rider_id>/rides": "all rides from a specific rider",
+					"DELETE /ride/<ride_id>": "delete ride by ride_id",
+					"/daily": "rides from the last 24 hour period",
+					"/daily?date=dd-mm-yyyy": "rides from a specified day",
+				}
+			}
+		)

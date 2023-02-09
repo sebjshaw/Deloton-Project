@@ -16,8 +16,9 @@ def create_line_graph(df: pd.DataFrame, x: str, y:str) -> px.line:
 	"""
 	y_title = y.replace("_"," ").capitalize()
 	x_title = x.replace("_"," ").capitalize()
+	title = "Total Rides across the last 7 days"
 
-	fig = px.line(df, x, y).update_layout(paper_bgcolor="#333333", plot_bgcolor='#333333')
+	fig = px.line(df, x, y, title=title).update_layout(paper_bgcolor="#333333", plot_bgcolor='#333333')
 
 	fig.update_xaxes(title = x_title, title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'))
 	fig.update_xaxes(gridcolor='#7fc37e', zerolinecolor='#7fc37e', zerolinewidth=3)
@@ -28,7 +29,13 @@ def create_line_graph(df: pd.DataFrame, x: str, y:str) -> px.line:
         font=dict(
             color="red"
         )
-    )
+    ), 
+		title={
+        'x':0.5,
+        'xanchor': 'center',
+		},
+		title_font_size=22,
+		font_color='#fefee2'
 	)
 
 	return fig

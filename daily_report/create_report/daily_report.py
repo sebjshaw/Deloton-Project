@@ -38,6 +38,7 @@ def pull_txt_file_from_s3() -> str:
 
     return total_emails
 
+
 def get_total_daily_rides() -> px.line:
     """Creates a line graph tracking the total rides over the last 7 days 
 
@@ -88,6 +89,7 @@ def get_avg_ride_length_by_gender_and_age() -> px.bar:
 		"""
 	)
     return create_grouped_bar_graph(df, 'age_group', 'average_duration', 'gender', 'Average Ride Duration', 's')
+
 
 def get_avg_power_by_gender_and_age() -> px.bar:
     """Gets the average power length split by user gender and age for las 24 hours. 
@@ -202,7 +204,7 @@ def get_largest_power() -> int:
             LIMIT 1
             """)[-1][0]
     return value
-
+    
 def encode_logo_as_base64() -> str:
     """Takes the logo png and encodes as base64 for insertion into the html template
 
@@ -371,3 +373,4 @@ def lambda_handler(event,context):
     send_ceo_report_email()
 
 lambda_handler('x', 'x')
+

@@ -6,7 +6,7 @@ from SQLConnection import SQLConnection
 
 sql = SQLConnection('./ec2/ingestion/dash_db.db')
 
-def create_line_graph(df: pd.DataFrame, x: str, y:str) -> px.line:
+def create_line_graph(df: pd.DataFrame, x: str, y:str, title:str) -> px.line:
 	"""
 	Generate a line graph from a dataframe
 
@@ -14,11 +14,14 @@ def create_line_graph(df: pd.DataFrame, x: str, y:str) -> px.line:
 			df (pd.DataFrame): dataframe containing columns to be plotted
 			x (str): string of column name
 			y (str): string of column name
+			title (str): graph title
 
 	Returns:
 			px.line: line graph plotting x and y
 	"""
-	fig = px.line(df, x, y).update_layout(paper_bgcolor="#333333", plot_bgcolor='#333333')
+	fig = px.line(df, x, y).update_layout(paper_bgcolor="#333333", plot_bgcolor='#333333', title=title)
+
+
 
 	fig.update_xaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'))
 	fig.update_xaxes(gridcolor='#7fc37e', zerolinecolor='#7fc37e', zerolinewidth=3)
@@ -55,9 +58,9 @@ def create_grouped_bar_graph(df:pd.DataFrame, x:str, y:str, group:str, title: st
 	"""
 	fig = px.bar(df, x, y, color=group, barmode='group', text_auto='.0f', title=title).update_layout(paper_bgcolor="#333333", plot_bgcolor='#333333')
 
-	fig.update_xaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'))
+	fig.update_xaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'), title=format_axes_labels(x))
 	fig.update_xaxes(gridcolor='#7fc37e', zerolinecolor='#7fc37e', zerolinewidth=3)
-	fig.update_yaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'))
+	fig.update_yaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'), title=format_axes_labels(y))
 	fig.update_yaxes(gridcolor='#7fc37e', zerolinecolor='#7fc37e', zerolinewidth=3)
 	fig.update_layout(
     legend=dict(
@@ -73,3 +76,14 @@ def create_grouped_bar_graph(df:pd.DataFrame, x:str, y:str, group:str, title: st
 		font_color='#fefee2'
 	)
 	return fig
+
+
+def format_axes_labels(label: str) -> str:
+	if '_' in label:
+		label = label.split('_')
+		new_label = []
+		for word in label:
+			word = word[0].upper()+word[1:]
+		return " ".join(label)
+	else:
+		return label[0].upper()+label[1:]

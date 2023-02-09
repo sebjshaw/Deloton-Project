@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Deloton Daily Report</title>  
+    <link rel="stylesheet" href="style.css">
+    <style>
+      body {
+        background-color: #333333;
+      }
+
+      #container {
+        background-color: #333333;
+        color: #fefee2;
+        width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+      }
+
+      #header {
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        border: #7e8073 4px solid;
+        background-color: #7fc37e;
+        border-radius: 10px;
+        width:80vw;
+      }
+      #summary {
+        width:80vw;
+        text-align:center;
+      }
+      #title {
+        width: 590px;
+      }
+      #date {
+        width: 190px;
+      }
+
+      #total_graph{
+        width:50vw;
+      }
+
+      #content1 {
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+      }
+      .graph {
+        width: 45vw;
+      }
+      #metrics {
+        width: 45vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+      }
+      .bit {
+	    border: #7fc37e 4px solid;
+	    text-align: center;
+	    background-color: #7e8073;
+	    border-radius: 10px;
+      }
+      .row {
+        padding: 6px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+      }
+      .metric {
+        width: 18vw;
+        text-align:center;
+      }
+
+      #content2 {
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+      }
+
+      .figure{
+        width:43vw
+      }
+
+      #content3 {
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        width: 80vw;
+      }
+      .stat {
+        width: 25vw;
+        text-align: center;
+      }
+
+      #footer {
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width:80vw;
+      }
+      #logo {
+        width: 20vw;
+      }
+      #authors {
+        width: 390px;
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div id="header">
+        <div id="title">
+          <h1>Daily Report</h1>
+        </div>
+        <div id="date">
+          <h1>{{ date }}</h1>
+        </div>
+      </div>
+      <div id="summary">
+        <h3>Summary:</h3>
+        <h4>The following report contains graphic visualisations of the day's rides. It allows comparison of today's total rides with the last 
+          7 days, to see which the most popular day of the week is, as well as breaking down certain key metrics by age and gender, providing useful insights 
+          into the customer base. Additional statistics are provided which show the number of heart rate alert emails sent in the last 24 hours, the maximum 
+          power output achieved by an individual rider and the day's longest ride.
+        </h4>
+      </div>
+      <div id="content1">
+        <div id="total_graph">{{ total_rides_graph }}</div>
+        <div id="metrics">
+          <div class="row">
+            <div class="bit metric">
+              <h2>Average Power/Ride:</h2>
+              <h2>{{ avg_power }}</h2>
+            </div>
+            <div class="bit metric">
+              <h2>Total Ride Time:</h2>
+              <h2>{{ total_ride_time }}</h2>
+            </div>
+          </div>
+          <div class="row">
+            <div class="bit metric">
+              <h2>Male Total Ride Time: {{ ride_time_m }}</h2>
+              <h2>Female Total Ride Time: {{ ride_time_f }}</h2>
+            </div>
+            <div class="bit metric">
+              <h2>Average Ride Heart Rate:</h2>
+              <h2>{{ avg_hr }}</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="content2">
+        <div class="graph">{{ avg_dur_graph }}</div>
+        <div class="graph">{{ avg_pow_graph }}</div>
+      </div>
+      <div id="content3">
+        <div class="stat bit">
+          <h2>Number of HR warning emails sent:</h2>
+          <h2>{{ over_max_hr }}</h2>
+        </div>
+        <div class="stat bit">
+          <h2>Maximum Power Output Acheived by a rider today:</h2>
+          <h2>{{ max_power }}</h2>
+        </div>
+        <div class="stat bit">
+          <h2>Today's Longest Ride:</h2>
+          <h2>{{ longest_ride }}</h2>
+        </div>
+      </div>
+      <div id="footer"> 
+        <div id="logo_div">
+          {{ logo }}
+        </div>
+        <div id="authors">
+          <h2>Created by: The Three Musketeers</h2>
+        </div>
+    </div>
+  </body>
+</html>

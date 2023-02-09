@@ -6,6 +6,10 @@ import boto3
 import os
 from datetime import datetime
 import cache
+import os
+from dotenv import load_dotenv
+load_dotenv
+
 
 FEB_1_2023_SECS = datetime.strptime('2023-02-01 00:00:00', '%Y-%m-%d %H:%M:%S') #the first of Feb as a datetime object
 NOW = datetime.now() #the second the program is initialised as a datetime object. For the ride_id of the interrupted ride
@@ -155,6 +159,12 @@ def push_csv_files_to_s3():
     s3.upload_file('./ec2/ingestion/most_recent_ride.csv', 'three-m-deloton-bucket', 'most_recent_ride.csv')
     s3.upload_file('./ec2/ingestion/user_info.csv', 'three-m-deloton-bucket', 'user_info.csv')
 
+def push_email_total_to_s3(total:int):
+    with open('./ec2/ingestion/hr_emails.txt', 'w') as f:
+        f.write(total)
+    s3.upload_file('./ec2/ingestion/hr_emails.txt', 'three-m-deloton-bucket', 'hr_emails.txt')
+    os.remove("./ec2/ingestion/hr_emails.txt")
+
 
 if __name__ == "__main__":
     recreate_current_ride_table(cursor, conn) #creates a table for the current ride data to be inserted into 
@@ -164,13 +174,19 @@ if __name__ == "__main__":
     user_info = 'N/A' #placeholder until user info is received
     user_info = 'N/A' #placeholder until user info is received
     user_id = 0000
+    total_hr_emails = 0
     
     # constantly retrieving logs and creating tables and csvs
     while True:
         try: 
             log_entry = create_log_entry(c)
             print(log_entry) #for reference, helps with debugging 
-            
+            try:
+                if log_entry['time'][:-7] == "16:44:00":
+                    push_email_total_to_s3(os.environ['TOTAL_HR_EMAILS'])
+                    os.environ['TOTAL_HR_EMAILS'] = 0
+            except:
+                continue
             # creates csv and pushes to s3, then deletes old current_ride table and creates new one 
             if log_entry.get('user_id') is not None:
                 push_csv_files_to_s3()
@@ -201,6 +217,7 @@ if __name__ == "__main__":
                     cache.set_cache_value(user_info['email_address'])
                     user_email_dict = create_dict_for_email(user_info, int(log_entry['heart_rate']), max_hr, log_entry['date'], int(log_entry['duration'][:-2]))
                     send_user_hr_warning(user_email_dict)
+                    os.environ['TOTAL_HR_EMAILS'] += 1
                     
         except KeyboardInterrupt:
             pass

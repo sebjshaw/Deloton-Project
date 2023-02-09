@@ -164,3 +164,14 @@ def lambda_handler(event, context):
 	elif path[1] == 'daily':
 		print(path)
 		return json.dumps(get_ride_info_for_specific_day(event))
+	else:
+		return json.dumps({
+			"available_endpoints": {
+				"GET /ride/<ride_id>": "ride by id",
+				"GET /rider/<rider_id>": "rider by user_id",
+				"GET /rider/<rider_id>/rides": "all rides from a specific rider",
+				"DELETE /ride/<ride_id>": "delete ride by ride_id",
+				"GET /daily": "rides from the last 24 hour period",
+				"GET /daily?date=dd-mm-yyyy": "rides from a specified day",
+			}
+		})

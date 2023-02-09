@@ -8,7 +8,7 @@ bucket = "three-m-deleton-report"
 
 def lambda_handler(event, context):
 	contents = s3.ls(bucket)
-	contents = [page.split("/")[-1] for page in contents if ('.html' in page and 'index.html' not in page)]
+	contents = [page.split("/")[-1] for page in contents if ('.html' in page and 'index.html' not in page)].sort(reverse=True)
 	file = open("index.html", "r")
 	html = file.read()
 

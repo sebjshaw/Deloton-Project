@@ -87,7 +87,7 @@ Get all rides for a specific date
 ### Daily Report
 
 16:45 every day, daily report is generated and sent off to the Deloton CEO's email detailing main findings over the last 24 hours.
-Sent off as a HTML file that can be downloaded as a PDF from the S3 bucket named: 'three-m-deleton-report'
+Included in email as a link to index.html page which contains links to all historic daily reports. The index.html and daily reports are on an s3 bucket which acts as a host for the page. The most recent daily report is at the top. 
 Automated using Crontab
 
 <img width="435" alt="daily_reportoooo" src="https://user-images.githubusercontent.com/115073814/217875230-8b640656-a526-4593-bcbc-29b06380c902.png">

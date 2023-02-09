@@ -6,17 +6,23 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+#credentials
 key = os.getenv('aws_access_key_id')
 secret = os.getenv('aws_secret_access_key')
+index_path = 'index.html'
 
+#s3 connection
 s3 = s3fs.S3FileSystem(anon=False, key=key, secret=secret)
-boto = boto3.resource('s3', key=key, secret=secret)
+boto = boto3.resource('s3')
 bucket = "three-m-deleton-report"
 
+#lambda function
 def lambda_handler(event, context):
 	contents = s3.ls(bucket)
-	contents = [page.split("/")[-1] for page in contents if ('.html' in page and 'index.html' not in page)].sort(reverse=True)
-	file = open("index.html", "r")
+	contents = [page.split("/")[-1] for page in contents if '.html' in page and 'index.html' not in page]
+	contents = [page.split(".")[0] for page in contents]
+	contents.sort(reverse=True)
+	file = open(index_path, "r")
 	html = file.read()
 
 	soup = bs(html,"html.parser")
@@ -32,14 +38,13 @@ def lambda_handler(event, context):
 		list_container.append(list_element)
 
 	changes = soup.prettify("utf-8")
+	
+	os.chdir('../../tmp')
 
-	with open("./index.html", 'wb') as file:
+	with open(index_path, 'wb') as file:
 		file.write(changes)
 
 	s3_path = f"s3://{bucket}/index.html"
 
-	# Define the local file path
-	local_path = "./index.html"
-
 	# Upload the file
-	s3.put(local_path, s3_path)
+	s3.put(index_path, s3_path)

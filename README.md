@@ -125,6 +125,15 @@ Resources used:
 
 ## Further Development
 
+### Live Dashboard
+
+- Button to change the theme of the dashboard between light-mode and dark-mode
+- Backtrack kafka logs to find user info when starting the EC2 middway through a ride
+
+### API
+
+- Authentication layer
+
 ### Email Alerts
 
 - Having a dedicated email address for sending heart rate exceeding limit email to a user's email that they have verified.

@@ -134,19 +134,19 @@ def send_user_hr_warning(user_info):
 
 # example email to send
 
-user_info = {
-    'date': '2023-02-02', 'time': '10:01:18.285918', 
-    'user_id': '4572', 'name': 'Harry Cook', 'gender': 'male', 
-    'address': 'Studio 69,Dickinson junction,East Timothy,L0 7EN', 
-    'date_of_birth': '1967-01-11', 'email_address': 'harry.c@gmail.com', 
-    'height_cm': '178', 'weight_kg': '66', 'account_create_date': '2022-02-21', 
-    'bike_serial': 'SN0000', 'original_source': 'social media'}
+#user_info = {
+#    'date': '2023-02-02', 'time': '10:01:18.285918', 
+#    'user_id': '4572', 'name': 'Harry Cook', 'gender': 'male', 
+#    'address': 'Studio 69,Dickinson junction,East Timothy,L0 7EN', 
+#    'date_of_birth': '1967-01-11', 'email_address': 'harry.c@gmail.com', 
+#    'height_cm': '178', 'weight_kg': '66', 'account_create_date': '2022-02-21', 
+#    'bike_serial': 'SN0000', 'original_source': 'social media'}
 
-curr_hr = 190
-max_hr = 187 # 33 years old
-date = '2023-02-02'
-duration = 24
+#curr_hr = 190
+#max_hr = 187 # 33 years old
+#date = '2023-02-02'
+#duration = 24
 
-new_user_info = create_dict_for_email(user_info, curr_hr, max_hr, date, duration)
+#new_user_info = create_dict_for_email(user_info, curr_hr, max_hr, date, duration)
 
-send_user_hr_warning(new_user_info)
+#send_user_hr_warning(new_user_info)

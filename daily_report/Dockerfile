@@ -12,5 +12,4 @@ COPY template.html .
 
 ENV PYTHONUNBUFFERED True
 
-
 CMD [ "daily_report.lambda_handler" ]

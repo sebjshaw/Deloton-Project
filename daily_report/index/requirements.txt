@@ -1,3 +1,4 @@
 s3fs
 beautifulsoup4
 boto3
+python-dotenv

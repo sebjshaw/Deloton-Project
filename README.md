@@ -90,6 +90,7 @@ Get all rides for a specific date
 Sent off as a HTML file that can be downloaded as a PDF from the S3 bucket named: 'three-m-deleton-report'
 Automated using Crontab
 
+<img width="435" alt="daily_reportoooo" src="https://user-images.githubusercontent.com/115073814/217875230-8b640656-a526-4593-bcbc-29b06380c902.png">
 
 ### Email Alerts
 

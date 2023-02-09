@@ -34,13 +34,13 @@ def lambda_handler(event, context):
 
 	changes = soup.prettify("utf-8")
 
-	with open("./index.html", 'wb') as file:
+	with open("index.html", 'wb') as file:
 		file.write(changes)
 
 	s3_path = f"s3://{bucket}/index.html"
 
 	# Define the local file path
-	local_path = "./index.html"
+	local_path = "index.html"
 
 	# Upload the file
 	s3.put(local_path, s3_path)

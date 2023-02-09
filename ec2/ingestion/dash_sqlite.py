@@ -182,7 +182,7 @@ if __name__ == "__main__":
             log_entry = create_log_entry(c)
             print(log_entry) #for reference, helps with debugging 
             try:
-                if log_entry['time'][:-7] == "16:40:00":
+                if log_entry['time'][:-7] == "16:44:00":
                     push_email_total_to_s3(os.environ['TOTAL_HR_EMAILS'])
                     os.environ['TOTAL_HR_EMAILS'] = 0
             except:

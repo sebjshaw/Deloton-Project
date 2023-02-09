@@ -268,7 +268,8 @@ def send_ceo_report_email():
     """
 
     SENDER = "trainee.alex.skowronski@sigmalabs.co.uk"
-    RECIPIENT = "bicycle-ceo@sigmalabs.co.uk"
+    # RECIPIENT = "bicycle-ceo@sigmalabs.co.uk"
+    RECIPIENT = "trainee.seb.shaw@sigmalabs.co.uk"
 
     AWS_REGION = "eu-west-2"
 
@@ -368,3 +369,5 @@ def lambda_handler(event,context):
     push_html_to_s3(today)
 
     send_ceo_report_email()
+
+lambda_handler('x', 'x')

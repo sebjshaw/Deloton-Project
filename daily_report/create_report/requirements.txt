@@ -3,7 +3,6 @@ python-dotenv
 pandas
 sqlalchemy
 plotly.express
-psycopg2
-psycopg2-binary 
+psycopg2-binary
 boto3
 botocore

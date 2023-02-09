@@ -135,9 +135,9 @@ def update_rpm_value(n):
 def update_heart_rate_value(n):
 	value = sql.get_list("""SELECT heart_rate FROM current_ride""")[-1][0]
 	max = sql.get_list("""SELECT max_hr from user_info""")[-1][0]
-	if int(value) == 0.9 * int(max):
+	if 0.9 * int(max) < int(value) < 0.95 * int(max):
 		return value, {'color': '#ffe700'}
-	elif int(value) == 0.95 * int(max):
+	elif 0.95 * int(max) < int(value) <  int(max):
 		return value, {'color': '#ff6700'}
 	elif int(value) >= int(max):
 		return value, {'color': '#ff0018'}

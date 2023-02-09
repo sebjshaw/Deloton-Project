@@ -86,6 +86,11 @@ Get all rides for a specific date
 
 ### Daily Report
 
+16:45 every day, daily report is generated and sent off to the Deloton CEO's email detailing main findings over the last 24 hours.
+Sent off as a HTML file that can be downloaded as a PDF from the S3 bucket named: 'three-m-deleton-report'
+Automated using Crontab
+
+
 ### Email Alerts
 
 1. EC2 hosting Kafka data stream automatically alerts user when their heart rate exceeds a certain level

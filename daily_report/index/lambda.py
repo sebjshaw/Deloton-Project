@@ -1,9 +1,16 @@
 import s3fs
 from bs4 import BeautifulSoup as bs
 import boto3
+import os
+from dotenv import load_dotenv
 
-s3 = s3fs.S3FileSystem(anon=False)
-boto = boto3.resource('s3')
+load_dotenv()
+
+key = os.getenv('aws_access_key_id')
+secret = os.getenv('aws_secret_access_key')
+
+s3 = s3fs.S3FileSystem(anon=False, key=key, secret=secret)
+boto = boto3.resource('s3', key=key, secret=secret)
 bucket = "three-m-deleton-report"
 
 def lambda_handler(event, context):

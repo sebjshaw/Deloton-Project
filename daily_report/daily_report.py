@@ -241,7 +241,9 @@ def create_html_report(template_file, content_dict):
 
     return report_html
  
- 
+# def write_daily_summary():
+
+
 def lambda_handler(event,context):
     today = str(datetime.now().date())
     total_rides = get_total_daily_rides()

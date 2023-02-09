@@ -34,6 +34,10 @@
         border-radius: 10px;
         width:80vw;
       }
+      #summary {
+        width:80vw;
+        text-align:center;
+      }
       #title {
         width: 590px;
       }
@@ -126,6 +130,14 @@
         <div id="date">
           <h1>{{ date }}</h1>
         </div>
+      </div>
+      <div id="summary">
+        <h3>Summary:</h3>
+        <h4>The following report contains graphic visualisations of the day's rides. It allows comparison of today's total rides with the last 
+          7 days, to see which the most popular day of the week is, as well as breaking down certain key metrics by age and gender, providing useful insights 
+          into the customer base. Additional statistics are provided which show the number of heart rate alert emails sent in the last 24 hours, the maximum 
+          power output achieved by an individual rider and the day's longest ride.
+        </h4>
       </div>
       <div id="content1">
         <div id="total_graph">{{ total_rides_graph }}</div>

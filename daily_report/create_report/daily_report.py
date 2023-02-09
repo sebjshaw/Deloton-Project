@@ -368,10 +368,3 @@ def lambda_handler(event,context):
     push_html_to_s3(today)
 
     send_ceo_report_email()
-
-
-
-    
-
-
-lambda_handler('x', 'x')

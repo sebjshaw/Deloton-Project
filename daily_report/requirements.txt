@@ -1,7 +1,0 @@
-s3fs
-python-dotenv
-pandas
-sqlalchemy
-plotly.express
-psycopg2
-psycopg2-binary 

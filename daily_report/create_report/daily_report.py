@@ -38,7 +38,6 @@ def pull_txt_file_from_s3() -> str:
 
     return total_emails
 
-
 def get_total_daily_rides() -> px.line:
     """Creates a line graph tracking the total rides over the last 7 days 
 
@@ -89,7 +88,6 @@ def get_avg_ride_length_by_gender_and_age() -> px.bar:
 		"""
 	)
     return create_grouped_bar_graph(df, 'age_group', 'average_duration', 'gender', 'Average Ride Duration', 's')
-
 
 def get_avg_power_by_gender_and_age() -> px.bar:
     """Gets the average power length split by user gender and age for las 24 hours. 
@@ -262,9 +260,9 @@ def push_html_to_s3(today: str):
     """
     
     s3_client = boto3.client('s3')
-    s3_client.upload_file(f'{today}.html','three-m-deleton-report',f'{today}.html')
+    s3_client.upload_file(f'{today}.html','three-m-deleton-report',f'{today}.html', ExtraArgs={'ACL': 'public-read'})
 
-def send_ceo_report_email():
+def send_ceo_report_email(today):
     """Receives the link to the index page containing links to current and past daily reports and sends an email 
     to the CEO using SES 
     """
@@ -288,10 +286,10 @@ def send_ceo_report_email():
     <h2>Daily Report</h2>
     
     <h4>Dear CEO,</h4>
-    <h4>We hope this finds you well. This email contains a link to the back log of daily reports. 
-    The most recent report will be at the top.</h4>
-
-    <a href="https://three-m-deleton-report.s3.eu-west-2.amazonaws.com/index.html">Daily Reports</a>
+    <h4>We hope this finds you well. This email contains two links. The first takes you to today's daily report.
+    The second takes you to a list of previous daily reports. Both are HTML links will can viewed in your browser.</h4>
+    <p><a href="https://three-m-deleton-report.s3.eu-west-2.amazonaws.com/{today}.html">Today's Report</a></p>
+    <p><a href="https://three-m-deloton-bucket.s3.eu-west-2.amazonaws.com/index.html">Previous Daily Reports</a></p>
      
     <h5>This email was sent to you by The Three Musketeers.</h5>
     </body>
@@ -370,7 +368,7 @@ def lambda_handler(event,context):
     
     push_html_to_s3(today)
 
-    send_ceo_report_email()
+    send_ceo_report_email(today)
 
 lambda_handler('x', 'x')
 

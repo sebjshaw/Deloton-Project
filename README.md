@@ -139,7 +139,9 @@ Resources used:
 ### API
 
 - Authentication layer
-
+### Daily Report
+- Customise the summary in the report to be a bespoke overview of that specific days metrics and insights. 
+- Have a !!WARNING!! at the top of the page if there are more than 5 heart rate emails sent in one day
 ### Email Alerts
 
 - Having a dedicated email address for sending heart rate exceeding limit email to a user's email that they have verified.

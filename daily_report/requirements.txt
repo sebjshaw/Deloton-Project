@@ -1,3 +1,9 @@
 s3fs
 beautifulsoup4
 boto3
+python-dotenv
+pandas
+sqlalchemy
+plotly.express
+psycopg2
+psycopg2-binary 

@@ -29,7 +29,7 @@ recent_layout = html.Div(
 						html.Div(
 							children = [
 								html.Div(
-									html.H2('Total Power',id='total_power_text', className='bit_title'),
+									html.H2('TOTAL POWER',id='total_power_text', className='bit_title'),
 								),
 								html.H2('Watts',id='total_power_value')
 							],
@@ -39,7 +39,7 @@ recent_layout = html.Div(
 						html.Div(
 							children = [
 								html.Div(
-									html.H2('Average Power',id='avg_power_text', className='bit_title'),
+									html.H2('AVERAGE POWER',id='avg_power_text', className='bit_title'),
 								),
 								html.H2('Watts',id='average_power_value')
 							],

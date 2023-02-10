@@ -23,16 +23,22 @@ def create_line_graph(df: pd.DataFrame, x: str, y:str, title:str) -> px.line:
 
 
 
-	fig.update_xaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'))
+	fig.update_xaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'), title=format_axes_labels(x))
 	fig.update_xaxes(gridcolor='#7fc37e', zerolinecolor='#7fc37e', zerolinewidth=3)
-	fig.update_yaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'))
+	fig.update_yaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'), title=format_axes_labels(y))
 	fig.update_yaxes(gridcolor='#7fc37e', zerolinecolor='#7fc37e', zerolinewidth=3)
 	fig.update_layout(
     legend=dict(
         font=dict(
-            color="red"
+            color="#fefee2"
         )
-    )
+    ),
+		title={
+        'x':0.5,
+        'xanchor': 'center',
+		},
+		title_font_size=22,
+		font_color='#fefee2'
 	)
 
 	if "heart_rate" in df.columns.tolist():
@@ -84,6 +90,7 @@ def format_axes_labels(label: str) -> str:
 		new_label = []
 		for word in label:
 			word = word[0].upper()+word[1:]
-		return " ".join(label)
+			new_label.append(word)
+		return " ".join(new_label)
 	else:
 		return label[0].upper()+label[1:]

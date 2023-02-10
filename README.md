@@ -101,9 +101,9 @@ Get all rides for a specific date
 
 ### Daily Report
 
-16:45 every day, daily report is generated and sent off to the Deloton CEO's email detailing main findings over the last 24 hours.
-Included in email as a link to index.html page which contains links to all historic daily reports. The index.html and daily reports are on an s3 bucket which acts as a host for the page. The most recent daily report is at the top.
-Automated using Crontab
+16:45 every day, a daily report is generated and sent off to the Deloton CEO's email detailing main findings over the last 24 hours.
+Included in email as a link to today's report as well as a link to a list of past reports. Both links will download a html file for the CEO to view in their browser.
+This process is automated using a Crontab
 
 <img width="435" alt="daily_reportoooo" src="https://user-images.githubusercontent.com/115073814/217875230-8b640656-a526-4593-bcbc-29b06380c902.png">
 
@@ -111,7 +111,7 @@ Automated using Crontab
 
 1. EC2 hosting Kafka data stream automatically alerts user when their heart rate exceeds a certain level
 2. Heart Rate Level calculated by age
-3. Currently, emails sent to this address: three.musketeers.deloton@gmail.com
+3. Currently, emails sent to this address: three.musketeers.deloton@gmail.com, as user emails are not real
 
 ![Screenshot_Email](https://user-images.githubusercontent.com/115073814/217221056-2253c7c2-8ace-41bc-91f5-7f412795570c.png)
 
@@ -184,3 +184,4 @@ Suggestions for additional features
 
 Welcome to the first edit - Alex
 Another edit - this time Seb
+Another edit - Seb again

@@ -23,9 +23,9 @@ def create_line_graph(df: pd.DataFrame, x: str, y:str, title:str) -> px.line:
 
 
 
-	fig.update_xaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'), title=format_axes_labels(x))
+	fig.update_xaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'), title=add_units(format_axes_labels(x)))
 	fig.update_xaxes(gridcolor='#7fc37e', zerolinecolor='#7fc37e', zerolinewidth=3)
-	fig.update_yaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'), title=format_axes_labels(y))
+	fig.update_yaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'), title=add_units(format_axes_labels(y)))
 	fig.update_yaxes(gridcolor='#7fc37e', zerolinecolor='#7fc37e', zerolinewidth=3)
 	fig.update_layout(
     legend=dict(
@@ -64,9 +64,9 @@ def create_grouped_bar_graph(df:pd.DataFrame, x:str, y:str, group:str, title: st
 	"""
 	fig = px.bar(df, x, y, color=group, barmode='group', text_auto='.0f', title=title).update_layout(paper_bgcolor="#333333", plot_bgcolor='#333333')
 
-	fig.update_xaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'), title=format_axes_labels(x))
+	fig.update_xaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'), title=add_units(format_axes_labels(x)))
 	fig.update_xaxes(gridcolor='#7fc37e', zerolinecolor='#7fc37e', zerolinewidth=3)
-	fig.update_yaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'), title=format_axes_labels(y))
+	fig.update_yaxes(title_font=dict(color='#f3dfc1'), tickfont=dict(color='#f3dfc1'), title=add_units(format_axes_labels(y)))
 	fig.update_yaxes(gridcolor='#7fc37e', zerolinecolor='#7fc37e', zerolinewidth=3)
 	fig.update_layout(
     legend=dict(
@@ -92,5 +92,15 @@ def format_axes_labels(label: str) -> str:
 			word = word[0].upper()+word[1:]
 			new_label.append(word)
 		return " ".join(new_label)
+	elif 'RPM' in label:
+		return label.upper()
 	else:
 		return label[0].upper()+label[1:]
+
+def add_units(label: str) -> str:
+	if 'Power' in label:
+		label += ' (W)'
+	elif 'Duration' in label:
+		label += ' (s)'
+	return label
+	

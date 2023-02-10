@@ -290,6 +290,7 @@ def send_ceo_report_email(today):
     The second takes you to a list of previous daily reports. Both are HTML links will can viewed in your browser.</h4>
     <p><a href="https://three-m-deleton-report.s3.eu-west-2.amazonaws.com/{today}.html">Today's Report</a></p>
     <p><a href="https://three-m-deloton-bucket.s3.eu-west-2.amazonaws.com/index.html">Previous Daily Reports</a></p>
+
      
     <h5>This email was sent to you by The Three Musketeers.</h5>
     </body>

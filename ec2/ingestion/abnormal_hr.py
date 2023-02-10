@@ -85,7 +85,7 @@ def send_user_hr_warning(user_info):
     <h1>Hey {user_info["user_forename"]} {user_info["user_surname"]}, </h1>
     
     <h1>This email is to let you know that on {user_info["ride_date"]}, {user_info["time_elapsed"]} seconds into your ride
-     your heart rate reached {user_info["curr_heart_rate"]} bpm, exceeding the typical limit of {user_info["limit_heart_rate"]} bpm.</h1>
+     your heart rate reached {user_info["curr_heart_rate"]} bpm, exceeding your typical limit of {user_info["limit_heart_rate"]} bpm.</h1>
      <h1>Stay safe!</h1>
      
     <h2>This email was sent to you by Deloton.</p>

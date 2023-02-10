@@ -2,6 +2,8 @@
 
 ![DelotonLogo](https://user-images.githubusercontent.com/115073814/217207897-f7b979af-dc1f-4fa5-89e4-99ee7c6a37c8.png)
 
+Hello and welcome to The Three Musketeer's data pipeline, built to deliver a user interface for Deloton customers as well as a data warehoue for Deloton employees to access using an API and Tableau. The CEO of Deloton also receives a Daily Report.
+
 ## Table of contents
 
 - [General Info](#general-info)
@@ -19,13 +21,12 @@
 
 ## General Info
 
-Creation of a full ETL pipeline whereby data collected from live bike usage outputs meaningful and insightful forms of data visualisation and functionality.
-These take the form of:
+This repo contains everything required to build a full ETL pipeline which collects data from live bike ride outputs and returns meaningful and insightful forms of data visualisation and functionality in the form of 5 key deliverables:
 
-- Real-time dashboard display of current user ride and recent history
-- Automated email service for excessively high heart rate data
+- Real-time dashboard display of current user ride and recent ride history
+- Automated email service for excessively high heart rate
 - Long term storage of user data for prospective business analysis
-- Automated daily report builder summarising key metrics
+- Automated daily report summarising key metrics
 - RESTful API
 - Tableau integration to perform data querying and dashboard creation
 
@@ -35,10 +36,10 @@ These take the form of:
 
 ### Summary of above roadmap
 
-1. Kafka consumer polls the Deloton topic receiving two logs per second. Combines these logs into one containing all the data for that second of the ride
-2. Parses logs and cleans data, passes into SQLite table ready for querying from the Live Dashboard, displaying recent and current pages
-3. At any point current user heart rate exceeds heart rate limit during the ride, calculated as a function of the user's age, email alert trigger sent using Amazon simple email service (SES)
-4. For a given ride for a specific user, at the end of their current ride, two csv files (user_info & ride_info) sent to s3 bucket (file storage service)
+1. Kafka consumer polls the Deloton topic receiving two logs per second.
+2. Combines the two logs into one containing all the data for that second of the ride. Passes into SQLite table ready for querying from the Live Dashboard. Also creates user information table to store the current users details
+3. When user heart rate exceeds heart rate limit during the ride, calculated as a function of the user's age, email alert sent using Amazon simple email service (SES)
+4. At the end of the current ride, two csv files (user_info & ride_info) sent to s3 bucket. Tables are wiped for the next ride's data
 5. AWS Lambda function reads csv files from s3 bucket and extracts key metrics (using Pandas) for long term storage in AWS RDS PostgreSQL table
 6. RDS comprised of two tables, users and rides, joined by user_id
 7. Tableau dashboard connected to RDS schemas and visuals created from it, live streaming the information
@@ -51,6 +52,18 @@ These take the form of:
 
 1. You will find the live dashboard up and running here: [Live Dashboard](http://18.130.141.140:8080/)
 2. Top left button allows user to switch between viewing the current ride (user details along with their current performance) and recent ride details.
+   If you would like to host run the dashboard yourself:
+
+- Create your own EC2 instance and run the following commands
+  NOTE: python3.10 is required for the most up to date version of pandas. The link to install this new version into your EC2 instance can be found [here](https://techviewleo.com/how-to-install-python-on-amazon-linux-2/)
+  - `sudo yum install git`
+  - `sudo git clone git@github.com:sebjshaw/Deloton-Project.git`
+  - `cd Deloton-Project`
+  - `sudo pip3.10 install -r requirements.txt`
+  - `sudo amazon-linux-extras install redis6`
+  - `sudo pip3.10 install sqlalchemy`
+  - `sudo pip3.10 install psycopg2-binary`
+  - `./run_files.sh`
 
 #### Current Ride
 

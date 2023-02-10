@@ -1,17 +1,17 @@
-![DelotonLogo](https://user-images.githubusercontent.com/115073814/217207897-f7b979af-dc1f-4fa5-89e4-99ee7c6a37c8.png)
-
 # Deloton-Project
+
+![DelotonLogo](https://user-images.githubusercontent.com/115073814/217207897-f7b979af-dc1f-4fa5-89e4-99ee7c6a37c8.png)
 
 ## Table of contents
 
 - [General Info](#general-info)
 - [Project Roadmap](#project-roadmap)
 - [Usage](#usage)
-     - [Live Dashboard](#live-dashboard)
-     - [RESTful API](#restful-api)
-     - [Daily Report](#daily-report)
-     - [Email Alerts](#email-alerts)
-     - [Tableau Dashboard](#tableau-dashboard)
+  - [Live Dashboard](#live-dashboard)
+  - [RESTful API](#restful-api)
+  - [Daily Report](#daily-report)
+  - [Email Alerts](#email-alerts)
+  - [Tableau Dashboard](#tableau-dashboard)
 - [Credits & Acknowledgments](#credits-and-acknowledgements)
 - [Further Development](#further-development)
 - [Ways to Contribute](#ways-to-contribute)
@@ -33,7 +33,7 @@ These take the form of:
 
 ![Screenshot_Excalidraw](https://user-images.githubusercontent.com/115073814/217223449-26e6a315-d01c-4a11-a743-ceee6c4e60d7.png)
 
-### Summary of above roadmap:
+### Summary of above roadmap
 
 1. Kafka consumer polls the Deloton topic receiving two logs per second. Combines these logs into one containing all the data for that second of the ride
 2. Parses logs and cleans data, passes into SQLite table ready for querying from the Live Dashboard, displaying recent and current pages
@@ -52,32 +52,34 @@ These take the form of:
 1. You will find the live dashboard up and running here: [Live Dashboard](http://18.130.141.140:8080/)
 2. Top left button allows user to switch between viewing the current ride (user details along with their current performance) and recent ride details.
 
-#### Current Ride:
+#### Current Ride
+
 <img width="1411" alt="Screenshot_LiveDashboard" src="https://user-images.githubusercontent.com/115073814/217261046-79872c89-567d-4f6e-bf45-7550f1fbcbdf.png">
 
-#### Recent Rides:
+#### Recent Rides
+
 <img width="1414" alt="Screenshot_LiveDashboardRecent" src="https://user-images.githubusercontent.com/115073814/217261372-560e20da-d1ef-4a44-8d4f-6825283be560.png">
 
 ### RESTful API
 
 [API](https://jzrx9wfk25.execute-api.eu-west-2.amazonaws.com/) can search the following endpoints:
 
-```GET``` ```/ride/:id```
+`GET` `/ride/:id`
 Get a ride with a specific ID
 
-```GET``` ```/rider/:user_id```
+`GET` `/rider/:user_id`
 Get rider information (e.g. name, gender, age, avg. heart rate, number of rides)
 
-```GET``` ```/rider/:user_id/rides```
+`GET` `/rider/:user_id/rides`
 Get all rides for a rider with a specific ID
 
-```DELETE``` ```/ride/:id```
+`DELETE` `/ride/:id`
 Delete a with a specific ID
 
-```GET``` ```/daily```
+`GET` `/daily`
 Get all of the rides in the current day
 
-```GET``` ```/daily?date=01-01-2020```
+`GET` `/daily?date=01-01-2020`
 Get all rides for a specific date
 
 ![Screenshot_API](https://user-images.githubusercontent.com/115073814/217295721-d7c80429-1267-4095-b8b6-67b73a49f0e4.png)
@@ -87,7 +89,7 @@ Get all rides for a specific date
 ### Daily Report
 
 16:45 every day, daily report is generated and sent off to the Deloton CEO's email detailing main findings over the last 24 hours.
-Included in email as a link to index.html page which contains links to all historic daily reports. The index.html and daily reports are on an s3 bucket which acts as a host for the page. The most recent daily report is at the top. 
+Included in email as a link to index.html page which contains links to all historic daily reports. The index.html and daily reports are on an s3 bucket which acts as a host for the page. The most recent daily report is at the top.
 Automated using Crontab
 
 <img width="435" alt="daily_reportoooo" src="https://user-images.githubusercontent.com/115073814/217875230-8b640656-a526-4593-bcbc-29b06380c902.png">
@@ -113,40 +115,47 @@ Automated using Crontab
 ## Credits and Acknowledgements
 
 Direct contributors to the repository:
+
 - Seb Shaw: [sebjshaw](https://github.com/sebjshaw)
 - Dominic Lawson: [DomLaw82](https://github.com/DomLaw82)
 - Alexander Skowronski: [AlexSkowronski2](https://github.com/AlexSkowronski2)
 
 Resources used:
+
 - [Pandas](https://pandas.pydata.org/)
 - [Amazon Web Services](https://aws.amazon.com/)
-    - API Gateway
-    - EC2
-    - ECR
-    - Lambda
-    - S3
-    - RDS
-    - SES
+  - API Gateway
+  - EC2
+  - ECR
+  - Lambda
+  - S3
+  - RDS
+  - SES
 - [Tableau Cloud](https://www.tableau.com/en-gb/products/cloud-bi)
 
 ## Further Development
 
-### Live Dashboard
+Suggestions for additional features
+
+### Live Dashboard Development
 
 - Button to change the theme of the dashboard between light-mode and dark-mode
 - Backtrack kafka logs to find user info when starting the EC2 middway through a ride
 
-### API
+### API Development
 
 - Authentication layer
-### Daily Report
-- Customise the summary in the report to be a bespoke overview of that specific days metrics and insights. 
+
+### Daily Report Development
+
+- Customise the summary in the report to be a bespoke overview of that specific days metrics and insights.
 - Have a !!WARNING!! at the top of the page if there are more than 5 heart rate emails sent in one day
-### Email Alerts
+
+### Email Alerts Development
 
 - Having a dedicated email address for sending heart rate exceeding limit email to a user's email that they have verified.
 
-### Tableau Dashboard
+### Tableau Dashboard Development
 
 - Age bin filter on Tableau dashboard for filtering specific ages of users, suggested bins could be: under 18s, 18-25, 25-35, 35-45, 45-55, over 55s
 - Perhaps adding in resistance dashboard onto Tableau dashboard
@@ -154,7 +163,7 @@ Resources used:
 
 ## Ways to Contribute
 
-1. Clone repo and create a new branch: ```bash $ git checkout https://github.com/alichtman/stronghold -b name_for_new_branch```
+1. Clone repo and create a new branch: `bash $ git checkout https://github.com/alichtman/stronghold -b name_for_new_branch`
 2. Make changes and test
 3. Submit Pull Request with comprehensive description of changes
 

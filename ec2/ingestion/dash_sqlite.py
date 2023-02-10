@@ -217,7 +217,9 @@ if __name__ == "__main__":
                     cache.set_cache_value(user_info['email_address'])
                     user_email_dict = create_dict_for_email(user_info, int(log_entry['heart_rate']), max_hr, log_entry['date'], int(log_entry['duration'][:-2]))
                     send_user_hr_warning(user_email_dict)
-                    os.environ['TOTAL_HR_EMAILS'] += 1
+                    total_emails = int(os.environ['TOTAL_HR_EMAILS']) + 1
+                    os.environ['TOTAL_HR_EMAILS'] = str(total_emails)
+                    
                     
         except KeyboardInterrupt:
             pass

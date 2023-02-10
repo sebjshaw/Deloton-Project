@@ -82,8 +82,8 @@ def update_user_info(n):
 	)
 	name = info[0][0]
 	dob = info[0][1]
-	age = 'AGE: ' + str(int(calculate_age(dob)))
-	gender = info[0][2]
+	age = str(int(calculate_age(dob)))
+	gender = info[0][2].upper()
 	return name, age, gender
 
 def calculate_age(dob:str) -> int:

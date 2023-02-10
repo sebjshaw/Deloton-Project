@@ -92,7 +92,7 @@ def format_axes_labels(label: str) -> str:
 			word = word[0].upper()+word[1:]
 			new_label.append(word)
 		return " ".join(new_label)
-	elif 'RPM' in label:
+	elif 'Rpm' in label:
 		return label.upper()
 	else:
 		return label[0].upper()+label[1:]
